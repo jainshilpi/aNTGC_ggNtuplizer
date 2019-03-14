@@ -17,8 +17,6 @@ vector<int>    eleChargeConsistent_;
 vector<float>  eleEn_;
 vector<float>  eleSCEn_;
 vector<float>  eleEcalEn_;
-vector<float>  eleESEnP1_;
-vector<float>  eleESEnP2_;
 vector<float>  eleESEnP1Raw_;
 vector<float>  eleESEnP2Raw_;
 vector<float>  eleD0_;
@@ -77,25 +75,29 @@ vector<float>  eleResol_rho_dn_;
 vector<float>  eleResol_phi_up_;
 vector<float>  eleResol_phi_dn_;
 
-vector<vector<float> > eleGSFPt_;
-vector<vector<float> > eleGSFEta_;
-vector<vector<float> > eleGSFPhi_;
-vector<vector<float> > eleGSFCharge_;
-vector<vector<int> >   eleGSFHits_;
-vector<vector<int> >   eleGSFMissHits_;
-vector<vector<int> >   eleGSFNHitsMax_;
-vector<vector<float> > eleGSFVtxProb_;
-vector<vector<float> > eleGSFlxyPV_;
-vector<vector<float> > eleGSFlxyBS_;
 
-vector<vector<float> > eleESEnEta_;
-vector<vector<float> > eleESEnPhi_;
-vector<vector<int> >   eleESEnZ_;
-vector<vector<int> >   eleESEnP_;
-vector<vector<int> >   eleESEnX_;
-vector<vector<int> >   eleESEnY_;
-vector<vector<int> >   eleESEnS_;
-vector<vector<float> > eleESEnE_;
+
+// vector<vector<float> > eleGSFPt_;
+// vector<vector<float> > eleGSFEta_;
+// vector<vector<float> > eleGSFPhi_;
+// vector<vector<float> > eleGSFCharge_;
+// vector<vector<int> >   eleGSFHits_;
+// vector<vector<int> >   eleGSFMissHits_;
+// vector<vector<int> >   eleGSFNHitsMax_;
+// vector<vector<float> > eleGSFVtxProb_;
+// vector<vector<float> > eleGSFlxyPV_;
+// vector<vector<float> > eleGSFlxyBS_;
+
+// vector<float>  eleESEnP1_;
+// vector<float>  eleESEnP2_;
+// vector<vector<float> > eleESEnEta_;
+// vector<vector<float> > eleESEnPhi_;
+// vector<vector<int> >   eleESEnZ_;
+// vector<vector<int> >   eleESEnP_;
+// vector<vector<int> >   eleESEnX_;
+// vector<vector<int> >   eleESEnY_;
+// vector<vector<int> >   eleESEnS_;
+// vector<vector<float> > eleESEnE_;
 
 Int_t nGSFTrk_;
 vector<float> gsfPt_;
@@ -178,27 +180,27 @@ void ggNtuplizer::branchesElectrons(TTree* tree) {
   tree->Branch("eleResol_phi_up",             &eleResol_phi_up_);
   tree->Branch("eleResol_phi_dn",             &eleResol_phi_dn_);
 
-  if (development_) {
-    tree->Branch("eleESEnP1Raw",              &eleESEnP1Raw_);
-    tree->Branch("eleESEnP2Raw",              &eleESEnP2Raw_);
-    tree->Branch("eleESEnEta",                &eleESEnEta_);
-    tree->Branch("eleESEnPhi",                &eleESEnPhi_);
-    tree->Branch("eleESEnZ",                  &eleESEnZ_);
-    tree->Branch("eleESEnP",                  &eleESEnP_);
-    tree->Branch("eleESEnX",                  &eleESEnX_);
-    tree->Branch("eleESEnY",                  &eleESEnY_);
-    tree->Branch("eleESEnS",                  &eleESEnS_);
-    tree->Branch("eleESEnE",                  &eleESEnE_);
-    tree->Branch("nGSFTrk",                   &nGSFTrk_);
-    tree->Branch("gsfPt",                     &gsfPt_);
-    tree->Branch("gsfEta",                    &gsfEta_);
-    tree->Branch("gsfPhi",                    &gsfPhi_);
-  }
+  // if (development_) {
+    // tree->Branch("eleESEnP1Raw",              &eleESEnP1Raw_);
+    // tree->Branch("eleESEnP2Raw",              &eleESEnP2Raw_);
+    // tree->Branch("eleESEnEta",                &eleESEnEta_);
+    // tree->Branch("eleESEnPhi",                &eleESEnPhi_);
+    // tree->Branch("eleESEnZ",                  &eleESEnZ_);
+    // tree->Branch("eleESEnP",                  &eleESEnP_);
+    // tree->Branch("eleESEnX",                  &eleESEnX_);
+    // tree->Branch("eleESEnY",                  &eleESEnY_);
+    // tree->Branch("eleESEnS",                  &eleESEnS_);
+    // tree->Branch("eleESEnE",                  &eleESEnE_);
+    // tree->Branch("nGSFTrk",                   &nGSFTrk_);
+    // tree->Branch("gsfPt",                     &gsfPt_);
+    // tree->Branch("gsfEta",                    &gsfEta_);
+    // tree->Branch("gsfPhi",                    &gsfPhi_);
+  // }
   
 }
 
 void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, math::XYZPoint &pv) {
-    
+  
   // cleanup from previous execution
   eleCharge_                  .clear();
   eleChargeConsistent_        .clear();
@@ -257,17 +259,17 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
   eleTrkdxy_                  .clear();
   eleKFHits_                  .clear();
   eleKFChi2_                  .clear();
-  eleGSFChi2_                 .clear();
-  eleGSFPt_                   .clear();
-  eleGSFEta_                  .clear();
-  eleGSFPhi_                  .clear();
-  eleGSFCharge_               .clear();
-  eleGSFHits_                 .clear();
-  eleGSFMissHits_             .clear();
-  eleGSFNHitsMax_             .clear();
-  eleGSFVtxProb_              .clear();
-  eleGSFlxyPV_                .clear();
-  eleGSFlxyBS_                .clear();
+  // eleGSFChi2_                 .clear();
+  // eleGSFPt_                   .clear();
+  // eleGSFEta_                  .clear();
+  // eleGSFPhi_                  .clear();
+  // eleGSFCharge_               .clear();
+  // eleGSFHits_                 .clear();
+  // eleGSFMissHits_             .clear();
+  // eleGSFNHitsMax_             .clear();
+  // eleGSFVtxProb_              .clear();
+  // eleGSFlxyPV_                .clear();
+  // eleGSFlxyBS_                .clear();
   eleFiredSingleTrgs_         .clear();
   eleFiredDoubleTrgs_         .clear();
   eleFiredL1Trgs_             .clear();
@@ -375,103 +377,103 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
       if (recVtxs->size() > 0)
         eleTrkdxy_.push_back(gsfTrackRef->dxy(recVtxs->front().position()));
       else
-	eleTrkdxy_.push_back(-999);
-    } else {
-      eleGSFChi2_.push_back(999.);
-      eleTrkdxy_.push_back(-999);
-    }
-    
-    reco::TrackRef kfTrackRef = iEle->closestCtfTrackRef();
-    if (kfTrackRef.isAvailable() && kfTrackRef.isNonnull()) {
-      eleKFHits_.push_back(kfTrackRef->hitPattern().trackerLayersWithMeasurement());
-      eleKFChi2_.push_back(kfTrackRef->normalizedChi2());
-    } else {
-      eleKFHits_.push_back(-1.);
-      eleKFChi2_.push_back(999.);
-    }
-
-    if (development_) {
-
-      Float_t ESp1 = 0;
-      Float_t ESp2 = 0;
-      vector<float> ESEta; 
-      vector<float> ESPhi;
-      vector<int>   ESZ;
-      vector<int>   ESP;
-      vector<int>   ESX;
-      vector<int>   ESY;
-      vector<int>   ESS;
-      vector<float> ESE;
-      for (CaloClusterPtrVector::const_iterator ips = iEle->superCluster()->preshowerClustersBegin(); ips != iEle->superCluster()->preshowerClustersEnd(); ++ips) {
-
-	ESDetId esid = ESDetId((*ips)->seed());
-	if (esid.plane() == 1) ESp1 += (*ips)->energy();
-	if (esid.plane() == 2) ESp2 += (*ips)->energy();
-
-	ESZ.push_back(esid.zside());
-	ESP.push_back(esid.plane());
-	ESX.push_back(esid.six());
-	ESY.push_back(esid.siy());
-	ESS.push_back(esid.strip());
-
-	ESEta.push_back((*ips)->eta());
-	ESPhi.push_back((*ips)->phi());
-	ESE.push_back((*ips)->energy());
-      }
-
-      eleESEnP1Raw_.push_back(ESp1);
-      eleESEnP2Raw_.push_back(ESp2);
-      eleESEnEta_.push_back(ESEta);
-      eleESEnPhi_.push_back(ESPhi);
-      eleESEnZ_.push_back(ESZ);
-      eleESEnP_.push_back(ESP);
-      eleESEnX_.push_back(ESX);
-      eleESEnY_.push_back(ESY);
-      eleESEnS_.push_back(ESS);
-      eleESEnE_.push_back(ESE);
-    }
-
-    // VID decisions 
-    UShort_t tmpeleIDbit = 0;   
-    bool isPassVeto   = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-veto");
-    if (isPassVeto)   setbit(tmpeleIDbit, 0);    
-    bool isPassLoose  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-loose");
-    if (isPassLoose)  setbit(tmpeleIDbit, 1);   
-    bool isPassMedium = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-medium");
-    if (isPassMedium) setbit(tmpeleIDbit, 2);    
-    bool isPassTight  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-tight");
-    if (isPassTight)  setbit(tmpeleIDbit, 3);    
-    bool isPassHEEP   = iEle->electronID("heepElectronID-HEEPV70");
-    if (isPassHEEP)   setbit(tmpeleIDbit, 4);
-    
-    eleIDMVAIso_  .push_back(iEle->userFloat("ElectronMVAEstimatorRun2Fall17IsoV2Values"));
-    eleIDMVANoIso_.push_back(iEle->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV2Values"));
-
-    elePFClusEcalIso_.push_back(iEle->ecalPFClusterIso());
-    elePFClusHcalIso_.push_back(iEle->hcalPFClusterIso());
-    
-    eleIDbit_.push_back(tmpeleIDbit);
-
-    nEle_++;
+       eleTrkdxy_.push_back(-999);
+   } else {
+    eleGSFChi2_.push_back(999.);
+    eleTrkdxy_.push_back(-999);
+  }
+  
+  reco::TrackRef kfTrackRef = iEle->closestCtfTrackRef();
+  if (kfTrackRef.isAvailable() && kfTrackRef.isNonnull()) {
+    eleKFHits_.push_back(kfTrackRef->hitPattern().trackerLayersWithMeasurement());
+    eleKFChi2_.push_back(kfTrackRef->normalizedChi2());
+  } else {
+    eleKFHits_.push_back(-1.);
+    eleKFChi2_.push_back(999.);
   }
 
   if (development_) {
-    
-    edm::Handle<edm::View<reco::GsfTrack> > GsfTrackHandle;
-    e.getByToken(gsfTracks_, GsfTrackHandle);
-    
-    nGSFTrk_ = 0;
-    gsfPt_ .clear();
-    gsfEta_.clear();
-    gsfPhi_.clear();
-    
-    for (edm::View<reco::GsfTrack>::const_iterator ig = GsfTrackHandle->begin(); ig != GsfTrackHandle->end(); ++ig) {
-      gsfPt_ .push_back(ig->pt());
-      gsfEta_.push_back(ig->eta());
-      gsfPhi_.push_back(ig->phi());
-      nGSFTrk_++;
-    }
-    
+
+    Float_t ESp1 = 0;
+    Float_t ESp2 = 0;
+    vector<float> ESEta; 
+    vector<float> ESPhi;
+    vector<int>   ESZ;
+    vector<int>   ESP;
+    vector<int>   ESX;
+    vector<int>   ESY;
+    vector<int>   ESS;
+    vector<float> ESE;
+    for (CaloClusterPtrVector::const_iterator ips = iEle->superCluster()->preshowerClustersBegin(); ips != iEle->superCluster()->preshowerClustersEnd(); ++ips) {
+
+     ESDetId esid = ESDetId((*ips)->seed());
+     if (esid.plane() == 1) ESp1 += (*ips)->energy();
+     if (esid.plane() == 2) ESp2 += (*ips)->energy();
+
+     ESZ.push_back(esid.zside());
+     ESP.push_back(esid.plane());
+     ESX.push_back(esid.six());
+     ESY.push_back(esid.siy());
+     ESS.push_back(esid.strip());
+
+     ESEta.push_back((*ips)->eta());
+     ESPhi.push_back((*ips)->phi());
+     ESE.push_back((*ips)->energy());
+   }
+
+   eleESEnP1Raw_.push_back(ESp1);
+   eleESEnP2Raw_.push_back(ESp2);
+   eleESEnEta_.push_back(ESEta);
+   eleESEnPhi_.push_back(ESPhi);
+   eleESEnZ_.push_back(ESZ);
+   eleESEnP_.push_back(ESP);
+   eleESEnX_.push_back(ESX);
+   eleESEnY_.push_back(ESY);
+   eleESEnS_.push_back(ESS);
+   eleESEnE_.push_back(ESE);
+ }
+
+    // VID decisions 
+ UShort_t tmpeleIDbit = 0;   
+ bool isPassVeto   = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-veto");
+ if (isPassVeto)   setbit(tmpeleIDbit, 0);    
+ bool isPassLoose  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-loose");
+ if (isPassLoose)  setbit(tmpeleIDbit, 1);   
+ bool isPassMedium = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-medium");
+ if (isPassMedium) setbit(tmpeleIDbit, 2);    
+ bool isPassTight  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-tight");
+ if (isPassTight)  setbit(tmpeleIDbit, 3);    
+ bool isPassHEEP   = iEle->electronID("heepElectronID-HEEPV70");
+ if (isPassHEEP)   setbit(tmpeleIDbit, 4);
+ 
+ eleIDMVAIso_  .push_back(iEle->userFloat("ElectronMVAEstimatorRun2Fall17IsoV2Values"));
+ eleIDMVANoIso_.push_back(iEle->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV2Values"));
+
+ elePFClusEcalIso_.push_back(iEle->ecalPFClusterIso());
+ elePFClusHcalIso_.push_back(iEle->hcalPFClusterIso());
+ 
+ eleIDbit_.push_back(tmpeleIDbit);
+
+ nEle_++;
+}
+
+if (development_) {
+  
+  edm::Handle<edm::View<reco::GsfTrack> > GsfTrackHandle;
+  e.getByToken(gsfTracks_, GsfTrackHandle);
+  
+  nGSFTrk_ = 0;
+  gsfPt_ .clear();
+  gsfEta_.clear();
+  gsfPhi_.clear();
+  
+  for (edm::View<reco::GsfTrack>::const_iterator ig = GsfTrackHandle->begin(); ig != GsfTrackHandle->end(); ++ig) {
+    gsfPt_ .push_back(ig->pt());
+    gsfEta_.push_back(ig->eta());
+    gsfPhi_.push_back(ig->phi());
+    nGSFTrk_++;
   }
   
+}
+
 }

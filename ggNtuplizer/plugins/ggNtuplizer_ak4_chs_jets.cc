@@ -8,9 +8,9 @@
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
-#include "FWCore/Utilities/interface/RandomNumberGenerator.h"
-#include "CLHEP/Random/RandomEngine.h"
-#include "CLHEP/Random/RandGauss.h"
+// #include "FWCore/Utilities/interface/RandomNumberGenerator.h"
+// #include "CLHEP/Random/RandomEngine.h"
+// #include "CLHEP/Random/RandGauss.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
 #include "CondFormats/JetMETObjects/interface/JetResolutionObject.h"
 
@@ -58,8 +58,8 @@ vector<float>  AK4CHSJet_DeepFlavTags_c_;
 vector<float>  AK4CHSJet_DeepFlavTags_uds_;
 vector<float>  AK4CHSJet_DeepFlavTags_g_;
 vector<float>  AK4CHSJet_CombMVA2Tags_;
-vector<int>    AK4CHSJet_PartonID_;
-vector<int>    AK4CHSJet_HadFlvr_;
+vector<int>    AK4CHSJet_PartonFlavour_;
+vector<int>    AK4CHSJet_HadronFlavour_;
 vector<Char_t>	AK4CHSJet_ID_;
 vector<float>  AK4CHSJet_PUID_;
 vector<Char_t>    AK4CHSJet_PUFullID_;
@@ -112,8 +112,8 @@ void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
 
 
 	if (doGenParticles_){
-		tree->Branch("AK4CHSJet_PartonID",       &AK4CHSJet_PartonID_);
-		tree->Branch("AK4CHSJet_HadFlvr",        &AK4CHSJet_HadFlvr_);
+		tree->Branch("AK4CHSJet_PartonFlavour",       &AK4CHSJet_PartonFlavour_);
+		tree->Branch("AK4CHSJet_HadronFlavour",        &AK4CHSJet_HadronFlavour_);
 		tree->Branch("AK4CHSJet_GenJetIndex",        &AK4CHSJet_GenJetIndex_);
 		tree->Branch("AK4CHSJet_GenPartonIndex",    &AK4CHSJet_GenPartonIndex_);
 	}  
@@ -178,8 +178,8 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 	AK4CHSJet_DeepFlavTags_g_ .clear();
 	AK4CHSJet_CombMVA2Tags_ .clear();
 
-	AK4CHSJet_PartonID_                            .clear();
-	AK4CHSJet_HadFlvr_                             .clear();
+	AK4CHSJet_PartonFlavour_                            .clear();
+	AK4CHSJet_HadronFlavour_                             .clear();
 	AK4CHSJet_ID_                                  .clear();
 	AK4CHSJet_PUID_                                .clear();
 	AK4CHSJet_PUFullID_                            .clear();
@@ -340,8 +340,8 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	AK4CHSJet_CombMVA2Tags_ .push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
 
     	//parton id
-      	AK4CHSJet_PartonID_.push_back(iJet->partonFlavour());
-      	AK4CHSJet_HadFlvr_.push_back(iJet->hadronFlavour());
+      	AK4CHSJet_PartonFlavour_.push_back(iJet->partonFlavour());
+      	AK4CHSJet_HadronFlavour_.push_back(iJet->hadronFlavour());
 
     	//jet PF Loose ID
       	double NHF      = iJet->neutralHadronEnergyFraction();
@@ -351,23 +351,30 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	double CHM      = iJet->chargedMultiplicity();
       	double CEMF     = iJet->chargedEmEnergyFraction();
       	double NNP      = iJet->neutralMultiplicity();
+      	double MUF      = iJet->muonEnergyFraction();
+
 
       	//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
       	bool looseJetID = false;    
       	bool tightJetID = false;
+      	Bool_t tightLeptVetoID = false;
       	if (fabs(iJet->eta()) <= 2.7) {
       		looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(iJet->eta())>2.4);
-      		tightJetID = (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(iJet->eta())>2.4);
+      		tightJetID = (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0) || fabs(iJet->eta())>2.4);
+      		tightLeptVetoID = (NHF<0.90 && NEMF<0.90 && NumConst>1 && MUF < 0.8) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.8) || fabs(iJet->eta())>2.4);
       	} else if (fabs(iJet->eta()) <= 3.0) {
       		looseJetID = (NEMF>0.01 && NHF<0.98 && NNP>2);
-      		tightJetID = (NEMF>0.01 && NHF<0.98 && NNP>2);
+      		tightJetID = (NEMF>0.02 && NEMF <0.99 && NNP>2);
+      		tightLeptVetoID = tightJetID;
       	} else {
       		looseJetID = (NEMF<0.90 && NNP>10); 
-      		tightJetID = (NEMF<0.90 && NNP>10);
+      		tightJetID = (NEMF<0.90 && NNP>10 && NHF > 0.02);
+      		tightLeptVetoID = tightJetID;
       	}
       	Char_t jetIDdecision = 0;
       	if(looseJetID) setbit(jetIDdecision, 0);
       	if(tightJetID) setbit(jetIDdecision, 1);
+      	if(tightLeptVetoID) setbit(jetIDdecision, 2);
       	AK4CHSJet_ID_.push_back(jetIDdecision);    
 
     	// PUJet ID from slimmedJets - not available for PUPPI

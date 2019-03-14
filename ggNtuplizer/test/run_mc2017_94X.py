@@ -60,7 +60,7 @@ jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput',
             PUMethod='CHS',
             updateCollection='slimmedJets',
             # addPruning=True,
-            # addSoftDrop=True,
+            # addPrunedSubjets=True,
             # addTrimming=True,
             # addFiltering=True, 
             # addNsub=True,
@@ -70,6 +70,24 @@ jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput',
             # addEnergyCorrFunc=True,
             JETCorrPayload = 'AK4PFchs',
             JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
+)
+
+# ak 0.8 PUPPI jets
+jetToolbox( process, 'ak8', 'ak8CHSJetToolbox', 'noOutput', 
+            PUMethod='PUPPI',
+            updateCollection='slimmedJetsAK8',
+            updateCollectionSubjets='slimmedJetsAK8PFPuppiSoftDropPacked',
+            JETCorrPayLoad='AK8PFPUPPI',
+            subJETCorrPayload='AK4PFPUPPI',
+            # addPruning=True,
+            # addSoftDrop=True
+            # addTrimming=True,
+            # addFiltering=True, 
+            # addNsub=True,
+            # maxTau=3,
+            # addQGTagger=True,
+            # addPUJetID=True,
+            # addEnergyCorrFunc=True
 )
 
 process.load("ggAnalysis.ggNtuplizer.ggNtuplizer_miniAOD_cfi")
