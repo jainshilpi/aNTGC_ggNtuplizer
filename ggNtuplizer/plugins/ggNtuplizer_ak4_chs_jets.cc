@@ -18,6 +18,7 @@ using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
 Int_t			nAK4CHSJet_;
+vector<Int_t>  AK4CHSJet_Charge_;
 vector<float>  AK4CHSJet_Pt_;
 vector<float>  AK4CHSJet_En_;
 vector<float>  AK4CHSJet_Eta_;
@@ -79,6 +80,7 @@ vector<int>    AK4CHSJet_GenPartonIndex_;
 
 void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
 	tree->Branch("nAK4CHSJet",                &nAK4CHSJet_);
+	tree->Branch("AK4CHSJet_Charge",               &AK4CHSJet_Charge_);
 	tree->Branch("AK4CHSJet_Pt",               &AK4CHSJet_Pt_);
 	tree->Branch("AK4CHSJet_En",               &AK4CHSJet_En_);
 	tree->Branch("AK4CHSJet_Eta",              &AK4CHSJet_Eta_);
@@ -146,7 +148,7 @@ void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
 
 
 void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es) {
-
+	AK4CHSJet_Charge_. clear();
 	AK4CHSJet_Pt_                                  .clear();
 	AK4CHSJet_En_                                  .clear();
 	AK4CHSJet_Eta_                                 .clear();
@@ -249,6 +251,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 
 		if (iJet->pt() < 30.) continue;
 
+		AK4CHSJet_Charge_.push_back(    iJet->charge());
 		AK4CHSJet_Pt_.push_back(    iJet->pt());
 		AK4CHSJet_En_.push_back(    iJet->energy());
 		AK4CHSJet_Eta_.push_back(   iJet->eta());

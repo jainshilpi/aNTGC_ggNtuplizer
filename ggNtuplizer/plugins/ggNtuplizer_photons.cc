@@ -55,8 +55,8 @@ vector<float>  phoSeedEnergy_;
 //vector<float>  phoMIPIntercept_;
 //vector<float>  phoMIPNhitCone_;
 //vector<float>  phoMIPIsHalo_;
-vector<UShort_t> phoxtalBits_;
-vector<UShort_t> phoIDbit_;
+vector<UChar_t> phoxtalBits_;
+vector<UChar_t> phoIDbit_;
 vector<float>    phoScale_stat_up_;
 vector<float>    phoScale_stat_dn_;
 vector<float>    phoScale_syst_up_;
@@ -330,20 +330,19 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
        nGain6 += rh->checkFlag( EcalRecHit::kHasSwitchToGain6 );
        nWeired += rh->checkFlag( EcalRecHit::kWeird ) || rh->checkFlag( EcalRecHit::kDiWeird );
        
-	if( rh->checkFlag( EcalRecHit::kHasSwitchToGain1 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated){ //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
+       if( rh->checkFlag( EcalRecHit::kHasSwitchToGain1 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated){
+      //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
+         setbit(tmpxtalbit, 0);
+         isSaturated = 1;
+	     //break;
+       }
 
-   setbit(tmpxtalbit, 0);
-   isSaturated = 1;
-	  //break;
- }
- 
-	if( rh->checkFlag( EcalRecHit::kHasSwitchToGain6 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated_gain6){ //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
-
-   setbit(tmpxtalbit, 1);
-   isSaturated_gain6 = 1;
-	  //break;
- }
- 
+       if( rh->checkFlag( EcalRecHit::kHasSwitchToGain6 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated_gain6){
+        //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
+         setbit(tmpxtalbit, 1);
+         isSaturated_gain6 = 1;
+	       //break;
+       }
       }//if( rh != rechits->end() ) 
       
       if (nWeired>0) setbit(tmpxtalbit,2);      

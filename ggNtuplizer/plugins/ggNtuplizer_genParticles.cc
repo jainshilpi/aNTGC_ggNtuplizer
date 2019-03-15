@@ -15,7 +15,7 @@ float            genWeight_;
 float            genHT_;
 float            genPho1_;
 float            genPho2_;
-TString          EventTag_;
+// TString          EventTag_;
 float            pdfWeight_;     
 vector<float>    pdfSystWeight_;
 
@@ -143,7 +143,7 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
     tree->Branch("pdfWeight",     &pdfWeight_);
     tree->Branch("pdfSystWeight", &pdfSystWeight_);
   }
-  tree->Branch("EventTag",      &EventTag_);
+  // tree->Branch("EventTag",      &EventTag_);
 
   tree->Branch("nPUInfo",       &nPUInfo_);
   tree->Branch("nPU",           &nPU_);
@@ -152,7 +152,7 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
 
   hPU_        = fs->make<TH1F>("hPU",        "number of pileup",      200,  0, 200);
   hPUTrue_    = fs->make<TH1F>("hPUTrue",    "number of true pilepu", 1000, 0, 200);
-  hGenWeightSign_ = fs->make<TH1F>("hGenWeightSign", "Gen weight signs",           2,    0, 2);
+  hGenWeightSign_ = fs->make<TH1F>("hGenWeightSign", "Gen weight signs",           2,    -1, 1);
   hSumGenWeightSign_ = fs->make<TH1F>("hSumGenWeightSign", "Sum of Gen weight signs",1,  0, 1);
   hSumGenWeight_ = fs->make<TH1F>("hSumGenWeight", "Sum of Gen weights",1,  0, 1);
 }
@@ -199,7 +199,7 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
   genPho2_   = -99;
   nPUInfo_   = 0;
   pdfWeight_ = -99;
-  EventTag_  = "";
+  // EventTag_  = "";
   pdf_          .clear();
   pdfSystWeight_.clear();
   nPU_          .clear();
@@ -225,7 +225,7 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
     processID_ = genEventInfoHandle->signalProcessID();
     genWeight_ = genEventInfoHandle->weight();
     if (genWeight_ >= 0) hGenWeightSign_->Fill(0.5);    
-    else hGenWeightSign_->Fill(1.5);
+    else hGenWeightSign_->Fill(-0.5);
     if (abs(genWeight_)>1) hSumGenWeightSign_->Fill(0.5,genWeight_/abs(genWeight_));
     else hSumGenWeightSign_->Fill(0.5,genWeight_);
     hSumGenWeight_->Fill(0.5,genWeight_);
@@ -261,17 +261,17 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
 
      typedef std::vector<std::string>::const_iterator comments_const_iterator;
 
-     comments_const_iterator c_begin = lheEventProduct->comments_begin();
-     comments_const_iterator c_end = lheEventProduct->comments_end();
+     // comments_const_iterator c_begin = lheEventProduct->comments_begin();
+     // comments_const_iterator c_end = lheEventProduct->comments_end();
 
-     TString model_params;
-     for(comments_const_iterator cit=c_begin; cit!=c_end; ++cit) {
-       size_t found = (*cit).find("model");
-       if(found != std::string::npos)   { 
-         model_params = *cit;
-       }
-     }
-     EventTag_ = model_params;
+     // TString model_params;
+     // for(comments_const_iterator cit=c_begin; cit!=c_end; ++cit) {
+     //   size_t found = (*cit).find("model");
+     //   if(found != std::string::npos)   { 
+     //     model_params = *cit;
+     //   }
+     // }
+     // EventTag_ = model_params;
    }
 
    if (dumpPDFSystWeight_) {
@@ -427,7 +427,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
 
       Char_t _mcPromptStatysType = getPromptStatus(*ip, genParticlesHandle);
       mcPromptStatusType_.push_back(_mcPromptStatysType);
-      if(_mcPromptStatysType == DIRECTPROMPT) setbit(mcHasDirectPromptPho_, 0);
+      if(_mcPromptStatysType == DIRECTPROMPT && ip->pdgId() == 22) setbit(mcHasDirectPromptPho_, 0);
 
       int mcGMomPID_ = -999;
       int mcMomPID_  = -999;

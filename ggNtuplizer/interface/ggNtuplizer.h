@@ -55,7 +55,7 @@ private:
 
   //   virtual void beginJob() {};
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
-  //   virtual void endJob() {};
+  virtual void endJob();
   
   void initTriggerFilters(const edm::Event&);
   ULong64_t matchSingleElectronTriggerFilters(double pt, double eta, double phi);
@@ -83,7 +83,7 @@ private:
   void branchesTaus       (TTree*);
   void branchesAK4CHSJets       (TTree*);
   // void branchesAK4PUPPIJets       (TTree*);
-  // void branchesAK8PUPPIJets    (TTree*);
+  void branchesAK8PUPPIJets    (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillGenInfo    (const edm::Event&);
@@ -96,6 +96,7 @@ private:
   void fillMuons      (const edm::Event&, math::XYZPoint&, const reco::Vertex);
   void fillTaus       (const edm::Event&);
   void fillAK4CHSJets       (const edm::Event&, const edm::EventSetup&);
+  void fillAK8PUPPIJets(const edm::Event&, const edm::EventSetup&);
   void branchesGenJetPart(TTree*);
   void fillGenJetInfo(const edm::Event&);
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);

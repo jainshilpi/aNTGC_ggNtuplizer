@@ -3,10 +3,15 @@
 using namespace std;
 using namespace edm;
 
+void ggNtuplizer::endJob() {
+  tree_->BuildIndex("run", "event");
+  std::cout<<"TTree "<<tree_->GetName()<<" indexed on run and event."<<std::endl<<" Complete!"<<std::endl;
+};
+
 
 
 ggNtuplizer::ggNtuplizer(const edm::ParameterSet& ps) :
-  hltPrescaleProvider_(ps, consumesCollector(), *this)
+hltPrescaleProvider_(ps, consumesCollector(), *this)
 {
 
   development_               = ps.getParameter<bool>("development");
@@ -92,10 +97,9 @@ ggNtuplizer::ggNtuplizer(const edm::ParameterSet& ps) :
   branchesElectrons(tree_);
   branchesMuons(tree_);
   if (dumpPFPhotons_)   branchesPFPhotons(tree_);
-  // if (dumpHFElectrons_) branchesHFElectrons(tree_);
   if (dumpTaus_)        branchesTaus(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
-  // if (dumpAK8Jets_)     branchesAK8Jets(tree_);
+  if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
 }
 
 ggNtuplizer::~ggNtuplizer() {
@@ -150,9 +154,11 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   // if (dumpHFElectrons_ ) fillHFElectrons(e);
   if (dumpTaus_)         fillTaus(e);
   if (dumpJets_)         fillAK4CHSJets(e,es);
-  // if (dumpAK8Jets_)      fillAK8Jets(e,es);
+  if (dumpAK8Jets_)      fillAK8PUPPIJets(e,es);
 
   tree_->Fill();
+
+  hEvents_->Fill(1.5);
 
 }
 
