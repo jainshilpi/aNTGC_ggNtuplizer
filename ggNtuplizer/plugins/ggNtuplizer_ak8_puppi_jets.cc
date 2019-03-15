@@ -240,8 +240,8 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 	AK8PuppiJet_SDSJpuppinb2ecf3_.clear();
 	nAK8PuppiJet_ = 0;
 
-	// edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
-	// if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
+	edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
+	if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
 
 	edm::Handle<double> rhoHandle;
 	e.getByToken(rhoLabel_, rhoHandle);
@@ -383,7 +383,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 			Float_t _genJetEn = -999.;
 			Float_t _genJetPhi = -999.;
 			Float_t _genJetEta = -999.;
-			// if(ijetAK8->genParton()) _genIndex = std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator)ijetAK8->genParton());
+			// if(ijetAK8->genParton()) 
 			if(ijetAK8->genJet()){
       			// _genJetIndex
 				_genJetPt = ijetAK8->genJet()->pt();
@@ -391,6 +391,11 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 				_genJetPhi = ijetAK8->genJet()->phi();
 				_genJetEta = ijetAK8->genJet()->eta();
 			}
+
+			// if(ijetAK8->genParton()){
+			// 	_genIndex = std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator)ijetAK8->genParton());
+			// 	cout<<_genIndex<<endl;
+			// }
 			// AK8PuppiJet_GenPartonIndex_.push_back(_genIndex);
 			// cout<<ijetAK8->genParton()->pt()<<endl;
 			AK8PuppiJet_GenJetEn_.push_back(_genJetEn);
