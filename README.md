@@ -1,5 +1,5 @@
 Steps:
-cmsrel CMSSW_9_4_13 <br>
+cmsrel CMSSW_9_4_13 <br> 
 
 cd CMSSW_9_4_13/src <br>
 
@@ -7,23 +7,23 @@ cmsenv <br>
 
 git cms-init <br>
 
-git cms-addpkg CondFormats/JetMETObjects
+git cms-addpkg CondFormats/JetMETObjects <br> 
 
-git cms-addpkg JetMETCorrections/Modules
+git cms-addpkg JetMETCorrections/Modules <br> 
 
-git cms-addpkg RecoBTag/Combined
+git cms-addpkg RecoBTag/Combined <br> 
 
-git cms-addpkg JetMETCorrections/Type1MET
+git cms-addpkg JetMETCorrections/Type1MET <br> 
 
-git cms-addpkg RecoMET/METFilters
+git cms-addpkg RecoMET/METFilters <br> 
 
-git cms-addpkg RecoEgamma/PostRecoTools
+git cms-addpkg RecoEgamma/PostRecoTools <br> 
 
-git cms-addpkg RecoEgamma/PhotonIdentification/
+git cms-addpkg RecoEgamma/PhotonIdentification/ <br> 
 
-git cms-addpkg RecoEgamma/ElectronIdentification/
+git cms-addpkg RecoEgamma/ElectronIdentification/ <br> 
 
-git cms-addpkg CommonTools/PileupAlgos
+git cms-addpkg CommonTools/PileupAlgos <br> 
 
 scram b -j 8 <br>
 
@@ -35,7 +35,7 @@ git cms-merge-topic cms-met:METFixEE2017_949_v2 <br>
 
 scram b -j 8 <br>
 
-git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4
+git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4 <br> 
 
 scram b -j 8 <br>
 
