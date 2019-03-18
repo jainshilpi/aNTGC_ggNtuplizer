@@ -17,7 +17,8 @@ git cms-merge-topic cms-egamma:EgammaPostRecoTools <br>
 scram b -j 8 <br>
 git cms-merge-topic cms-met:METFixEE2017_949_v2 <br>
 scram b -j 8 <br>
-cd $CMSSW_BASE/src <br>
+git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4
+scram b -j 8 <br>
 git clone -b 94X git@github.com:wadud001/aNTGC_gggNtuplizer.git <br>
 scram b -j8 <br>
 
