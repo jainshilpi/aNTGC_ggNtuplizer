@@ -9,18 +9,20 @@ vector<float>  genJetEn_;
 vector<float>  genJetPt_;
 vector<float>  genJetEta_;
 vector<float>  genJetPhi_;
-//vector<int>  genJetPartonID_;
+vector<float>  genJetEMenergy_;
+vector<float>  genJetHADenergy_;
+vector<float>  genJetINVenergy_;
 
 
 void ggNtuplizer::branchesGenJetPart(TTree* tree) {
 
-  tree->Branch("nGenJets",     &nGenJets_);
+  // tree->Branch("nGenJets",     &nGenJets_);
   tree->Branch("genJetEn",       &genJetEn_);
   tree->Branch("genJetPt",       &genJetPt_);
   tree->Branch("genJetEta",      &genJetEta_);
   tree->Branch("genJetPhi",      &genJetPhi_);
-  //tree->Branch("genJetPartonID",      &genJetPartonID_);
-  
+  tree->Branch("genJetEMenergy",      &genJetEMenergy_);
+  tree->Branch("genJetHADenergy",      &genJetHADenergy_); 
 }
 
 void ggNtuplizer::fillGenJetInfo(const edm::Event& e) {
@@ -30,9 +32,14 @@ void ggNtuplizer::fillGenJetInfo(const edm::Event& e) {
   genJetPt_.clear();
   genJetEta_.clear();
   genJetPhi_.clear();
-  //genJetPartonID_.clear();
+  genJetEMenergy_.clear();
+  genJetHADenergy_.clear();
+  genJetINVenergy_.clear();
   
   if(doGenJets_){
+
+    edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
+    if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
 
     // Get GenJets
     edm::Handle<std::vector<reco::GenJet>> ak4PFJetsCHSgenjets;
@@ -49,18 +56,13 @@ void ggNtuplizer::fillGenJetInfo(const edm::Event& e) {
       genJetPt_.push_back(ip->pt());
       genJetEta_.push_back(ip->eta());
       genJetPhi_.push_back(ip->phi());
-      //genJetPartonID_.push_back(ip->genParton()->pdgId());
+      genJetEMenergy_.push_back(ip->emEnergy () );
+      genJetHADenergy_.push_back(ip->hadEnergy ());
+      genJetINVenergy_.push_back(ip->invisibleEnergy ());
+
     }
 
-  }//if(doGenJets_)
-
-
-
-
-
-  //////////////////////////////////////////////////////
-  // cleanup from previous execution
-
+  }
 }
 
 

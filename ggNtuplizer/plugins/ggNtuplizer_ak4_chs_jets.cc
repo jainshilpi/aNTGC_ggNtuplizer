@@ -79,7 +79,7 @@ vector<int>    AK4CHSJet_GenPartonIndex_;
 
 
 void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
-	tree->Branch("nAK4CHSJet",                &nAK4CHSJet_);
+	// tree->Branch("nAK4CHSJet",                &nAK4CHSJet_);
 	tree->Branch("AK4CHSJet_Charge",               &AK4CHSJet_Charge_);
 	tree->Branch("AK4CHSJet_Pt",               &AK4CHSJet_Pt_);
 	tree->Branch("AK4CHSJet_En",               &AK4CHSJet_En_);
@@ -285,100 +285,103 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 
       	AK4CHSJet_FiredTrgs_.push_back(matchJetTriggerFilters(iJet->pt(), iJet->eta(), iJet->phi()));    
 
-    	//Searching for leading track and lepton
-      	float leadTrkPt  = -99;
-      	float leadTrkEta = -99;
-      	float leadTrkPhi = -99;
-      	int   lepTrkPID  = -99;
-      	float lepTrkPt   = -99;
-      	float lepTrkEta  = -99;
-      	float lepTrkPhi  = -99;
 
-      	for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
+    	if(doGenParticles_){
+    		//Searching for leading track and lepton
+    		float leadTrkPt  = -99;
+    		float leadTrkEta = -99;
+    		float leadTrkPhi = -99;
+    		int   lepTrkPID  = -99;
+    		float lepTrkPt   = -99;
+    		float lepTrkEta  = -99;
+    		float lepTrkPhi  = -99;
 
-      		const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
+    		for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
 
-      		if (daughter.isNonnull() && daughter.isAvailable()) {
-      			if (daughter->charge() != 0 && daughter->pt() > leadTrkPt) {
-      				leadTrkPt  = daughter->pt();
-      				leadTrkEta = daughter->eta();
-      				leadTrkPhi = daughter->phi();
-      			}
+    			const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
 
-      			if (abs(daughter->pdgId()) == 11 || abs(daughter->pdgId()) == 13) {
-      				if (daughter->pt() > lepTrkPt) {
-      					lepTrkPID = daughter->pdgId();
-      					lepTrkPt  = daughter->pt();
-      					lepTrkEta = daughter->eta();
-      					lepTrkPhi = daughter->phi();
-      				}
-      			}
-      		}
-      	}
+    			if (daughter.isNonnull() && daughter.isAvailable()) {
+    				if (daughter->charge() != 0 && daughter->pt() > leadTrkPt) {
+    					leadTrkPt  = daughter->pt();
+    					leadTrkEta = daughter->eta();
+    					leadTrkPhi = daughter->phi();
+    				}
 
-      	AK4CHSJet_LeadTrackPt_ .push_back(leadTrkPt);
-      	AK4CHSJet_LeadTrackEta_.push_back(leadTrkEta);
-      	AK4CHSJet_LeadTrackPhi_.push_back(leadTrkPhi);
-      	AK4CHSJet_LepTrackPID_ .push_back(lepTrkPID);
-      	AK4CHSJet_LepTrackPt_  .push_back(lepTrkPt);
-      	AK4CHSJet_LepTrackEta_ .push_back(lepTrkEta);
-      	AK4CHSJet_LepTrackPhi_ .push_back(lepTrkPhi);
+    				if (abs(daughter->pdgId()) == 11 || abs(daughter->pdgId()) == 13) {
+    					if (daughter->pt() > lepTrkPt) {
+    						lepTrkPID = daughter->pdgId();
+    						lepTrkPt  = daughter->pt();
+    						lepTrkEta = daughter->eta();
+    						lepTrkPhi = daughter->phi();
+    					}
+    				}
+    			}
+    		}
 
-      	AK4CHSJet_ConsituentEtaPhiSpread_.push_back(iJet->constituentEtaPhiSpread());
-      	AK4CHSJet_MaxConstituentDistance_.push_back(iJet->maxDistance());
-      	AK4CHSJet_constituentPtDistribution_.push_back(iJet->constituentPtDistribution()); 
+    		AK4CHSJet_LeadTrackPt_ .push_back(leadTrkPt);
+    		AK4CHSJet_LeadTrackEta_.push_back(leadTrkEta);
+    		AK4CHSJet_LeadTrackPhi_.push_back(leadTrkPhi);
+    		AK4CHSJet_LepTrackPID_ .push_back(lepTrkPID);
+    		AK4CHSJet_LepTrackPt_  .push_back(lepTrkPt);
+    		AK4CHSJet_LepTrackEta_ .push_back(lepTrkEta);
+    		AK4CHSJet_LepTrackPhi_ .push_back(lepTrkPhi);
+    	}
+
+    	AK4CHSJet_ConsituentEtaPhiSpread_.push_back(iJet->constituentEtaPhiSpread());
+    	AK4CHSJet_MaxConstituentDistance_.push_back(iJet->maxDistance());
+    	AK4CHSJet_constituentPtDistribution_.push_back(iJet->constituentPtDistribution()); 
 
     	//b/c-tagging
-      	AK4CHSJet_CSV2BJetTags_    .push_back(iJet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
-      	AK4CHSJet_DeepCSVTags_b_   .push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probb"));
-      	AK4CHSJet_DeepCSVTags_bb_  .push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probbb"));
-      	AK4CHSJet_DeepCSVTags_c_   .push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probc"));
-      	AK4CHSJet_DeepCSVTags_udsg_.push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probudsg"));
-      	AK4CHSJet_DeepFlavTags_bb_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probb"));
-      	AK4CHSJet_DeepFlavTags_bbb_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probbb"));
-      	AK4CHSJet_DeepFlavTags_lepb_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:problepb"));
-      	AK4CHSJet_DeepFlavTags_c_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probc"));
-      	AK4CHSJet_DeepFlavTags_uds_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probuds"));
-      	AK4CHSJet_DeepFlavTags_g_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probg"));
-      	AK4CHSJet_CombMVA2Tags_ .push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
+    	AK4CHSJet_CSV2BJetTags_    .push_back(iJet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
+    	AK4CHSJet_DeepCSVTags_b_   .push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probb"));
+    	AK4CHSJet_DeepCSVTags_bb_  .push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probbb"));
+    	AK4CHSJet_DeepCSVTags_c_   .push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probc"));
+    	AK4CHSJet_DeepCSVTags_udsg_.push_back(iJet->bDiscriminator("pfDeepCSVJetTags:probudsg"));
+    	AK4CHSJet_DeepFlavTags_bb_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probb"));
+    	AK4CHSJet_DeepFlavTags_bbb_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probbb"));
+    	AK4CHSJet_DeepFlavTags_lepb_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:problepb"));
+    	AK4CHSJet_DeepFlavTags_c_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probc"));
+    	AK4CHSJet_DeepFlavTags_uds_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probuds"));
+    	AK4CHSJet_DeepFlavTags_g_ .push_back(iJet->bDiscriminator("pfDeepFlavourJetTags:probg"));
+    	AK4CHSJet_CombMVA2Tags_ .push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
 
     	//parton id
-      	AK4CHSJet_PartonFlavour_.push_back(iJet->partonFlavour());
-      	AK4CHSJet_HadronFlavour_.push_back(iJet->hadronFlavour());
+    	AK4CHSJet_PartonFlavour_.push_back(iJet->partonFlavour());
+    	AK4CHSJet_HadronFlavour_.push_back(iJet->hadronFlavour());
 
     	//jet PF Loose ID
-      	double NHF      = iJet->neutralHadronEnergyFraction();
-      	double NEMF     = iJet->neutralEmEnergyFraction();
-      	double NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
-      	double CHF      = iJet->chargedHadronEnergyFraction();
-      	double CHM      = iJet->chargedMultiplicity();
-      	double CEMF     = iJet->chargedEmEnergyFraction();
-      	double NNP      = iJet->neutralMultiplicity();
-      	double MUF      = iJet->muonEnergyFraction();
+    	double NHF      = iJet->neutralHadronEnergyFraction();
+    	double NEMF     = iJet->neutralEmEnergyFraction();
+    	double NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
+    	double CHF      = iJet->chargedHadronEnergyFraction();
+    	double CHM      = iJet->chargedMultiplicity();
+    	double CEMF     = iJet->chargedEmEnergyFraction();
+    	double NNP      = iJet->neutralMultiplicity();
+    	double MUF      = iJet->muonEnergyFraction();
 
 
       	//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
-      	bool looseJetID = false;    
-      	bool tightJetID = false;
-      	Bool_t tightLeptVetoID = false;
-      	if (fabs(iJet->eta()) <= 2.7) {
-      		looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(iJet->eta())>2.4);
-      		tightJetID = (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0) || fabs(iJet->eta())>2.4);
-      		tightLeptVetoID = (NHF<0.90 && NEMF<0.90 && NumConst>1 && MUF < 0.8) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.8) || fabs(iJet->eta())>2.4);
-      	} else if (fabs(iJet->eta()) <= 3.0) {
-      		looseJetID = (NEMF>0.01 && NHF<0.98 && NNP>2);
-      		tightJetID = (NEMF>0.02 && NEMF <0.99 && NNP>2);
-      		tightLeptVetoID = tightJetID;
-      	} else {
-      		looseJetID = (NEMF<0.90 && NNP>10); 
-      		tightJetID = (NEMF<0.90 && NNP>10 && NHF > 0.02);
-      		tightLeptVetoID = tightJetID;
-      	}
-      	Char_t jetIDdecision = 0;
-      	if(looseJetID) setbit(jetIDdecision, 0);
-      	if(tightJetID) setbit(jetIDdecision, 1);
-      	if(tightLeptVetoID) setbit(jetIDdecision, 2);
-      	AK4CHSJet_ID_.push_back(jetIDdecision);    
+    	bool looseJetID = false;    
+    	bool tightJetID = false;
+    	Bool_t tightLeptVetoID = false;
+    	if (fabs(iJet->eta()) <= 2.7) {
+    		looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(iJet->eta())>2.4);
+    		tightJetID = (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0) || fabs(iJet->eta())>2.4);
+    		tightLeptVetoID = (NHF<0.90 && NEMF<0.90 && NumConst>1 && MUF < 0.8) && ((fabs(iJet->eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.8) || fabs(iJet->eta())>2.4);
+    	} else if (fabs(iJet->eta()) <= 3.0) {
+    		looseJetID = (NEMF>0.01 && NHF<0.98 && NNP>2);
+    		tightJetID = (NEMF>0.02 && NEMF <0.99 && NNP>2);
+    		tightLeptVetoID = tightJetID;
+    	} else {
+    		looseJetID = (NEMF<0.90 && NNP>10); 
+    		tightJetID = (NEMF<0.90 && NNP>10 && NHF > 0.02);
+    		tightLeptVetoID = tightJetID;
+    	}
+    	Char_t jetIDdecision = 0;
+    	if(looseJetID) setbit(jetIDdecision, 0);
+    	if(tightJetID) setbit(jetIDdecision, 1);
+    	if(tightLeptVetoID) setbit(jetIDdecision, 2);
+    	AK4CHSJet_ID_.push_back(jetIDdecision);    
 
     	// PUJet ID from slimmedJets - not available for PUPPI
       	AK4CHSJet_PUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant")); // not for PUPPI https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2017#Jets
@@ -389,7 +392,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	if (doGenParticles_) {
       		int jetGenPartonIndex = -99;     
       		if (iJet->genParton() && genParticlesHandle.isValid()) {
-      			jetGenPartonIndex = std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) (*iJet).genParton());
+      			jetGenPartonIndex = std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) iJet->genParton());
       		}
       		AK4CHSJet_GenPartonIndex_.push_back(jetGenPartonIndex);
       		Int_t _genJetIndex = -99;

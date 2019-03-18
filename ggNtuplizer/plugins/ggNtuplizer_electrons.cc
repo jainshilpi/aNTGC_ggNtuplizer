@@ -70,7 +70,7 @@ vector<float>  eleResol_phi_dn_;
 
 void ggNtuplizer::branchesElectrons(TTree* tree) {
 
-  tree->Branch("nEle",                    &nEle_);
+  // tree->Branch("nEle",                    &nEle_);
   tree->Branch("eleCharge",               &eleCharge_);
   tree->Branch("eleChargeConsistent",     &eleChargeConsistent_);
   tree->Branch("eleEn",                   &eleEn_);

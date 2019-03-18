@@ -24,7 +24,7 @@ vector<int>      nPU_;
 vector<int>      puBX_;
 vector<float>    puTrue_;
 
-Int_t            nMC_;
+Int_t nMC_;
 vector<int>      mcPID;
 vector<float>    mcVtx;
 vector<float>    mcVty;
@@ -159,7 +159,7 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
 
 void ggNtuplizer::branchesGenPart(TTree* tree) {
 
-  tree->Branch("nMC",          &nMC_);
+  // tree->Branch("nMC",          &nMC_);
   tree->Branch("mcPID",        &mcPID);
   tree->Branch("mcVtx",        &mcVtx);
   tree->Branch("mcVty",        &mcVty);
@@ -427,7 +427,8 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
 
       Char_t _mcPromptStatysType = getPromptStatus(*ip, genParticlesHandle);
       mcPromptStatusType_.push_back(_mcPromptStatysType);
-      if(_mcPromptStatysType == DIRECTPROMPT && ip->pdgId() == 22) setbit(mcHasDirectPromptPho_, 0);
+      if((ip->pdgId() == 22) && (_mcPromptStatysType == DIRECTPROMPT)) setbit(mcHasDirectPromptPho_, 0);
+      if((ip->pdgId() == 22) && (ip->isPromptFinalState())) setbit(mcHasDirectPromptPho_, 1);
 
       int mcGMomPID_ = -999;
       int mcMomPID_  = -999;

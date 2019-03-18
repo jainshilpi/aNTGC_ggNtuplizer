@@ -89,7 +89,7 @@ vector< vector<float> > AK8PuppiJet_SDSJpuppinb2ecf3_;
 
 
 void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
-	tree->Branch("nAK8PUPPIJet",                  &nAK8PuppiJet_);
+	// tree->Branch("nAK8PUPPIJet",                  &nAK8PuppiJet_);
 	tree->Branch("AK8PuppiJet_Charge",                 &AK8PuppiJet_Charge_);
 	tree->Branch("AK8PuppiJet_Pt",                 &AK8PuppiJet_Pt_);
 	tree->Branch("AK8PuppiJet_En",                 &AK8PuppiJet_En_);

@@ -260,7 +260,7 @@ void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es
   //     else if (name.find("HLT_PFHT800_4JetPt50_v")                                     != string::npos) bitJet = 36;
   //   }
 
-    if (year_ == 2017) {
+  if (year_ == 2017) {
       // Electron or Muon or Cross triggers
       if      (name.find("HLT_DoubleMu20_7_Mass0to30_L1_DM4_v")                  != string::npos) bitEleMuX =  0; // 2017
       else if (name.find("HLT_DoubleMu20_7_Mass0to30_Photon23_v")                != string::npos) bitEleMuX =  1; // 2017
@@ -396,6 +396,20 @@ void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es
       else if (name.find("HLT_PFHT750_4JetPt50_v")                                     != string::npos) bitJet = 34;
       else if (name.find("HLT_PFHT750_4JetPt70_v")                                     != string::npos) bitJet = 35;
       else if (name.find("HLT_PFHT800_4JetPt50_v")                                     != string::npos) bitJet = 36;
+      else if (name.find("HLT_CaloJet550_NoJetID_v")                                     != string::npos) bitJet = 37;
+
+      else if (name.find("HLT_DiPFJetAve200_v")                                     != string::npos) bitJet = 38;
+      else if (name.find("HLT_DiPFJetAve260_v")                                     != string::npos) bitJet = 39;
+      else if (name.find("HLT_DiPFJetAve320_v")                                     != string::npos) bitJet = 40;
+      else if (name.find("HLT_DiPFJetAve400_v")                                     != string::npos) bitJet = 41;
+      else if (name.find("HLT_DiPFJetAve500_v")                                     != string::npos) bitJet = 41;
+      else if (name.find("HLT_DiPFJetAve160_HFJEC")                                     != string::npos) bitJet = 43;
+      else if (name.find("HLT_DiPFJetAve220_HFJEC")                                     != string::npos) bitJet = 44;
+      else if (name.find("HLT_DiPFJetAve300_HFJEC")                                     != string::npos) bitJet = 45;
+
+      
+
+
     }
 
     // indicates prescaling and whether trigger was fired or not

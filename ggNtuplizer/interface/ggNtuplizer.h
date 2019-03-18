@@ -98,8 +98,6 @@ private:
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);
   // void fillAK8PUPPIJets    (const edm::Event&, const edm::EventSetup&);
 
-  void cleanupPhotons();
-
   bool development_;
   bool addFilterInfoAOD_;  
   bool addFilterInfoMINIAOD_;  
@@ -171,19 +169,7 @@ private:
   TH1F    *hGenWeightSign_;
   TH1F    *hSumGenWeightSign_;
   TH1F    *hSumGenWeight_;
-
-  CiCPhotonID                 *cicPhotonId_;
-  //EnergyScaleCorrection_class *egmScaler_;
-
-  // JME::JetResolution            jetResolution_;
-  // JME::JetResolutionScaleFactor jetResolutionSF_;
-  // JME::JetResolution            AK8jetResolution_;
-  // JME::JetResolutionScaleFactor AK8jetResolutionSF_;
-
-  //PFJetIDSelectionFunctor pfLooseId_;
-  //boost::shared_ptr<FactorizedJetCorrector> jecAK8_;
-  //boost::shared_ptr<FactorizedJetCorrector> jecAK8pSD_;
-  //std::vector<std::string> jecAK8PayloadNames_;
+  
   HLTPrescaleProvider hltPrescaleProvider_;
 };
 

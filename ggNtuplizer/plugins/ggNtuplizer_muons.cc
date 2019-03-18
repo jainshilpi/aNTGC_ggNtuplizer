@@ -43,7 +43,7 @@ vector<int>       muBestTrkType_;
 
 void ggNtuplizer::branchesMuons(TTree* tree) {
 
-  tree->Branch("nMu",           &nMu_);
+  // tree->Branch("nMu",           &nMu_);
   tree->Branch("muPt",          &muPt_);
   tree->Branch("muEn",          &muEn_);
   tree->Branch("muEta",         &muEta_);

@@ -79,7 +79,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
 
   //pfLooseId_                 = ps.getParameter<ParameterSet>("pfLooseId");
 
-  cicPhotonId_ = new CiCPhotonID(ps);
+  // cicPhotonId_ = new CiCPhotonID(ps);
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data (tag V09_04_09_00)");
@@ -98,11 +98,10 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   branchesMuons(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
+  if(dumpJets_ && doGenParticles_) branchesGenJetPart(tree_);
 }
 
 ggNtuplizer::~ggNtuplizer() {
-  cleanupPhotons();
-  delete cicPhotonId_;
 }
 
 void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
@@ -150,9 +149,9 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillPhotons(e, es); 
   if (dumpJets_)         fillAK4CHSJets(e,es);
   if (dumpAK8Jets_)      fillAK8PUPPIJets(e,es);
+  if(dumpJets_ && doGenParticles_) fillGenJetInfo(e);
 
   tree_->Fill();
-
   hEvents_->Fill(0.8);
 
 }

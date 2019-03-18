@@ -82,8 +82,7 @@ bool isInFootprint(const T& thefootprint, const U& theCandidate) {
 
 
 void ggNtuplizer::branchesPhotons(TTree* tree) {
-
-  tree->Branch("nPho",                    &nPho_);
+  // tree->Branch("nPho",                    &nPho_);
   tree->Branch("phoE",                    &phoE_);
   tree->Branch("phoSigmaE",               &phoSigmaE_);
   tree->Branch("phoEt",                   &phoEt_);
@@ -240,7 +239,8 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   noZS::EcalClusterLazyTools lazyToolnoZS(e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
 
   for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho) {
-
+    if(iPho->et() < 100.) continue;
+    
     phoE_             .push_back(iPho->energy());
     phoCalibE_        .push_back(iPho->userFloat("ecalEnergyPostCorr"));
     phoEt_            .push_back(iPho->et());
@@ -369,30 +369,15 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     phoE5x5Full5x5_          .push_back(iPho->full5x5_e5x5());
     phoR9Full5x5_            .push_back(iPho->full5x5_r9());
 
-    //phoSeedBCE_        .push_back((*iPho).superCluster()->seed()->energy());
-    //phoSeedBCEta_      .push_back((*iPho).superCluster()->seed()->eta());
-    /*
-    phoSeedTimeFull5x5_.push_back(lazyToolnoZS.SuperClusterSeedTime(*((*iPho).superCluster())));
-    phoMIPChi2_        .push_back(iPho->mipChi2());
-    phoMIPTotEnergy_   .push_back(iPho->mipTotEnergy());
-    phoMIPSlope_       .push_back(iPho->mipSlope());
-    phoMIPIntercept_   .push_back(iPho->mipIntercept());
-    phoMIPNhitCone_    .push_back(iPho->mipNhitCone());
-    phoMIPIsHalo_      .push_back(iPho->mipIsHalo());
-    */
 
     if(doGenParticles_){
       const reco::GenParticle * phoGen_ = iPho->genParticle(); // I don't know what matching algoritm is used - https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2017#MC_Truth
-      Int_t phoGenPos_ = (phoGen_ == nullptr) ? -999 : std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) phoGen_); //would be good to check explicitly (pdgID, pt, eta & phi) if this position gives the right gen particle
+      Int_t phoGenPos_ = (phoGen_ == nullptr) ? -999 : std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) phoGen_);
       // if(phoGenPos_>=0) std::cout<<"pho->genParticle->pdgID "<<phoGen_->pdgId()<<" prunedGenParticle("<<phoGenPos_<<")->pdgid() "<< (&*genParticlesHandle->begin()+phoGenPos_)->pdgId()<<std::endl;
       pho_gen_index_.push_back(phoGenPos_);
     }
     
     nPho_++;
   }
-
-}
-
-void ggNtuplizer::cleanupPhotons() {
 
 }
