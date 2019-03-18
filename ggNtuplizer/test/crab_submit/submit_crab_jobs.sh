@@ -10,8 +10,6 @@ mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/'
 
 
 
-
-
 ################################################################################################################
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
 source /cvmfs/cms.cern.ch/crab3/crab.sh;
