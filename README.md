@@ -34,7 +34,7 @@ Modify the variables: <br>
 * *psetname* - python script for cmsRun <br>
 * *writeSite* - site to write crab jobs <br>
 * *mainOutputDir* - path to write crab outputs <br>
- <br>
+ 
 ___Submit___ ./submit_crab_jobs.sh<br>
 A log file will be created in *writedir* for the submissions. <br>
 
