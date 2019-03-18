@@ -1,6 +1,6 @@
 Step 1: Set Up CMSSW 
 ====================
-export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git3 <br> 
+export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git <br> 
 cmsrel CMSSW_9_4_13 <br> 
 cd CMSSW_9_4_13/src <br>
 cmsenv <br>
