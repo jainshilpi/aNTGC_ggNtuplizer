@@ -1,18 +1,18 @@
 #!/bin/bash
-git config merge.renamelimit 15345
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
 
 export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git
 
-presendDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )
+presentDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )
 eval 'scramv1 project CMSSW CMSSW_9_4_13'
-cd ${presendDir}/CMSSW_9_4_13/src
+cd ${presentDir}/CMSSW_9_4_13/src
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
 eval `scramv1 runtime -sh`;
 git cms-init
 git cms-addpkg CondFormats/JetMETObjects 
 git cms-addpkg JetMETCorrections/Modules
+git config merge.renamelimit 15345
 git cms-addpkg RecoBTag/Combined
 git cms-addpkg JetMETCorrections/Type1MET
 git cms-addpkg RecoMET/METFilters
