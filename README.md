@@ -22,7 +22,7 @@ git cms-merge-topic cms-met:METFixEE2017_949_v2 <br>
 scram b -j 8 <br>
 git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4 <br> 
 scram b -j 8 <br>
-git clone -b 94X git@github.com:wadud001/aNTGC_gggNtuplizer.git <br>
+git clone -b master --single-branch git@github.com:wadud001/aNTGC_gggNtuplizer.git <br> --depth 1 <br>
 scram b -j8 <br>
 
 
@@ -36,7 +36,7 @@ Modify the variables: <br>
 * *psetname* - python script for cmsRun <br>
 * *writeSite* - site to write crab jobs <br>
 * *mainOutputDir* - path to write crab outputs <br>
- 
+
 ___Submit___ ./submit_crab_jobs.sh<br>
 A log file named *crab_submitted_datasets_[date-time].log* will be created in *writedir* for the submissions. <br>
 
