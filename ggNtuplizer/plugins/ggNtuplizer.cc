@@ -96,8 +96,6 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
-  if (dumpPFPhotons_)   branchesPFPhotons(tree_);
-  if (dumpTaus_)        branchesTaus(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
 }
@@ -109,7 +107,7 @@ ggNtuplizer::~ggNtuplizer() {
 
 void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
-  hEvents_->Fill(0.5);
+  hEvents_->Fill(0.2);
 
   // if (doGenParticles_) {
   //   jetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
@@ -150,15 +148,12 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillElectrons(e, es, pv);
   fillMuons(e, pv, vtx);
   fillPhotons(e, es); 
-  if (dumpPFPhotons_)    fillPFPhotons(e, es);
-  // if (dumpHFElectrons_ ) fillHFElectrons(e);
-  if (dumpTaus_)         fillTaus(e);
   if (dumpJets_)         fillAK4CHSJets(e,es);
   if (dumpAK8Jets_)      fillAK8PUPPIJets(e,es);
 
   tree_->Fill();
 
-  hEvents_->Fill(1.5);
+  hEvents_->Fill(0.8);
 
 }
 

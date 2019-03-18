@@ -76,11 +76,9 @@ private:
   void branchesGenPart    (TTree*);
   void branchesMET        (TTree*);
   void branchesPhotons    (TTree*);
-  void branchesPFPhotons  (TTree*);
   void branchesElectrons  (TTree*);
   // void branchesHFElectrons(TTree*);
   void branchesMuons      (TTree*);
-  void branchesTaus       (TTree*);
   void branchesAK4CHSJets       (TTree*);
   // void branchesAK4PUPPIJets       (TTree*);
   void branchesAK8PUPPIJets    (TTree*);
@@ -90,11 +88,9 @@ private:
   void fillGenPart    (const edm::Event&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
   void fillPhotons    (const edm::Event&, const edm::EventSetup&);
-  void fillPFPhotons  (const edm::Event&, const edm::EventSetup&);
   void fillElectrons  (const edm::Event&, const edm::EventSetup&, math::XYZPoint&);
   // void fillHFElectrons(const edm::Event&);
   void fillMuons      (const edm::Event&, math::XYZPoint&, const reco::Vertex);
-  void fillTaus       (const edm::Event&);
   void fillAK4CHSJets       (const edm::Event&, const edm::EventSetup&);
   void fillAK8PUPPIJets(const edm::Event&, const edm::EventSetup&);
   void branchesGenJetPart(TTree*);
