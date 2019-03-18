@@ -34,7 +34,6 @@ vector<int>   AK8PuppiJet_NNP_;
 vector<float> AK8PuppiJet_MUF_;
 // vector<float> AK8PuppiJet_puppiMultiplicity_;
 // vector<float> AK8PuppiJet_neutral_puppiMultiplicity_;
-vector<int>   AK8PuppiJet_nconstituents_;
 vector<Char_t> AK8PuppiJet_PFid_;
 vector<float> AK8PuppiJet_PUPPISoftDropMass_;
 vector<float> AK8PuppiJet_CHSPrunedMass_;
@@ -111,7 +110,6 @@ void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
 	tree->Branch("AK8PuppiJet_MUF",                &AK8PuppiJet_MUF_);
 	// tree->Branch("AK8PuppiJet_puppiMultiplicity",                &AK8PuppiJet_puppiMultiplicity_);
 	// tree->Branch("AK8PuppiJet_neutral_puppiMultiplicity",                &AK8PuppiJet_neutral_puppiMultiplicity_);
-	tree->Branch("AK8PuppiJet_nconstituents",      &AK8PuppiJet_nconstituents_);
 	tree->Branch("AK8PuppiJet_PFid",          &AK8PuppiJet_PFid_);
 	tree->Branch("AK8PuppiJet_PUPPISoftDropMass",       &AK8PuppiJet_PUPPISoftDropMass_);
 	tree->Branch("AK8PuppiJet_CHSPrunedMass",         &AK8PuppiJet_CHSPrunedMass_);
@@ -186,7 +184,6 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 	AK8PuppiJet_MUF_.clear();
 	// AK8PuppiJet_puppiMultiplicity_.clear();
 	// AK8PuppiJet_neutral_puppiMultiplicity_.clear();
-	AK8PuppiJet_nconstituents_.clear();
 	AK8PuppiJet_PFid_.clear();
 	AK8PuppiJet_PUPPISoftDropMass_.clear();
 	AK8PuppiJet_CHSPrunedMass_.clear();
@@ -278,26 +275,24 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		AK8PuppiJet_tau2_.push_back(ijetAK8->userFloat("NjettinessAK8Puppi:tau2"));
 		AK8PuppiJet_tau3_.push_back(ijetAK8->userFloat("NjettinessAK8Puppi:tau3"));
 		AK8PuppiJet_tau4_.push_back(ijetAK8->userFloat("NjettinessAK8Puppi:tau4"));
-		AK8PuppiJet_CHF_.push_back(ijetAK8->chargedHadronEnergyFraction());
-		AK8PuppiJet_NHF_.push_back(ijetAK8->neutralHadronEnergyFraction());
-		AK8PuppiJet_CEF_.push_back(ijetAK8->chargedEmEnergyFraction());
+
+		    	//jet PF Loose ID
+		double NHF      = ijetAK8->neutralHadronEnergyFraction();
+		double NEMF     = ijetAK8->neutralEmEnergyFraction();
+		double CHF      = ijetAK8->chargedHadronEnergyFraction();
+		Int_t CHM      = (ijetAK8->isPFJet() || ijetAK8->isJPTJet()) ? ijetAK8->chargedMultiplicity() : -99999.;
+		Int_t NNP      = ijetAK8->neutralMultiplicity();
+		Int_t NumConst = CHM + NNP;
+		double CEMF     = ijetAK8->chargedEmEnergyFraction();
+		double MUF      = ijetAK8->muonEnergyFraction();
+
 		AK8PuppiJet_NEF_.push_back(ijetAK8->neutralEmEnergyFraction());
-		AK8PuppiJet_NCH_.push_back(ijetAK8->chargedMultiplicity());
-		AK8PuppiJet_NNP_.push_back(ijetAK8->neutralMultiplicity());
+		AK8PuppiJet_NCH_.push_back(CHM);
+		AK8PuppiJet_NNP_.push_back(NNP);
 		AK8PuppiJet_MUF_.push_back(ijetAK8->muonEnergyFraction());
-		AK8PuppiJet_nconstituents_.push_back(ijetAK8->chargedMultiplicity() + ijetAK8->neutralMultiplicity());
 		// AK8PuppiJet_puppiMultiplicity_.push_back(ijetAK8->userFloat("patPuppiJetSpecificProducer:puppiMultiplicity"));
 		// AK8PuppiJet_neutral_puppiMultiplicity_.push_back(ijetAK8->userFloat("patPuppiJetSpecificProducer:neutralPuppiMultiplicity"));
 
-    	//jet PF Loose ID
-		double NHF      = ijetAK8->neutralHadronEnergyFraction();
-		double NEMF     = ijetAK8->neutralEmEnergyFraction();
-		double NumConst = ijetAK8->chargedMultiplicity()+ijetAK8->neutralMultiplicity();
-		double CHF      = ijetAK8->chargedHadronEnergyFraction();
-		double CHM      = ijetAK8->chargedMultiplicity();
-		double CEMF     = ijetAK8->chargedEmEnergyFraction();
-		double NNP      = ijetAK8->neutralMultiplicity();
-		double MUF      = ijetAK8->muonEnergyFraction();
 
 			//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
 		bool looseJetID = false;    
