@@ -20,7 +20,7 @@ def submit(config):
 
 workarea='#workarea'
 
-mainOutputDir = '/store/user/mwadud/aNTGC/ggNtuplizerSkim/'
+mainOutputDir = '#mainOutputDir'
 
 
 config.General.requestName = '#jobname'
