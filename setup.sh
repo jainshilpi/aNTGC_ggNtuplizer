@@ -2,7 +2,7 @@
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
 
-export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git3 
+export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git
 
 scramv1 project CMSSW CMSSW_9_4_13
 cd CMSSW_9_4_13/src 
