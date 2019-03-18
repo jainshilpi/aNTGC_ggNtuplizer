@@ -23,6 +23,7 @@ crab_cfg_template=crab_submit.py
 units_perjob=10
 splitting='FileBased'
 blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico'"
+
 submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S').log
 
 mkdir -p ${writedir}
@@ -38,10 +39,10 @@ do
 	echo "Job directory: "${jobDir}
 	echo "Write site: " ${writeSite}
 
-	# if [ -d "$jobDir" ]; then
-	# 	echo "Error! Directory "$jobDir "exists!" 
- #  		exit
-	# fi
+	if [ -d "$jobDir" ]; then
+		echo "Error! Directory "$jobDir "exists!" 
+		exit
+	fi
 
 	rm -rf ${jobDir}
 

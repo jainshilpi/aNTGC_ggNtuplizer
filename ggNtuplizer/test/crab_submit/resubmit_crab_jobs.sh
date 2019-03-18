@@ -19,7 +19,7 @@ do
 			echo "Error! Directory "${crab_dir} "does not exist!"
 			continue;
 		fi
-
+		echo "Resubmitting "${crab_dir}
 		crab resubmit -d ${crab_dir}
 	fi
 done < ${inputFile}
