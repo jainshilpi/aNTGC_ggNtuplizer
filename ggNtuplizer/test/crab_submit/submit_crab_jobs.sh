@@ -16,6 +16,7 @@ splitting='FileBased'
 blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico'"
 # whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T2_US_Caltech','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
 
+submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S').log
 
 mkdir -p ${writedir}
 for dataset in `sed '/^$/d' ${input_datasets}`;
@@ -26,7 +27,9 @@ do
 
 	jobDir=${writedir}/${jobName}/
 
-	echo ${jobName}
+	echo "Submitting " ${jobName}
+	echo "Job directory: "${jobDir}
+	echo "Write site: " ${writeSite}
 
 	# if [ -d "$jobDir" ]; then
 	# 	echo "Error! Directory "$jobDir "exists!" 
@@ -50,5 +53,5 @@ do
 	sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
 	sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
 
-	python ${crab_cfg_file}
+	python ${crab_cfg_file} | tee ${submit_log_file}
 done
