@@ -41,4 +41,4 @@ A log file will be created in *writedir* for the submissions. <br>
 
 Step 3: Resubmit failed jobs
 ============================
-./resubmit_crab_jobs [log file from previous step]
+./resubmit_crab_jobs __[log file from previous step]__
