@@ -37,7 +37,7 @@ Modify the variables: <br>
 * *mainOutputDir* - path to write crab outputs <br>
  
 ___Submit___ ./submit_crab_jobs.sh<br>
-A **log file** named *crab_submitted_datasets_[date-time].log* will be created in *writedir* for the submissions. <br>
+A log file named *crab_submitted_datasets_[date-time].log* will be created in *writedir* for the submissions. <br>
 
 
 Step 3: Resubmit failed jobs
