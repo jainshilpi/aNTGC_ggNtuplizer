@@ -1,6 +1,6 @@
 Step 1: Set Up CMSSW 
 ====================
-**To skip this stepm, download setup.sh and run it in the desired directory.**
+**To skip this step, download setup.sh and run it in the desired directory.**
 export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git3 <br> 
 cmsrel CMSSW_9_4_13 <br> 
 cd CMSSW_9_4_13/src <br>
