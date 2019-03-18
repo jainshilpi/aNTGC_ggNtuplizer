@@ -2,7 +2,7 @@
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
 eval `scramv1 runtime -sh`;
-# voms-proxy-init --voms cms
+voms-proxy-init --voms cms
 
 input_datasets="datasets.txt"
 writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs"
