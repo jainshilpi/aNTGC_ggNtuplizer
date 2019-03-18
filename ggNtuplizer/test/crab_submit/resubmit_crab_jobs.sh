@@ -20,6 +20,6 @@ do
 			continue;
 		fi
 		echo "Resubmitting "${crab_dir}
-		crab kill -d ${crab_dir}
+		crab resubmit -d ${crab_dir}
 	fi
 done < ${inputFile}
