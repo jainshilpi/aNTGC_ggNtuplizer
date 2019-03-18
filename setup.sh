@@ -1,4 +1,5 @@
 #!/bin/bash
+git config merge.renamelimit 15345
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
 
