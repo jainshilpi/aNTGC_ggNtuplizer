@@ -27,6 +27,6 @@ git cms-merge-topic cms-met:METFixEE2017_949_v2
 cd $CMSSW_BASE
 git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4
 cd $CMSSW_BASE
-git clone -b master --single-branch git@github.com:wadud001/aNTGC_gggNtuplizer.git --depth 1
+git clone -b master git@github.com:wadud001/aNTGC_gggNtuplizer.git
 ls
 scram b -j 20
