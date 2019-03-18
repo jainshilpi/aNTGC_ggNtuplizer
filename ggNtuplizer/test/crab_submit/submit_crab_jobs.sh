@@ -60,5 +60,5 @@ do
 	sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
 	sed -i 's|#mainOutputDir|'$mainOutputDir'|g' ${crab_cfg_file}
 
-	python ${crab_cfg_file} | tee ${submit_log_file}
+	python ${crab_cfg_file} | tee --append ${submit_log_file}
 done
