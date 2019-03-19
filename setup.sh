@@ -28,5 +28,6 @@ cd $CMSSW_BASE
 git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4
 cd $CMSSW_BASE
 git clone -b master git@github.com:wadud001/aNTGC_gggNtuplizer.git
+mv aNTGC_gggNtuplizer ggAnalysis
 ls
 scram b -j 20

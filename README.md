@@ -23,6 +23,7 @@ scram b -j 8 <br>
 git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4 <br> 
 scram b -j 8 <br>
 git clone -b master git@github.com:wadud001/aNTGC_gggNtuplizer.git <br>
+mv aNTGC_gggNtuplizer ggAnalysis
 scram b -j8 <br>
 
 
