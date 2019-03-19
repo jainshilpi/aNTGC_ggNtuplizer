@@ -29,7 +29,6 @@
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 //#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
-#include "HiggsAnalysis/HiggsTo2photons/interface/CiCPhotonID.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
 //#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
 #include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"

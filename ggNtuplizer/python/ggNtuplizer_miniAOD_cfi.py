@@ -1,5 +1,4 @@
 import FWCore.ParameterSet.Config as cms
-from HiggsAnalysis.HiggsTo2photons.hggPhotonIDCuts_cfi import *
 #from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 #from CMGTools.External.pujetidproducer_cfi import stdalgos, chsalgos
 

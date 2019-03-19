@@ -15,7 +15,6 @@ git config merge.renamelimit 15345
 git cms-addpkg RecoBTag/Combined
 git cms-addpkg JetMETCorrections/Type1MET
 git cms-addpkg RecoMET/METFilters
-git cms-addpkg RecoEgamma/PostRecoTools
 git cms-addpkg RecoEgamma/PhotonIdentification
 git cms-addpkg RecoEgamma/ElectronIdentification
 git cms-addpkg CommonTools/PileupAlgos
@@ -24,9 +23,9 @@ git cms-merge-topic cms-egamma:EgammaPostRecoTools
 cd $CMSSW_BASE
 git cms-merge-topic cms-met:METFixEE2017_949_v2
 cd $CMSSW_BASE
-git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_94X_v4
+git clone https://github.com/cms-jet/JetToolbox.git -b jetToolbox_94X_v4
 cd $CMSSW_BASE
-git clone -b master git@github.com:wadud001/aNTGC_gggNtuplizer.git
+git clone -b master https://github.com/wadud001/aNTGC_gggNtuplizer.git
 mv aNTGC_gggNtuplizer ggAnalysis
 ls
 scram b -j 20
