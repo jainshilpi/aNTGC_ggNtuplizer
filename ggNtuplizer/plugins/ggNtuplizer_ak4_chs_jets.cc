@@ -251,6 +251,8 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 
 		if (iJet->pt() < 30.) continue;
 
+		if((!iJet->isPFJet()) && (!iJet->isJPTJet())) continue;
+
 		AK4CHSJet_Charge_.push_back(    iJet->charge());
 		AK4CHSJet_Pt_.push_back(    iJet->pt());
 		AK4CHSJet_En_.push_back(    iJet->energy());
@@ -353,7 +355,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	double NHF      = iJet->neutralHadronEnergyFraction();
       	double NEMF     = iJet->neutralEmEnergyFraction();
       	double CHF      = iJet->chargedHadronEnergyFraction();
-      	Int_t CHM      = (iJet->isPFJet() || iJet->isJPTJet()) ? iJet->chargedMultiplicity() : -99999.;
+      	Int_t CHM      = iJet->chargedMultiplicity();
       	Int_t NNP      = iJet->neutralMultiplicity();
       	Int_t NumConst = CHM + NNP;
       	double CEMF     = iJet->chargedEmEnergyFraction();

@@ -150,8 +150,8 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
   tree->Branch("puBX",          &puBX_);
   tree->Branch("puTrue",        &puTrue_);
 
-  hPU_        = fs->make<TH1F>("hPU",        "number of pileup",      200,  0, 200);
-  hPUTrue_    = fs->make<TH1F>("hPUTrue",    "number of true pilepu", 1000, 0, 200);
+  hPU_        = fs->make<TH1F>("hPU",        "number of pileup",      1000,  0., 1000.);
+  hPUTrue_    = fs->make<TH1F>("hPUTrue",    "number of true pilepu", 1000, 0., 1000.);
   hGenWeightSign_ = fs->make<TH1F>("hGenWeightSign", "Gen weight signs",           2,    -1, 1);
   hSumGenWeightSign_ = fs->make<TH1F>("hSumGenWeightSign", "Sum of Gen weight signs",1,  0, 1);
   hSumGenWeight_ = fs->make<TH1F>("hSumGenWeight", "Sum of Gen weights",1,  0, 1);
@@ -291,8 +291,8 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
  if (genPileupHandle.isValid()) {
   for (vector<PileupSummaryInfo>::const_iterator pu = genPileupHandle->begin(); pu != genPileupHandle->end(); ++pu) {
     if (pu->getBunchCrossing() == 0) {
-      hPU_->Fill(pu->getPU_NumInteractions());
-      hPUTrue_->Fill(pu->getTrueNumInteractions());
+      hPU_->Fill(pu->getPU_NumInteractions() + 0.1);
+      hPUTrue_->Fill(pu->getTrueNumInteractions() + 0.1);
     }
 
     nPU_   .push_back(pu->getPU_NumInteractions());

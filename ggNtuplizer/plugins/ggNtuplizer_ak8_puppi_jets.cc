@@ -262,6 +262,8 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 	for (edm::View<pat::Jet>::const_iterator ijetAK8 = jetsAK8PUPPIhandle->begin(); ijetAK8 != jetsAK8PUPPIhandle->end(); ++ijetAK8) {
 		if( ijetAK8->pt() < 170.0 ) continue;
 
+		if((!ijetAK8->isPFJet()) && (!ijetAK8->isJPTJet())) continue;
+
 		nAK8PuppiJet_++;
 		AK8PuppiJet_Charge_.push_back(ijetAK8->charge());
 		AK8PuppiJet_Pt_.push_back(ijetAK8->pt());
@@ -280,7 +282,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		double NHF      = ijetAK8->neutralHadronEnergyFraction();
 		double NEMF     = ijetAK8->neutralEmEnergyFraction();
 		double CHF      = ijetAK8->chargedHadronEnergyFraction();
-		Int_t CHM      = (ijetAK8->isPFJet() || ijetAK8->isJPTJet()) ? ijetAK8->chargedMultiplicity() : -99999.;
+		Int_t CHM      = ijetAK8->chargedMultiplicity();
 		Int_t NNP      = ijetAK8->neutralMultiplicity();
 		Int_t NumConst = CHM + NNP;
 		double CEMF     = ijetAK8->chargedEmEnergyFraction();

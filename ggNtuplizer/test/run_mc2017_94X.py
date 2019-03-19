@@ -14,12 +14,13 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    'file:4ABBDF87-C443-E811-B7FB-00259022516E.root'
+    # 'file:4ABBDF87-C443-E811-B7FB-00259022516E.root'
+    'file:049CDDCC-4741-E911-BAF6-0025905A60AA.root'
     ))
 
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -40,7 +41,7 @@ setupEgammaPostRecoSeq(process,
  'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V2_cff']
  )
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggtree_mc.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCtree_mc.root'))
 
 ### reduce effect of high eta EE noise on the PF MET measurement
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
@@ -52,10 +53,10 @@ runMetCorAndUncFromMiniAOD (
         postfix = "ModifiedMET"
         )
 
-## include jetToolbox to add various jets
+### include jetToolbox to add various jets
 from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
 
-# ak0.4CHSjets
+### ak0.4CHSjets
 jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput', 
             # PUMethod='CHS',
             updateCollection='slimmedJets',
@@ -72,8 +73,8 @@ jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput',
             JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
             )
 
-# ak 0.8 PUPPI jets
-jetToolbox( process, 'ak8', 'ak8CHSJetToolbox', 'noOutput', 
+### ak 0.8 PUPPI jets
+jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput', 
             PUMethod='PUPPI',
             updateCollection='slimmedJetsAK8',
             updateCollectionSubjets='slimmedJetsAK8PFPuppiSoftDropPacked',
@@ -100,7 +101,8 @@ process.ggNtuplizer.dumpAK8Jets=cms.bool(True)
 process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
 process.ggNtuplizer.dumpTaus=cms.bool(False)
 process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "PAT")
-# process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHS")
+process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHS")
+# process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK8PFPUPPI"   "genJets")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
 
 process.p = cms.Path(

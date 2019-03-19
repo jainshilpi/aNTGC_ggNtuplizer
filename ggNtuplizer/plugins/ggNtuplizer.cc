@@ -82,7 +82,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   // cicPhotonId_ = new CiCPhotonID(ps);
 
   Service<TFileService> fs;
-  tree_    = fs->make<TTree>("EventTree", "Event data (tag V09_04_09_00)");
+  tree_    = fs->make<TTree>("EventTree", "Event data");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed and skimmed events",   2,  0,   1);
 
   branchesGlobalEvent(tree_);
