@@ -39,6 +39,9 @@ vector<float> AK8PuppiJet_PUPPISoftDropMass_;
 vector<float> AK8PuppiJet_CHSPrunedMass_;
 vector<float> AK8PuppiJet_CHSSoftDropMass_;
 vector<float> AK8PuppiJet_pfBoostedDSVBTag_;
+
+// vector<float> AK8PuppiJet_TrimmedMass_;
+// vector<float> AK8PuppiJet_FilteredMass_;
 // vector<float> AK8PuppiJet_DSVnewV4_;
 vector<float> AK8PuppiJet_CSV_;
 vector<float> AK8PuppiJet_DDBvLTags_qcd_;
@@ -112,6 +115,8 @@ void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
 	// tree->Branch("AK8PuppiJet_neutral_puppiMultiplicity",                &AK8PuppiJet_neutral_puppiMultiplicity_);
 	tree->Branch("AK8PuppiJet_PFid",          &AK8PuppiJet_PFid_);
 	tree->Branch("AK8PuppiJet_PUPPISoftDropMass",       &AK8PuppiJet_PUPPISoftDropMass_);
+	// tree->Branch("AK8PuppiJet_TrimmedMass",       &AK8PuppiJet_TrimmedMass_);
+	// tree->Branch("AK8PuppiJet_FilteredMass",       &AK8PuppiJet_FilteredMass_);
 	tree->Branch("AK8PuppiJet_CHSPrunedMass",         &AK8PuppiJet_CHSPrunedMass_);
 	tree->Branch("AK8PuppiJet_CHSSoftDropMass",         &AK8PuppiJet_CHSSoftDropMass_);
 	tree->Branch("AK8PuppiJet_pfBoostedDSVBTag",   &AK8PuppiJet_pfBoostedDSVBTag_);
@@ -148,7 +153,7 @@ void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
 	tree->Branch("AK8PuppiJet_GenJetPt",       &AK8PuppiJet_GenJetPt_);
 	tree->Branch("AK8PuppiJet_GenJetEta",      &AK8PuppiJet_GenJetEta_);
 	tree->Branch("AK8PuppiJet_GenJetPhi",      &AK8PuppiJet_GenJetPhi_);
-	tree->Branch("AK8PuppiJet_nSDSJpuppi",            &AK8PuppiJet_nSDSJpuppi_);
+	// tree->Branch("AK8PuppiJet_nSDSJpuppi",            &AK8PuppiJet_nSDSJpuppi_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiPt",           &AK8PuppiJet_SDSJpuppiPt_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiEta",          &AK8PuppiJet_SDSJpuppiEta_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiMass",         &AK8PuppiJet_SDSJpuppiMass_);
@@ -186,6 +191,8 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 	// AK8PuppiJet_neutral_puppiMultiplicity_.clear();
 	AK8PuppiJet_PFid_.clear();
 	AK8PuppiJet_PUPPISoftDropMass_.clear();
+	// AK8PuppiJet_TrimmedMass_.clear();
+	// AK8PuppiJet_FilteredMass_.clear();
 	AK8PuppiJet_CHSPrunedMass_.clear();
 	AK8PuppiJet_CHSSoftDropMass_.clear();
 	AK8PuppiJet_pfBoostedDSVBTag_.clear();
@@ -295,6 +302,9 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		// AK8PuppiJet_puppiMultiplicity_.push_back(ijetAK8->userFloat("patPuppiJetSpecificProducer:puppiMultiplicity"));
 		// AK8PuppiJet_neutral_puppiMultiplicity_.push_back(ijetAK8->userFloat("patPuppiJetSpecificProducer:neutralPuppiMultiplicity"));
 
+		AK8PuppiJet_CHF_.push_back(CHF);
+		AK8PuppiJet_NHF_.push_back(NHF);
+		AK8PuppiJet_CEF_.push_back(CEMF);
 
 			//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
 		bool looseJetID = false;    
@@ -320,6 +330,8 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		AK8PuppiJet_PFid_.push_back(jetIDdecision);
 
 		AK8PuppiJet_PUPPISoftDropMass_.push_back(ijetAK8->userFloat("ak8PFJetsPuppiSoftDropMass"));
+		// AK8PuppiJet_TrimmedMass_.push_back(ijetAK8->userFloat("ak8PFJetsCHSTrimmedLinks"));;
+		// AK8PuppiJet_FilteredMass_.push_back(ijetAK8->userFloat("ak8PFJetsCHSFilteredLinks"));;
 		AK8PuppiJet_CHSPrunedMass_.push_back(ijetAK8->userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass"));
 		AK8PuppiJet_CHSSoftDropMass_.push_back(ijetAK8->userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSSoftDropMass"));
 		AK8PuppiJet_pfBoostedDSVBTag_.push_back(ijetAK8->bDiscriminator("pfBoostedDoubleSecondaryVertexAK8BJetTags"));

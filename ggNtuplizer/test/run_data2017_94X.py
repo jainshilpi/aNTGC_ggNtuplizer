@@ -15,12 +15,12 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v11', '')
 
 #process.Tracer = cms.Service("Tracer")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-        'file:/data4/cmkuo/testfiles/DoubleEG_Run2017E_31Mar2018.root'
+        'file:F8DDFDC7-8AD6-E711-BCA2-4C79BA1811CB.root'
         )
                             )
 
@@ -49,7 +49,7 @@ runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outpu
 #runOnData( process, outputModules = [] )
 #removeMCMatching(process, names=['All'], outputModules=[])
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggtree_data.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCtree_data.root'))
 
 ### reduce effect of high eta EE noise on the PF MET measurement
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
@@ -61,6 +61,26 @@ runMetCorAndUncFromMiniAOD (
         postfix = "ModifiedMET"
 )
 
+### include jetToolbox to add various jets
+from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
+jetToolbox( process, 'ak4', 'ak4JetSubs', 'noOutput',
+        runOnMC=False,
+        updateCollection='slimmedJets',
+        JETCorrPayload='AK4PFchs',
+        JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute'],
+        postFix='updated'
+        )
+
+### ak 0.8 PUPPI jets
+jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput',
+            runOnMC=False,
+            PUMethod='PUPPI',
+            updateCollection='slimmedJetsAK8',
+            updateCollectionSubjets='slimmedJetsAK8PFPuppiSoftDropPacked',
+            JETCorrPayload = 'AK8PFPuppi'
+            )
+
+
 process.load("ggAnalysis.ggNtuplizer.ggNtuplizer_miniAOD_cfi")
 process.ggNtuplizer.year=cms.int32(2017)
 process.ggNtuplizer.doGenParticles=cms.bool(False)
@@ -71,6 +91,9 @@ process.ggNtuplizer.dumpAK8Jets=cms.bool(False)
 process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
 process.ggNtuplizer.dumpTaus=cms.bool(False)
 process.ggNtuplizer.pfMETLabel=cms.InputTag("slimmedMETsModifiedMET")
+process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated")
+process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
+
 
 process.p = cms.Path(
     process.fullPatMetSequenceModifiedMET *

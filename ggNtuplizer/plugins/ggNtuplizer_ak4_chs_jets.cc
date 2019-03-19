@@ -401,7 +401,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       		Int_t _genJetIndex = -99;
       		if (iJet->genJet() && genJetsHandle.isValid()) {
       			_genJetIndex = std::distance(genJetsHandle->begin(), (vector<reco::GenJet>::const_iterator) iJet->genJet());
-      			cout<<"  "<<iJet->genJet()->pt()<<"  "<<(genJetsHandle->begin()+_genJetIndex)->pt()<<endl;
+      			// cout<<"  "<<iJet->genJet()->pt()<<"  "<<(genJetsHandle->begin()+_genJetIndex)->pt()<<endl;
       		}
       		AK4CHSJet_GenJetIndex_.push_back(_genJetIndex);
       	}

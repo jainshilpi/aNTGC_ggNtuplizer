@@ -1,13 +1,12 @@
 #!/bin/bash
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
-
 export CMSSW_GIT_REFERENCE=/afs/cern.ch/cms/git-cmssw-mirror/cmssw.git
-
 presentDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )
+cd $presentDir
 eval 'scramv1 project CMSSW CMSSW_9_4_13'
-cd ${presentDir}/CMSSW_9_4_13/src
 source /cvmfs/cms.cern.ch/cmsset_default.sh;
+cd ${presentDir}/CMSSW_9_4_13/src
 eval `scramv1 runtime -sh`;
 git cms-init
 git cms-addpkg CondFormats/JetMETObjects 

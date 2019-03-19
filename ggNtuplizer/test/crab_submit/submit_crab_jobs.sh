@@ -1,6 +1,6 @@
 #!/bin/bash
 
-input_datasets="datasets.bk"
+input_datasets="datasets.txt"
 writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs"
 psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
 writeSite="T2_US_Wisconsin"

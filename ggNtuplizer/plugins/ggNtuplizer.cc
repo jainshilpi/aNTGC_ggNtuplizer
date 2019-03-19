@@ -91,14 +91,13 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
     branchesGenInfo(tree_, fs);
     branchesGenPart(tree_);
   }
-
+  if(dumpJets_ && doGenParticles_) branchesGenAK4JetPart(tree_);
   branchesMET(tree_);
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
-  if(dumpJets_ && doGenParticles_) branchesGenAK4JetPart(tree_);
 }
 
 ggNtuplizer::~ggNtuplizer() {

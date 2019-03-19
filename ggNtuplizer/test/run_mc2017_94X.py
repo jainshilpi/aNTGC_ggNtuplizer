@@ -14,8 +14,8 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(400) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 5000
 
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
@@ -85,8 +85,8 @@ jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput',
             PUMethod='PUPPI',
             updateCollection='slimmedJetsAK8',
             updateCollectionSubjets='slimmedJetsAK8PFPuppiSoftDropPacked',
-            JETCorrPayload = 'AK8PFPuppi',
-            subJETCorrPayload='AK4PFPuppi'
+            JETCorrPayload = 'AK8PFPuppi'
+            # subJETCorrPayload='AK4PFPuppi'
             # addPruning=True,
             # addSoftDrop=True
             # addTrimming=True,
