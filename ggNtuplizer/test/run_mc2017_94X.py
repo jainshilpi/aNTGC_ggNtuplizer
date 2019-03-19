@@ -57,21 +57,28 @@ runMetCorAndUncFromMiniAOD (
 from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
 
 ### ak0.4CHSjets
-jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput', 
-            # PUMethod='CHS',
-            updateCollection='slimmedJets',
-            # addPruning=True,
-            # addPrunedSubjets=True,
-            # addTrimming=True,
-            # addFiltering=True, 
-            # addNsub=True,
-            # maxTau=3,
-            addQGTagger=True,
-            # addPUJetID=True,
-            # addEnergyCorrFunc=True,
-            JETCorrPayload = 'AK4PFchs',
-            JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
-            )
+# jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput', 
+#             # PUMethod='CHS',
+#             updateCollection='slimmedJets',
+#             # addPruning=True,
+#             # addPrunedSubjets=True,
+#             # addTrimming=True,
+#             # addFiltering=True, 
+#             # addNsub=True,
+#             # maxTau=3,
+#             addQGTagger=True,
+#             # addPUJetID=True,
+#             # addEnergyCorrFunc=True,
+#             JETCorrPayload = 'AK4PFchs',
+#             JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
+#             )
+
+jetToolbox( process, 'ak4', 'ak4JetSubs', 'noOutput',
+        updateCollection='slimmedJets',
+        JETCorrPayload='AK4PFchs',
+        JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute'],
+        postFix='updated'
+        )
 
 ### ak 0.8 PUPPI jets
 jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput', 
@@ -101,8 +108,8 @@ process.ggNtuplizer.dumpAK8Jets=cms.bool(True)
 process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
 process.ggNtuplizer.dumpTaus=cms.bool(False)
 process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "PAT")
-process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHS")
-# process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK8PFPUPPI"   "genJets")
+process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated")
+process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK4PFCHSupdated","genJets","ggKit")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
 
 process.p = cms.Path(

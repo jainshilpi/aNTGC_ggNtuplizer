@@ -98,7 +98,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   branchesMuons(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
-  if(dumpJets_ && doGenParticles_) branchesGenJetPart(tree_);
+  if(dumpJets_ && doGenParticles_) branchesGenAK4JetPart(tree_);
 }
 
 ggNtuplizer::~ggNtuplizer() {
@@ -149,7 +149,7 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillPhotons(e, es); 
   if (dumpJets_)         fillAK4CHSJets(e,es);
   if (dumpAK8Jets_)      fillAK8PUPPIJets(e,es);
-  if(dumpJets_ && doGenParticles_) fillGenJetInfo(e);
+  if(dumpJets_ && doGenParticles_) fillGenAK4JetInfo(e);
 
   tree_->Fill();
   hEvents_->Fill(0.8);

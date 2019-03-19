@@ -93,8 +93,8 @@ private:
   void fillMuons      (const edm::Event&, math::XYZPoint&, const reco::Vertex);
   void fillAK4CHSJets       (const edm::Event&, const edm::EventSetup&);
   void fillAK8PUPPIJets(const edm::Event&, const edm::EventSetup&);
-  void branchesGenJetPart(TTree*);
-  void fillGenJetInfo(const edm::Event&);
+  void branchesGenAK4JetPart(TTree*);
+  void fillGenAK4JetInfo(const edm::Event&);
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);
   // void fillAK8PUPPIJets    (const edm::Event&, const edm::EventSetup&);
 
