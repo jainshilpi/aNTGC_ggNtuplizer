@@ -27,9 +27,12 @@ submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S')
 mkdir -p ${writedir}
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
-	datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
+	# datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
 	# jobName=${datasetName#"/"}_$(date '+%d_%m_%Y_%H_%M_%S');
-	jobName=${datasetName#"/"}
+	# jobName=${datasetName#"/"}
+
+	jobName=$(echo ${dataset////_})
+	jobName=${jobName#"_"}
 
 	jobDir=${writedir}/${jobName}/
 
@@ -38,7 +41,7 @@ do
 	echo "Write site: " ${writeSite}
 
 	if [ -d "$jobDir" ]; then
-		echo "Error! Directory "$jobDir "exists!" 
+		echo "Error! Directory "$jobDir "exists!"
 		exit
 	fi
 
