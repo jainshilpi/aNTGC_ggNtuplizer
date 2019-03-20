@@ -29,7 +29,7 @@ config.General.workArea = '%s' % workarea
 
 
 config.Site.storageSite = '#storageSite'
-# config.Site.whitelist = [#whitelist]
+config.Site.whitelist = [#whitelist]
 config.Site.blacklist = [#blacklist]
 
 
@@ -43,6 +43,6 @@ config.Data.allowNonValidInputDataset = True
 config.Data.outLFNDirBase = '%s' % mainOutputDir
 config.Data.splitting     = '#splitting'
 config.Data.unitsPerJob   = #unitsperjob
-# config.Data.ignoreLocality = True
+config.Data.ignoreLocality = True
 
 submit(config)

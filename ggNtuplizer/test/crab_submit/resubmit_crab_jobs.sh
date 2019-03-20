@@ -7,7 +7,8 @@ voms-proxy-init --voms cms
 
 
 
-inputFile=$1
+commandval=$1
+inputFile=$2
 
 while IFS= read -r line
 do
@@ -20,6 +21,6 @@ do
 			continue;
 		fi
 		echo "Resubmitting "${crab_dir}
-		crab status -d ${crab_dir}
+		crab $commandval -d ${crab_dir}
 	fi
 done < ${inputFile}

@@ -3,12 +3,11 @@ import FWCore.ParameterSet.Config as cms
 #from CMGTools.External.pujetidproducer_cfi import stdalgos, chsalgos
 
 ggNtuplizer = cms.EDAnalyzer("ggNtuplizer",
-                 hggPhotonIDConfiguration = hggPhotonIDCuts,
                  doGenParticles       = cms.bool(True),
                  doGenJets           = cms.bool(True),
                  runOnParticleGun     = cms.bool(False),
                  runOnSherpa          = cms.bool(False),
-                 dumpPFPhotons        = cms.bool(True), 
+                 dumpPFPhotons        = cms.bool(True),
                  dumpJets             = cms.bool(False),
                  dumpAK8Jets          = cms.bool(False),
                  dumpTaus             = cms.bool(False),
@@ -19,7 +18,7 @@ ggNtuplizer = cms.EDAnalyzer("ggNtuplizer",
                  addFilterInfoMINIAOD = cms.bool(False),
                  doNoHFMET            = cms.bool(False),
 
-                 year                 = cms.int32(2017), 
+                 year                 = cms.int32(2017),
 
                  trgFilterDeltaPtCut  = cms.double(0.5),
                  trgFilterDeltaRCut   = cms.double(0.3),

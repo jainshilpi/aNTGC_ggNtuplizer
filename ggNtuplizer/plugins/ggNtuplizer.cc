@@ -58,7 +58,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   muonCollection_            = consumes<View<pat::Muon> >              (ps.getParameter<InputTag>("muonSrc"));
   ebReducedRecHitCollection_ = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("ebReducedRecHitCollection"));
   eeReducedRecHitCollection_ = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("eeReducedRecHitCollection"));
-  esReducedRecHitCollection_ = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("esReducedRecHitCollection")); 
+  esReducedRecHitCollection_ = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("esReducedRecHitCollection"));
   recophotonCollection_      = consumes<reco::PhotonCollection>        (ps.getParameter<InputTag>("recoPhotonSrc"));
   tracklabel_                = consumes<reco::TrackCollection>         (ps.getParameter<InputTag>("TrackLabel"));
   gsfElectronlabel_          = consumes<reco::GsfElectronCollection>   (ps.getParameter<InputTag>("gsfElectronLabel"));
@@ -71,15 +71,9 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   ak4PFJetsCHSLabel_              = consumes<View<pat::Jet> >               (ps.getParameter<InputTag>("ak4PFJetsCHSSrc"));
   ak4PFJetsPUPPILabel_              = consumes<View<pat::Jet> >               (ps.getParameter<InputTag>("ak4PFJetsPUPPISrc"));
   ak8JetsPUPPILabel_              = consumes<View<pat::Jet> >               (ps.getParameter<InputTag>("ak8JetsPUPPISrc"));
-  
+
   ak4PFJetsCHSGenJetLabel_              = consumes<std::vector<reco::GenJet> >               (ps.getParameter<InputTag>("ak4PFJetsCHSGenJetLabel"));
-  //boostedDoubleSVLabel_      = consumes<reco::JetTagCollection>        (ps.getParameter<InputTag>("boostedDoubleSVLabel"));
   newparticles_              =                                          ps.getParameter< vector<int > >("newParticles");
-  //jecAK8PayloadNames_        =                                          ps.getParameter<std::vector<std::string> >("jecAK8PayloadNames"); 
-
-  //pfLooseId_                 = ps.getParameter<ParameterSet>("pfLooseId");
-
-  // cicPhotonId_ = new CiCPhotonID(ps);
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data");
@@ -145,7 +139,7 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillMET(e, es);
   fillElectrons(e, es, pv);
   fillMuons(e, pv, vtx);
-  fillPhotons(e, es); 
+  fillPhotons(e, es);
   if (dumpJets_)         fillAK4CHSJets(e,es);
   if (dumpAK8Jets_)      fillAK8PUPPIJets(e,es);
   if(dumpJets_ && doGenParticles_) fillGenAK4JetInfo(e);

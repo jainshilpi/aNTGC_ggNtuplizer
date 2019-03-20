@@ -18,21 +18,22 @@ voms-proxy-init --voms cms
 
 
 crab_cfg_template=crab_submit.py
-units_perjob=10
+units_perjob=1
 splitting='FileBased'
-blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico'"
+blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
+whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
 
 submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S').log
 
 mkdir -p ${writedir}
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
-	# datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
+	datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
 	# jobName=${datasetName#"/"}_$(date '+%d_%m_%Y_%H_%M_%S');
-	# jobName=${datasetName#"/"}
+	jobName=${datasetName#"/"}
 
-	jobName=$(echo ${dataset////_})
-	jobName=${jobName#"_"}
+	# jobName=$(echo ${dataset////_})
+	# jobName=${jobName#"_"}
 
 	jobDir=${writedir}/${jobName}/
 
@@ -57,7 +58,7 @@ do
 	sed -i 's|#jobname|'$jobName'|g' ${crab_cfg_file}
 	sed -i 's|#inputDataset|'$dataset'|g' ${crab_cfg_file}
 	sed -i 's|#storageSite|'$writeSite'|g' ${crab_cfg_file}
-	# sed -i 's|#whitelist|'$whitelist'|g' ${crab_cfg_file}
+	sed -i 's|#whitelist|'$whitelist'|g' ${crab_cfg_file}
 	sed -i 's|#blacklist|'$blacklist'|g' ${crab_cfg_file}
 	sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
 	sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}

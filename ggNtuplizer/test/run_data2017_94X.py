@@ -43,11 +43,10 @@ setupEgammaPostRecoSeq(process,
                                      'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V2_cff']
                        )
 
-#from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
+
 from PhysicsTools.PatAlgos.tools.coreTools import *
 runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outputModules = [] )
-#runOnData( process, outputModules = [] )
-#removeMCMatching(process, names=['All'], outputModules=[])
+
 
 process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCtree_data.root'))
 

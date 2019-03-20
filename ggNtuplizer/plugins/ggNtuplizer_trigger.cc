@@ -401,19 +401,17 @@ if (eleSingleFilters.size() == 0) {
 }
 
 ULong64_t ggNtuplizer::matchSingleElectronTriggerFilters(double pt, double eta, double phi) {
-
-  // bits in the return value correspond to decisions from filters defined above
-  ULong64_t result = 0;
-
-  for (size_t f = 0; f < 64; ++f){
-      for (size_t v = 0; v < trgSingleElePt[f].size(); ++v){
-        if (fabs(pt - trgSingleElePt[f][v])/trgSingleElePt[f][v] < trgFilterDeltaPtCut_  && deltaR(eta, phi, trgSingleEleEta[f][v], trgSingleElePhi[f][v]) < trgFilterDeltaRCut_) {
-            result |= (1<<f);
-            break;
+    // bits in the return value correspond to decisions from filters defined above
+    ULong64_t result = 0;
+    for (size_t f = 0; f < 64; ++f){
+        for (size_t v = 0; v < trgSingleElePt[f].size(); ++v){
+            if (fabs(pt - trgSingleElePt[f][v])/trgSingleElePt[f][v] < trgFilterDeltaPtCut_  && deltaR(eta, phi, trgSingleEleEta[f][v], trgSingleElePhi[f][v]) < trgFilterDeltaRCut_) {
+                result |= (1<<f);
+                break;
+            }
         }
     }
-}
-return result;
+    return result;
 }
 
 ULong64_t ggNtuplizer::matchDoubleElectronTriggerFilters(double pt, double eta, double phi) {
@@ -432,22 +430,20 @@ return result;
 }
 
 ULong64_t ggNtuplizer::matchSinglePhotonTriggerFilters(double pt, double eta, double phi) {
-
   // bits in the return value correspond to decisions from filters defined above
     ULong64_t result = 0;
     for (size_t f = 0; f < 64; ++f){
-      for (size_t v = 0; v < trgSinglePhoPt[f].size(); ++v){
-        if (fabs(pt - trgSinglePhoPt[f][v])/trgSinglePhoPt[f][v] < trgFilterDeltaPtCut_ && deltaR(eta, phi, trgSinglePhoEta[f][v], trgSinglePhoPhi[f][v]) < trgFilterDeltaRCut_) {
-            result |= (1<<f);
-            break;
+        for (size_t v = 0; v < trgSinglePhoPt[f].size(); ++v){
+            if (fabs(pt - trgSinglePhoPt[f][v])/trgSinglePhoPt[f][v] < trgFilterDeltaPtCut_ && deltaR(eta, phi, trgSinglePhoEta[f][v], trgSinglePhoPhi[f][v]) < trgFilterDeltaRCut_) {
+                result |= (1<<f);
+                break;
+            }
         }
     }
-}
-return result;
+    return result;
 }
 
 ULong64_t ggNtuplizer::matchDoublePhotonTriggerFilters(double pt, double eta, double phi) {
-
     // bits in the return value correspond to decisions from filters defined above
     ULong64_t result = 0;
     for (size_t f = 0; f < 64; ++f){
@@ -462,7 +458,6 @@ ULong64_t ggNtuplizer::matchDoublePhotonTriggerFilters(double pt, double eta, do
 }
 
 ULong64_t ggNtuplizer::matchTriplePhotonTriggerFilters(double pt, double eta, double phi) {
-
   // bits in the return value correspond to decisions from filters defined above
     UInt_t result = 0;
     for (size_t f = 0; f < 64; ++f){
@@ -479,7 +474,6 @@ ULong64_t ggNtuplizer::matchTriplePhotonTriggerFilters(double pt, double eta, do
 
 
 ULong64_t ggNtuplizer::matchMuonTriggerFilters(double pt, double eta, double phi) {
-
   // bits in the return value correspond to decisions from filters defined above
     ULong64_t result = 0;
     for (size_t f = 0; f < 64; ++f){
