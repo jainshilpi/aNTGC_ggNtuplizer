@@ -5,6 +5,7 @@
 <use name="FWCore/PluginManager"/>
 <use name="FWCore/ParameterSet"/>
 <use name="DataFormats/HepMCCandidate"/>
+<use name="DataFormats/Common"/>
 <use name="DataFormats/Candidate"/>
 <use name="DataFormats/PatCandidates"/>
 <use name="DataFormats/GsfTrackReco"/>
@@ -15,5 +16,26 @@
 <use name="CondFormats/JetMETObjects"/>
 <use name="JetMETCorrections/Objects"/>
 <use name="JetMETCorrections/Modules"/>
+<use name="FWCore/Common"/>
+<use name="DataFormats/EgammaCandidates"/>
+<use name="DataFormats/MuonReco"/>
+<use name="DataFormats/JetReco"/>
+<use name="Geometry/Records"/>
+<use name="Geometry/EcalAlgo"/>
+<use name="RecoEgamma/EgammaTools"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="TrackingTools/TrackAssociator"/>
+<use name="RecoEgamma/EgammaElectronAlgos"/>
+<use name="RecoEgamma/ElectronIdentification"/>
+<use name="TrackingTools/TransientTrack"/>
+<use name="SimDataFormats/Track"/>
+<use name="SimDataFormats/Vertex"/>
+<use name="SimTracker/TrackAssociation"/>
+<use name="SimTracker/Records"/>
+<use name="SimTracker/TrackerHitAssociation"/>
+<use name="TrackingTools/IPTools"/>
+<use name="heppdt"/>
+<use name="root"/>
+<use name="boost"/>
 
 <flags EDM_PLUGIN="1"/>
