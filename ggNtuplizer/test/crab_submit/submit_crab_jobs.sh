@@ -2,12 +2,13 @@
 
 input_datasets="datasets.txt"
 writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs"
-psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
-mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/'
+mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/xSecs/'
 
 
-
+maxFiles=100
 
 
 ################################################################################################################
@@ -30,7 +31,7 @@ for dataset in `sed '/^$/d' ${input_datasets}`;
 do
 	datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
 	# jobName=${datasetName#"/"}_$(date '+%d_%m_%Y_%H_%M_%S');
-	jobName=${datasetName#"/"}
+	jobName=xsec_${datasetName#"/"}
 
 	# jobName=$(echo ${dataset////_})
 	# jobName=${jobName#"_"}
@@ -45,8 +46,6 @@ do
 		echo "Error! Directory "$jobDir "exists!"
 		exit
 	fi
-
-	rm -rf ${jobDir}
 
 	mkdir -p ${jobDir}
 
@@ -63,6 +62,9 @@ do
 	sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
 	sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
 	sed -i 's|#mainOutputDir|'$mainOutputDir'|g' ${crab_cfg_file}
+
+	sed -i 's|#config.Data.totalUnits|'config.Data.totalUnits'|g' ${crab_cfg_file}
+	sed -i 's|#totalUnits|'$maxFiles'|g' ${crab_cfg_file}
 
 	python ${crab_cfg_file} | tee --append ${submit_log_file}
 done
