@@ -124,7 +124,7 @@ void ggNtuplizer::branchesElectrons(TTree* tree) {
   tree->Branch("eleResol_rho_dn",             &eleResol_rho_dn_);
   tree->Branch("eleResol_phi_up",             &eleResol_phi_up_);
   tree->Branch("eleResol_phi_dn",             &eleResol_phi_dn_);
-  
+
 }
 
 void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, math::XYZPoint &pv) {
@@ -261,16 +261,16 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
     eleResol_phi_up_ .push_back(iEle->userFloat("energySigmaPhiUp"));
     eleResol_phi_dn_ .push_back(iEle->userFloat("energySigmaPhiDown"));
 
-    // VID decisions 
-    UShort_t tmpeleIDbit = 0;   
+    // VID decisions
+    UShort_t tmpeleIDbit = 0;
     bool isPassVeto   = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-veto");
-    if (isPassVeto)   setbit(tmpeleIDbit, 0);    
+    if (isPassVeto)   setbit(tmpeleIDbit, 0);
     bool isPassLoose  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-loose");
-    if (isPassLoose)  setbit(tmpeleIDbit, 1);   
+    if (isPassLoose)  setbit(tmpeleIDbit, 1);
     bool isPassMedium = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-medium");
-    if (isPassMedium) setbit(tmpeleIDbit, 2);    
+    if (isPassMedium) setbit(tmpeleIDbit, 2);
     bool isPassTight  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-tight");
-    if (isPassTight)  setbit(tmpeleIDbit, 3);    
+    if (isPassTight)  setbit(tmpeleIDbit, 3);
     bool isPassHEEP   = iEle->electronID("heepElectronID-HEEPV70");
     if (isPassHEEP)   setbit(tmpeleIDbit, 4);
     eleIDbit_.push_back(tmpeleIDbit);

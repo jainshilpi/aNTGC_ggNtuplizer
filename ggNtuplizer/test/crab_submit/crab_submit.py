@@ -37,6 +37,7 @@ config.JobType.psetName  = '#psetname'
 config.JobType.pluginName  = 'Analysis'
 
 
+config.Data.inputDBS = '#inputDBS'
 config.Data.inputDataset = '#inputDataset'
 config.Data.publication = False
 config.Data.allowNonValidInputDataset = True

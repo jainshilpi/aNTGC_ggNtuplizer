@@ -14,13 +14,14 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(400) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(20) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 5000
 
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
     # 'file:4ABBDF87-C443-E811-B7FB-00259022516E.root'
-    'file:049CDDCC-4741-E911-BAF6-0025905A60AA.root'
+    # 'file:049CDDCC-4741-E911-BAF6-0025905A60AA.root'
+    'file:sherpa_jjg_lo_h3z0p0003_ptmin500_ptmax550_MASTER_cff_py_MINIAODSIM_38.root'
     ))
 
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -57,13 +58,13 @@ runMetCorAndUncFromMiniAOD (
 from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
 
 ### ak0.4CHSjets
-# jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput', 
+# jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput',
 #             # PUMethod='CHS',
 #             updateCollection='slimmedJets',
 #             # addPruning=True,
 #             # addPrunedSubjets=True,
 #             # addTrimming=True,
-#             # addFiltering=True, 
+#             # addFiltering=True,
 #             # addNsub=True,
 #             # maxTau=3,
 #             addQGTagger=True,
@@ -81,7 +82,7 @@ jetToolbox( process, 'ak4', 'ak4JetSubs', 'noOutput',
         )
 
 ### ak 0.8 PUPPI jets
-jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput', 
+jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput',
             PUMethod='PUPPI',
             updateCollection='slimmedJetsAK8',
             updateCollectionSubjets='slimmedJetsAK8PFPuppiSoftDropPacked',
@@ -90,7 +91,7 @@ jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput',
             # addPruning=True,
             # addSoftDrop=True
             # addTrimming=True,
-            # addFiltering=True, 
+            # addFiltering=True,
             # addNsub=True,
             # maxTau=3,
             # addQGTagger=True,
@@ -107,10 +108,13 @@ process.ggNtuplizer.dumpJets=cms.bool(True)
 process.ggNtuplizer.dumpAK8Jets=cms.bool(True)
 process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
 process.ggNtuplizer.dumpTaus=cms.bool(False)
-process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "PAT")
+# process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "PAT")
 process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated")
 process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK4PFCHSupdated","genJets","ggKit")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
+process.ggNtuplizer.runOnSherpa = cms.bool(True)
+patTriggerResults    = cms.InputTag("TriggerResults", "", "RECO")
+process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
 
 process.p = cms.Path(
   process.fullPatMetSequenceModifiedMET *
