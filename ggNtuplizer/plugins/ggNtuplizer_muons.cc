@@ -25,7 +25,7 @@ vector<int>       muPixelHits_;
 vector<int>       muMuonHits_;
 vector<int>       muStations_;
 vector<int>       muMatches_;
-vector<int>       muTrkQuality_;
+vector<Char_t>       muTrkQuality_;
 vector<float>     muIsoTrk_;
 vector<float>     muPFChIso_;
 vector<float>     muPFPhoIso_;
@@ -39,7 +39,7 @@ vector<float>     muchi2LocalPosition_;
 vector<float>     mutrkKink_;
 vector<float>     muBestTrkPtError_;
 vector<float>     muBestTrkPt_;
-vector<int>       muBestTrkType_;
+vector<Char_t>       muBestTrkType_;
 
 void ggNtuplizer::branchesMuons(TTree* tree) {
 

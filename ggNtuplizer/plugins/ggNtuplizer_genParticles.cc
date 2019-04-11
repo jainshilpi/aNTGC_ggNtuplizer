@@ -16,7 +16,7 @@ float            genHT_;
 float            genPho1_;
 float            genPho2_;
 // TString          EventTag_;
-float            pdfWeight_;     
+float            pdfWeight_;
 vector<float>    pdfSystWeight_;
 
 Int_t            nPUInfo_;
@@ -88,7 +88,7 @@ float getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
     // skip muons/neutrinos, if requested
     if (removeMu && pdgCode == 13) continue;
     if (removeNu && (pdgCode == 12 || pdgCode == 14 || pdgCode == 16)) continue;
-    
+
     // pass a minimum Et threshold
     // if (p->et() < 0) continue;
 
@@ -224,17 +224,17 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
     if (genEventInfoHandle->hasBinningValues()) pthat_ = genEventInfoHandle->binningValues()[0];
     processID_ = genEventInfoHandle->signalProcessID();
     genWeight_ = genEventInfoHandle->weight();
-    if (genWeight_ >= 0) hGenWeightSign_->Fill(0.5);    
+    if (genWeight_ >= 0) hGenWeightSign_->Fill(0.5);
     else hGenWeightSign_->Fill(-0.5);
     if (abs(genWeight_)>1) hSumGenWeightSign_->Fill(0.5,genWeight_/abs(genWeight_));
     else hSumGenWeightSign_->Fill(0.5,genWeight_);
     hSumGenWeight_->Fill(0.5,genWeight_);
   } else edm::LogWarning("ggNtuplizer") << "no GenEventInfoProduct in event";
-  
-  // access generator level HT  
+
+  // access generator level HT
   edm::Handle<LHEEventProduct> lheEventProduct;
   e.getByToken(lheEventLabel_, lheEventProduct);
-  
+
   double lheHt   = 0.;
   double lhePho1 = 0.;
   double lhePho2 = 0.;
@@ -246,10 +246,10 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
     for ( size_t idxParticle = 0; idxParticle < numParticles; ++idxParticle ) {
       int absPdgId = TMath::Abs(lheEvent.IDUP[idxParticle]);
       int status = lheEvent.ISTUP[idxParticle];
-      if (status == 1 && ((absPdgId >= 1 && absPdgId <= 6) || absPdgId == 21) ){// quarks and gluons       
+      if (status == 1 && ((absPdgId >= 1 && absPdgId <= 6) || absPdgId == 21) ){// quarks and gluons
         // first entry is px, second py
        lheHt += TMath::Sqrt(TMath::Power(lheParticles[idxParticle][0], 2.) + TMath::Power(lheParticles[idxParticle][1], 2.));
-     } 
+     }
       if (status == 1 && absPdgId == 22 && nMCPho == 0) { // first photon
        lhePho1 = TMath::Sqrt(TMath::Power(lheParticles[idxParticle][0], 2.) + TMath::Power(lheParticles[idxParticle][1], 2.));
        nMCPho++;
@@ -267,7 +267,7 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
      // TString model_params;
      // for(comments_const_iterator cit=c_begin; cit!=c_end; ++cit) {
      //   size_t found = (*cit).find("model");
-     //   if(found != std::string::npos)   { 
+     //   if(found != std::string::npos)   {
      //     model_params = *cit;
      //   }
      // }
@@ -281,9 +281,9 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
      }
    }
  }
- genHT_   = lheHt;  
- genPho1_ = lhePho1;  
- genPho2_ = lhePho2;  
+ genHT_   = lheHt;
+ genPho1_ = lhePho1;
+ genPho2_ = lhePho2;
 
  edm::Handle<vector<PileupSummaryInfo> > genPileupHandle;
  e.getByToken(puCollection_, genPileupHandle);
@@ -337,7 +337,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
   mcTrkIsoDR03.clear();
   mcCalIsoDR04.clear();
   mcTrkIsoDR04.clear();
-  
+
 
   mcHasDirectPromptPho_ = 0;
   nMC_ = 0;
@@ -358,7 +358,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
     int status = ip->status();
 
     bool stableFinalStateParticle = (status == 1) && (ip->pt() > 5.0);
-    
+
     bool quarks = (abs(ip->pdgId())<7);
 
     Bool_t gluons = (ip->pdgId() == 21);
@@ -366,25 +366,25 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
     // keep non-FSR photons with pT > 5.0 and all leptons with pT > 3.0;
     bool photonOrLepton =
     (ip->pdgId() == 22 && (ip->isPromptFinalState() || ip->isLastCopy() || status == 1)) ||
-    (status == 1 && abs(ip->pdgId()) == 11 && (ip->isPromptFinalState() || ip->isLastCopy())) || 
+    (status == 1 && abs(ip->pdgId()) == 11 && (ip->isPromptFinalState() || ip->isLastCopy())) ||
     (status == 1 && abs(ip->pdgId()) == 13 && (ip->isPromptFinalState() || ip->isLastCopy())) ||
     (status == 1 && (abs(ip->pdgId()) == 12 || abs(ip->pdgId()) == 14 || abs(ip->pdgId()) == 16)) ||
     (status == 1 && ( abs(ip->pdgId()) >= 11 && abs(ip->pdgId()) <= 16 ) && ip->pt() > 3.0)  ||
     (status < 10 && abs(ip->pdgId()) == 15 && ip->pt() > 3.0);
 
-    // select also Z, W, H, top and b 
+    // select also Z, W, H, top and b
     bool heavyParticle =
-    ((    ip->pdgId()  == 23 && ip->isHardProcess()) || 
-     (abs(ip->pdgId()) == 24 && ip->isHardProcess()) || 
+    ((    ip->pdgId()  == 23 && ip->isHardProcess()) ||
+     (abs(ip->pdgId()) == 24 && ip->isHardProcess()) ||
      (    ip->pdgId()  == 25 && ip->isHardProcess()) ||
-     (abs(ip->pdgId()) ==  6 && ip->isHardProcess()) || 
+     (abs(ip->pdgId()) ==  6 && ip->isHardProcess()) ||
      (abs(ip->pdgId()) ==  5 && ip->isHardProcess()));
-    
+
     bool newParticle = false;
     for (size_t inp = 0; inp < newparticles_.size(); ++inp) {
       if (abs(ip->pdgId()) == newparticles_[inp]) newParticle = true;
     }
-    
+
     if ( heavyParticle || photonOrLepton || quarks || newParticle || quarks || gluons || stableFinalStateParticle) {
 
       const reco::Candidate *p = (const reco::Candidate*)&(*ip);
@@ -422,7 +422,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
           else if (abs(dp->pdgId())==15 || abs(dp->pdgId())==16) setbit(tmpStatusFlag, 11);
         }
       }
-      
+
       mcStatusFlag.push_back(tmpStatusFlag);
 
       Char_t _mcPromptStatysType = getPromptStatus(*ip, genParticlesHandle);
@@ -436,37 +436,38 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
       float mcMomMass_  = -999.;
       float mcMomEta_   = -999.;
       float mcMomPhi_   = -999.;
+      UShort_t temp_mcParentage = 0;
       if (!runOnSherpa_) {
+       Int_t pIndex= std::distance(genParticlesHandle->begin(),ip);
+       if(pIndex >= 0){
+         reco::GenParticleRef partRef = reco::GenParticleRef(genParticlesHandle,pIndex);
+         genpartparentage::GenParticleParentage particleHistory(partRef);
 
-       reco::GenParticleRef partRef = reco::GenParticleRef(genParticlesHandle,
-         ip-genParticlesHandle->begin());
-       genpartparentage::GenParticleParentage particleHistory(partRef);
+         if(particleHistory.hasLeptonParent()) setbit(temp_mcParentage, 0);
+         if(particleHistory.hasBosonParent()) setbit(temp_mcParentage, 1);
+         if(particleHistory.hasNonPromptParent()) setbit(temp_mcParentage, 2);
+         if(particleHistory.hasQCDParent()) setbit(temp_mcParentage, 3);
+         if(particleHistory.hasExoticParent()) setbit(temp_mcParentage, 4);
 
-       UShort_t temp_mcParentage = 0;
-       if(particleHistory.hasLeptonParent()) setbit(temp_mcParentage, 0);
-       if(particleHistory.hasBosonParent()) setbit(temp_mcParentage, 1);
-       if(particleHistory.hasNonPromptParent()) setbit(temp_mcParentage, 2);
-       if(particleHistory.hasQCDParent()) setbit(temp_mcParentage, 3);
-       if(particleHistory.hasExoticParent()) setbit(temp_mcParentage, 4);
-       mcParentage.push_back(temp_mcParentage);      
-
-       if ( particleHistory.hasRealParent() ) {
-         reco::GenParticleRef momRef = particleHistory.parent();
-         if ( momRef.isNonnull() && momRef.isAvailable() ) {
-           mcMomPID_  = momRef->pdgId();
-           mcMomPt_   = momRef->pt();
-           mcMomMass_ = momRef->mass();
-           mcMomEta_  = momRef->eta();
-           mcMomPhi_  = momRef->phi();
+         if ( particleHistory.hasRealParent() ) {
+           reco::GenParticleRef momRef = particleHistory.parent();
+           if ( momRef.isNonnull() && momRef.isAvailable() ) {
+             mcMomPID_  = momRef->pdgId();
+             mcMomPt_   = momRef->pt();
+             mcMomMass_ = momRef->mass();
+             mcMomEta_  = momRef->eta();
+             mcMomPhi_  = momRef->phi();
 
 	         // get Granny
-           genpartparentage::GenParticleParentage motherParticle(momRef);
-           if ( motherParticle.hasRealParent() ) {
-             reco::GenParticleRef granny = motherParticle.parent();
-             mcGMomPID_ = granny->pdgId();
+             genpartparentage::GenParticleParentage motherParticle(momRef);
+             if ( motherParticle.hasRealParent() ) {
+               reco::GenParticleRef granny = motherParticle.parent();
+               mcGMomPID_ = granny->pdgId();
+             }
            }
          }
        }
+       mcParentage.push_back(temp_mcParentage);
        mcGMomPID.push_back(mcGMomPID_);
        mcMomPID.push_back(mcMomPID_);
        mcMomPt.push_back(mcMomPt_);

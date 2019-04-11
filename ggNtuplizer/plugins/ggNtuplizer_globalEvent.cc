@@ -32,7 +32,7 @@ void ggNtuplizer::branchesGlobalEvent(TTree* tree) {
   tree->Branch("run",     &run_);
   tree->Branch("event",   &event_);
   tree->Branch("lumis",   &lumis_);
-  tree->Branch("isData",  &isData_);
+  // tree->Branch("isData",  &isData_);
   tree->Branch("nVtx",                 &nVtx_);
   tree->Branch("nGoodVtx",             &nGoodVtx_);
   tree->Branch("isPVGood",             &isPVGood_);

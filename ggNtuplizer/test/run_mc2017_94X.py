@@ -14,14 +14,14 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(20) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 5000
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    # 'file:4ABBDF87-C443-E811-B7FB-00259022516E.root'
-    # 'file:049CDDCC-4741-E911-BAF6-0025905A60AA.root'
-    'file:sherpa_jjg_lo_h3z0p0003_ptmin500_ptmax550_MASTER_cff_py_MINIAODSIM_38.root'
+    # 'file:F8DDFDC7-8AD6-E711-BCA2-4C79BA1811CB.root'
+    'file:049CDDCC-4741-E911-BAF6-0025905A60AA.root'
+    # 'file:sherpa_jjg_lo_h3z0p0003_ptmin500_ptmax550_MASTER_cff_py_MINIAODSIM_38.root'
     ))
 
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -108,13 +108,13 @@ process.ggNtuplizer.dumpJets=cms.bool(True)
 process.ggNtuplizer.dumpAK8Jets=cms.bool(True)
 process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
 process.ggNtuplizer.dumpTaus=cms.bool(False)
-# process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "PAT")
+process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger")
 process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated")
 process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK4PFCHSupdated","genJets","ggKit")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
 process.ggNtuplizer.runOnSherpa = cms.bool(True)
 patTriggerResults    = cms.InputTag("TriggerResults", "", "RECO")
-process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
+# process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
 
 process.p = cms.Path(
   process.fullPatMetSequenceModifiedMET *

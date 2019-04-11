@@ -75,7 +75,7 @@ vector<Float_t> AK4CHSJet_JER_SFdown_;
 vector<ULong64_t> AK4CHSJet_FiredTrgs_;
 //gen-info
 vector<Int_t>  AK4CHSJet_GenJetIndex_;
-vector<int>    AK4CHSJet_GenPartonIndex_;
+vector<Int_t>    AK4CHSJet_GenPartonIndex_;
 
 
 void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
@@ -118,12 +118,12 @@ void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
 		tree->Branch("AK4CHSJet_HadronFlavour",        &AK4CHSJet_HadronFlavour_);
 		tree->Branch("AK4CHSJet_GenJetIndex",        &AK4CHSJet_GenJetIndex_);
 		tree->Branch("AK4CHSJet_GenPartonIndex",    &AK4CHSJet_GenPartonIndex_);
-	}  
+	}
 	tree->Branch("AK4CHSJet_ID",        &AK4CHSJet_ID_);
 	tree->Branch("AK4CHSJet_PUID",      &AK4CHSJet_PUID_);
 	tree->Branch("AK4CHSJet_PUFullID",  &AK4CHSJet_PUFullID_);
 	tree->Branch("AK4CHSJet_qgLikelihood",  &AK4CHSJet_qgLikelihood_);
-	
+
 	// tree->Branch("AK4CHSJet_JECfactor",  &AK4CHSJet_JECfactor_);
 	tree->Branch("AK4CHSJet_JECUnc",    &AK4CHSJet_JECUnc_);
 	tree->Branch("AK4CHSJet_JER_ptRes",    &AK4CHSJet_JER_ptRes_);
@@ -234,9 +234,9 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 	e.getByToken(vtxLabel_, vtxHandle);
 	if (!vtxHandle.isValid()) edm::LogWarning("ggNtuplizer") << "Primary vertices info not unavailable";
 
-  	// Accessing the JEC uncertainties 
+  	// Accessing the JEC uncertainties
 	edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
-	es.get<JetCorrectionsRecord>().get("AK4PFchs",JetCorParColl); 
+	es.get<JetCorrectionsRecord>().get("AK4PFchs",JetCorParColl);
 	JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
 	JetCorrectionUncertainty *jecUnc=0;
 	jecUnc = new JetCorrectionUncertainty(JetCorPar);
@@ -284,7 +284,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	}
       	// AK4CHSJet_JECfactor_.push_back(iJet->jecFactor());
 
-      	AK4CHSJet_FiredTrgs_.push_back(matchJetTriggerFilters(iJet->pt(), iJet->eta(), iJet->phi()));    
+      	AK4CHSJet_FiredTrgs_.push_back(matchJetTriggerFilters(iJet->pt(), iJet->eta(), iJet->phi()));
 
 
       	if(doGenParticles_){
@@ -330,7 +330,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 
       	AK4CHSJet_ConsituentEtaPhiSpread_.push_back(iJet->constituentEtaPhiSpread());
       	AK4CHSJet_MaxConstituentDistance_.push_back(iJet->maxDistance());
-      	AK4CHSJet_constituentPtDistribution_.push_back(iJet->constituentPtDistribution()); 
+      	AK4CHSJet_constituentPtDistribution_.push_back(iJet->constituentPtDistribution());
 
     	//b/c-tagging
       	AK4CHSJet_CSV2BJetTags_    .push_back(iJet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
@@ -364,7 +364,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	AK4CHSJet_NCH_.push_back( CHM);
 
       	//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
-      	bool looseJetID = false;    
+      	bool looseJetID = false;
       	bool tightJetID = false;
       	Bool_t tightLeptVetoID = false;
       	if (fabs(iJet->eta()) <= 2.7) {
@@ -376,7 +376,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       		tightJetID = (NEMF>0.02 && NEMF <0.99 && NNP>2);
       		tightLeptVetoID = tightJetID;
       	} else {
-      		looseJetID = (NEMF<0.90 && NNP>10); 
+      		looseJetID = (NEMF<0.90 && NNP>10);
       		tightJetID = (NEMF<0.90 && NNP>10 && NHF > 0.02);
       		tightLeptVetoID = tightJetID;
       	}
@@ -384,7 +384,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	if(looseJetID) setbit(jetIDdecision, 0);
       	if(tightJetID) setbit(jetIDdecision, 1);
       	if(tightLeptVetoID) setbit(jetIDdecision, 2);
-      	AK4CHSJet_ID_.push_back(jetIDdecision);    
+      	AK4CHSJet_ID_.push_back(jetIDdecision);
 
     	// PUJet ID from slimmedJets - not available for PUPPI
       	AK4CHSJet_PUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant")); // not for PUPPI https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2017#Jets
@@ -393,7 +393,7 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	AK4CHSJet_qgLikelihood_.emplace_back(iJet->userFloat("QGTagger:qgLikelihood"));
     	// gen jet and parton
       	if (doGenParticles_) {
-      		int jetGenPartonIndex = -99;     
+      		int jetGenPartonIndex = -99;
       		if (iJet->genParton() && genParticlesHandle.isValid()) {
       			jetGenPartonIndex = std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) iJet->genParton());
       		}

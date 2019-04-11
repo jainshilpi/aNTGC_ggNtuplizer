@@ -15,7 +15,7 @@ ggNtuplizer = cms.EDAnalyzer("ggNtuplizer",
                  dumpHFElectrons      = cms.bool(True),
                  development          = cms.bool(False),
                  addFilterInfoAOD     = cms.bool(False),
-                 addFilterInfoMINIAOD = cms.bool(False),
+                 addFilterInfoMINIAOD = cms.bool(True),
                  doNoHFMET            = cms.bool(False),
 
                  year                 = cms.int32(2017),

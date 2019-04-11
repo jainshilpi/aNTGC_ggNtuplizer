@@ -13,7 +13,7 @@ using namespace reco;
 // (local) variables associated with tree branches
 Int_t          nEle_;
 vector<int>    eleCharge_;
-vector<int>    eleChargeConsistent_;
+vector<Bool_t>    eleChargeConsistent_;
 vector<float>  eleEn_;
 vector<float>  eleSCEn_;
 vector<float>  eleEcalEn_;
@@ -39,7 +39,7 @@ vector<float>  eledEtaAtVtx_;
 vector<float>  eledPhiAtVtx_;
 vector<float>  eleSigmaIEtaIEtaFull5x5_;
 vector<float>  eleSigmaIPhiIPhiFull5x5_;
-vector<int>    eleConvVeto_;
+vector<Bool_t>    eleConvVeto_;
 vector<int>    eleMissHits_;
 vector<float>  eleESEffSigmaRR_;
 vector<float>  elePFChIso_;
@@ -51,11 +51,11 @@ vector<float>  elePFClusHcalIso_;
 vector<float>  eleIDMVAIso_;
 vector<float>  eleIDMVANoIso_;
 vector<float>  eleR9Full5x5_;
-vector<int>    eleEcalDrivenSeed_;
+vector<Bool_t>    eleEcalDrivenSeed_;
 vector<ULong64_t> eleFiredSingleTrgs_;
 vector<ULong64_t> eleFiredDoubleTrgs_;
 vector<ULong64_t> eleFiredL1Trgs_;
-vector<UShort_t>  eleIDbit_;
+vector<Char_t>  eleIDbit_;
 vector<float>  eleScale_stat_up_;
 vector<float>  eleScale_stat_dn_;
 vector<float>  eleScale_syst_up_;
@@ -202,7 +202,7 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
   for (edm::View<pat::Electron>::const_iterator iEle = electronHandle->begin(); iEle != electronHandle->end(); ++iEle) {
 
     eleCharge_          .push_back(iEle->charge());
-    eleChargeConsistent_.push_back((Int_t)iEle->isGsfCtfScPixChargeConsistent());
+    eleChargeConsistent_.push_back(iEle->isGsfCtfScPixChargeConsistent());
     eleEn_              .push_back(iEle->energy());
     eleCalibEn_         .push_back(iEle->userFloat("ecalEnergyPostCorr"));
     elePt_              .push_back(iEle->pt());
@@ -230,7 +230,7 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
     eleBrem_            .push_back(iEle->fbrem());
     eledEtaAtVtx_       .push_back(iEle->deltaEtaSuperClusterTrackAtVtx());
     eledPhiAtVtx_       .push_back(iEle->deltaPhiSuperClusterTrackAtVtx());
-    eleConvVeto_        .push_back((Int_t)iEle->passConversionVeto()); // ConvVtxFit || missHit == 0
+    eleConvVeto_        .push_back(iEle->passConversionVeto()); // ConvVtxFit || missHit == 0
     eleMissHits_        .push_back(iEle->gsfTrack()->hitPattern().numberOfAllHits(reco::HitPattern::MISSING_INNER_HITS));
     eleESEffSigmaRR_    .push_back(lazyTool.eseffsirir(*((*iEle).superCluster())));
 

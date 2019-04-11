@@ -24,8 +24,8 @@ vector<float>  phoSCPhi_;
 vector<float>  phoSCEtaWidth_;
 vector<float>  phoSCPhiWidth_;
 vector<float>  phoSCBrem_;
-vector<int>    phohasPixelSeed_;
-vector<int>    phoEleVeto_;
+vector<Bool_t>    phohasPixelSeed_;
+vector<Bool_t>    phoEleVeto_;
 vector<float>  phoR9_;
 vector<float>  phoHoverE_;
 vector<float>  phoESEffSigmaRR_;
@@ -75,7 +75,7 @@ bool isInFootprint(const T& thefootprint, const U& theCandidate) {
   for ( auto itr = thefootprint.begin(); itr != thefootprint.end(); ++itr ) {
 
     if( itr.key() == theCandidate.key() ) return true;
-    
+
   }
   return false;
 };
@@ -240,7 +240,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
 
   for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho) {
     if(iPho->et() < 100.) continue;
-    
+
     phoE_             .push_back(iPho->energy());
     phoCalibE_        .push_back(iPho->userFloat("ecalEnergyPostCorr"));
     phoEt_            .push_back(iPho->et());
@@ -258,8 +258,8 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     phoSCEtaWidth_    .push_back((*iPho).superCluster()->etaWidth());
     phoSCPhiWidth_    .push_back((*iPho).superCluster()->phiWidth());
     phoSCBrem_        .push_back((*iPho).superCluster()->phiWidth()/(*iPho).superCluster()->etaWidth());
-    phohasPixelSeed_  .push_back((Int_t)iPho->hasPixelSeed());
-    phoEleVeto_       .push_back((Int_t)iPho->passElectronVeto());
+    phohasPixelSeed_  .push_back(iPho->hasPixelSeed());
+    phoEleVeto_       .push_back(iPho->passElectronVeto());
     phoR9_            .push_back(iPho->r9());
     phoHoverE_        .push_back(iPho->hadTowOverEm());
     phoESEffSigmaRR_  .push_back(lazyTool.eseffsirir(*((*iPho).superCluster())));
@@ -267,22 +267,22 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     phoPFPhoIso_      .push_back(iPho->userFloat("phoPhotonIsolation"));
     phoPFNeuIso_      .push_back(iPho->userFloat("phoNeutralHadronIsolation"));
     phoPFChWorstIso_  .push_back(iPho->userFloat("phoWorstChargedIsolation"));
-    phoIDMVA_         .push_back(iPho->userFloat("PhotonMVAEstimatorRunIIFall17v2Values"));  
+    phoIDMVA_         .push_back(iPho->userFloat("PhotonMVAEstimatorRunIIFall17v2Values"));
 
-    // VID decisions     
+    // VID decisions
     UShort_t tmpphoIDbit = 0;
     // https://twiki.cern.ch/twiki/bin/view/CMS/EgammaRunIIRecommendations?rev=9#Fall17v2_AN1
     bool isPassLoose  = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-loose");
-    if (isPassLoose)  setbit(tmpphoIDbit, 0);   
+    if (isPassLoose)  setbit(tmpphoIDbit, 0);
     bool isPassMedium = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-medium");
-    if (isPassMedium) setbit(tmpphoIDbit, 1);    
+    if (isPassMedium) setbit(tmpphoIDbit, 1);
     bool isPassTight  = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-tight");
     if (isPassTight)  setbit(tmpphoIDbit, 2);
     bool isPassMVAv1wp80  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp80");
     if (isPassMVAv1wp80)  setbit(tmpphoIDbit, 3);
     bool isPassMVAv1wp90  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp90");
     if (isPassMVAv1wp90)  setbit(tmpphoIDbit, 4);
-    phoIDbit_.push_back(tmpphoIDbit);      
+    phoIDbit_.push_back(tmpphoIDbit);
 
     // systematics for energy scale and resolution
     phoScale_stat_up_.push_back(iPho->userFloat("energyScaleStatUp"));
@@ -300,10 +300,10 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     DetId seed = (iPho->superCluster()->seed()->hitsAndFractions())[0].first;
     bool isBarrel = seed.subdetId() == EcalBarrel;
     const EcalRecHitCollection * rechits = (isBarrel?lazyTool.getEcalEBRecHitCollection():lazyTool.getEcalEERecHitCollection());
-    
+
     EcalRecHitCollection::const_iterator theSeedHit = rechits->find(seed);
     if (theSeedHit != rechits->end()) {
-      //std::cout<<"(*theSeedHit).time()"<<(*theSeedHit).time()<<"seed energy: "<<(*theSeedHit).energy()<<std::endl;  
+      //std::cout<<"(*theSeedHit).time()"<<(*theSeedHit).time()<<"seed energy: "<<(*theSeedHit).energy()<<std::endl;
 
       phoSeedTime_  .push_back((*theSeedHit).time());
       phoSeedEnergy_.push_back((*theSeedHit).energy());
@@ -311,11 +311,11 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
       phoSeedTime_  .push_back(-99.);
       phoSeedEnergy_.push_back(-99.);
     }
-    
+
     unsigned short nSaturated = 0, nLeRecovered = 0, nNeighRecovered = 0, nGain1 = 0, nGain6 = 0, nWeired = 0;
     int isSaturated       = 0;
     int isSaturated_gain6 = 0;
-    
+
     UShort_t tmpxtalbit = 0;
 
     auto matrix5x5 = lazyTool.matrixDetId(seed,-2,+2,-2,+2);
@@ -329,7 +329,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
        nGain1 += rh->checkFlag( EcalRecHit::kHasSwitchToGain1 );
        nGain6 += rh->checkFlag( EcalRecHit::kHasSwitchToGain6 );
        nWeired += rh->checkFlag( EcalRecHit::kWeird ) || rh->checkFlag( EcalRecHit::kDiWeird );
-       
+
        if( rh->checkFlag( EcalRecHit::kHasSwitchToGain1 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated){
       //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
          setbit(tmpxtalbit, 0);
@@ -343,13 +343,13 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
          isSaturated_gain6 = 1;
 	       //break;
        }
-      }//if( rh != rechits->end() ) 
-      
-      if (nWeired>0) setbit(tmpxtalbit,2);      
-      if (nGain6>0) setbit(tmpxtalbit,3); 
+      }//if( rh != rechits->end() )
+
+      if (nWeired>0) setbit(tmpxtalbit,2);
+      if (nGain6>0) setbit(tmpxtalbit,3);
 
     }//for(auto & deId : matrix5x5 )
-    
+
     phoxtalBits_.push_back(tmpxtalbit);
 
     phoFiredSingleTrgs_     .push_back(matchSinglePhotonTriggerFilters(iPho->et(), iPho->eta(), iPho->phi()));
@@ -376,7 +376,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
       // if(phoGenPos_>=0) std::cout<<"pho->genParticle->pdgID "<<phoGen_->pdgId()<<" prunedGenParticle("<<phoGenPos_<<")->pdgid() "<< (&*genParticlesHandle->begin()+phoGenPos_)->pdgId()<<std::endl;
       pho_gen_index_.push_back(phoGenPos_);
     }
-    
+
     nPho_++;
   }
 
