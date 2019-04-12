@@ -113,7 +113,7 @@ process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated
 process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK4PFCHSupdated","genJets","ggKit")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
 process.ggNtuplizer.runOnSherpa = cms.bool(True)
-patTriggerResults    = cms.InputTag("TriggerResults", "", "RECO")
+process.ggNtuplizer.patTriggerResults = cms.InputTag("TriggerResults", "", "RECO")
 # process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
 
 process.p = cms.Path(

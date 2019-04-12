@@ -15,7 +15,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v11', '')
 
 #process.Tracer = cms.Service("Tracer")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.source = cms.Source("PoolSource",
@@ -92,6 +92,8 @@ process.ggNtuplizer.dumpTaus=cms.bool(False)
 process.ggNtuplizer.pfMETLabel=cms.InputTag("slimmedMETsModifiedMET")
 process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
+process.ggNtuplizer.patTriggerResults = cms.InputTag("TriggerResults", "", "RECO")
+process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger")
 
 
 process.p = cms.Path(

@@ -80,16 +80,15 @@ void ggNtuplizer::fillMET(const edm::Event& e, const edm::EventSetup& es) {
 
     auto&& filterNames = e.triggerNames(patFilterResults);
 
-      // === the following lines allow us to find the filters stored in the event ! ===
-      //  edm::TriggerNames const& triggerNames = e.triggerNames(patFilterResults);
-      //  for ( edm::TriggerNames::Strings::const_iterator triggerName = triggerNames.triggerNames().begin();
-      // triggerName != triggerNames.triggerNames().end(); ++triggerName ) {
-      //    int triggerId = triggerNames.triggerIndex(*triggerName);
-      //    if ( triggerId >= 0 && triggerId < (int)triggerNames.size() ) {
-      // std::string triggerDecision = ( patFilterResultsHandle->accept(triggerId) ) ? "passed" : "failed";
-      // std::cout << " triggerName = " << (*triggerName) << " " << triggerDecision << std::endl;
-      //    }
-      //  }
+    // === the following lines allow us to find the filters stored in the event ! ===
+    // edm::TriggerNames const& triggerNames = e.triggerNames(patFilterResults);
+    // for ( edm::TriggerNames::Strings::const_iterator triggerName = triggerNames.triggerNames().begin(); triggerName != triggerNames.triggerNames().end(); ++triggerName){
+    //   int triggerId = triggerNames.triggerIndex(*triggerName);
+    //   if ( triggerId >= 0 && triggerId < (int)triggerNames.size() ){
+    //     std::string triggerDecision = ( patFilterResultsHandle->accept(triggerId) ) ? "passed" : "failed";
+    //     std::cout << " triggerName = " << (*triggerName) << " " << triggerDecision << std::endl;
+    //   }
+    // }
     for (unsigned iF = 0; iF < 9; ++iF){
       unsigned index = filterNames.triggerIndex(filterNamesToCheck[iF]);
       if( index == filterNames.size() ) LogDebug("METFilters") << filterNamesToCheck[iF] << " is missing, exiting";

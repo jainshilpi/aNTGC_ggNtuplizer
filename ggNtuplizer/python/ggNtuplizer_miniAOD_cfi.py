@@ -14,7 +14,7 @@ ggNtuplizer = cms.EDAnalyzer("ggNtuplizer",
                  dumpPDFSystWeight    = cms.bool(False),
                  dumpHFElectrons      = cms.bool(True),
                  development          = cms.bool(False),
-                 addFilterInfoAOD     = cms.bool(False),
+                 addFilterInfoAOD     = cms.bool(True),
                  addFilterInfoMINIAOD = cms.bool(True),
                  doNoHFMET            = cms.bool(False),
 

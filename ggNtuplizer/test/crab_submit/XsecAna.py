@@ -29,7 +29,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:mc', '')
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )

@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # input_datasets="datasets.txt"
-input_datasets="signal_MINIAOD_list.txt"
-writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs"
-psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
-# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
+input_datasets="2016_mc_samples.txt"
+writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs/xsecs2016/"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
-mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/'
+mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/xSecs/'
 
 
 maxFiles=500
-inputDBS=phys03
+inputDBS=global
 
 
 ################################################################################################################
