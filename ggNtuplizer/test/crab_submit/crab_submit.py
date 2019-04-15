@@ -44,6 +44,6 @@ config.Data.allowNonValidInputDataset = True
 config.Data.outLFNDirBase = '%s' % mainOutputDir
 config.Data.splitting     = '#splitting'
 config.Data.unitsPerJob   = #unitsperjob
-config.Data.ignoreLocality = True
+config.Data.ignoreLocality = False
 #config.Data.totalUnits = #totalUnits
 submit(config)

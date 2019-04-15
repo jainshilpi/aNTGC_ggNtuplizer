@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # input_datasets="datasets.txt"
-input_datasets="signal_MINIAOD_list.txt"
-writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs"
+input_datasets="test_h3z0p0008_MINIAOD_list.txt"
+writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/testJobs/"
 psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
 # psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
-mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/'
+mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkimTest/'
 
 
 maxFiles=500
@@ -21,12 +21,12 @@ voms-proxy-init --voms cms
 
 
 crab_cfg_template=crab_submit.py
-units_perjob=10
+units_perjob=1000
 splitting='FileBased'
-# blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
-# whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
-blacklist=""
-whitelist="'T3_US_FNALLPC'"
+blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
+whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
+# blacklist=""
+# whitelist="'T3_US_FNALLPC'"
 
 submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S').log
 
@@ -48,7 +48,8 @@ do
 
 	if [ -d "$jobDir" ]; then
 		echo "Error! Directory "$jobDir "exists!"
-		exit
+		continue
+		# exit
 	fi
 
 	mkdir -p ${jobDir}
@@ -75,3 +76,5 @@ do
 
 	python ${crab_cfg_file} | tee --append ${submit_log_file}
 done
+
+
