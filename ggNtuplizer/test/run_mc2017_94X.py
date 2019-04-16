@@ -2,9 +2,10 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process('ggKit')
 
+
+##########################################################################################################################
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
-
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 #process.load("Configuration.Geometry.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
@@ -12,23 +13,23 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
-
 #process.Tracer = cms.Service("Tracer")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
-
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
     # 'file:F8DDFDC7-8AD6-E711-BCA2-4C79BA1811CB.root'
     'file:049CDDCC-4741-E911-BAF6-0025905A60AA.root'
     # 'file:sherpa_jjg_lo_h3z0p0003_ptmin500_ptmax550_MASTER_cff_py_MINIAODSIM_38.root'
     ))
-
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
-
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
 process.load( "PhysicsTools.PatAlgos.selectionLayer1.selectedPatCandidates_cff" )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCtree_mc.root'))
+##########################################################################################################################
 
+
+##########################################################################################################################
 ### fix a bug in the ECAL-Tracker momentum combination when applying the scale and smearing
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(process,
@@ -41,9 +42,10 @@ setupEgammaPostRecoSeq(process,
  phoIDModules=['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V2_cff',
  'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V2_cff']
  )
+##########################################################################################################################
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCtree_mc.root'))
 
+##########################################################################################################################
 ### reduce effect of high eta EE noise on the PF MET measurement
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 runMetCorAndUncFromMiniAOD (
@@ -53,26 +55,12 @@ runMetCorAndUncFromMiniAOD (
         fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139} ,
         postfix = "ModifiedMET"
         )
+##########################################################################################################################
 
+
+##########################################################################################################################
 ### include jetToolbox to add various jets
 from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
-
-### ak0.4CHSjets
-# jetToolbox( process, 'ak4', 'ak4CHSJetToolbox', 'noOutput',
-#             # PUMethod='CHS',
-#             updateCollection='slimmedJets',
-#             # addPruning=True,
-#             # addPrunedSubjets=True,
-#             # addTrimming=True,
-#             # addFiltering=True,
-#             # addNsub=True,
-#             # maxTau=3,
-#             addQGTagger=True,
-#             # addPUJetID=True,
-#             # addEnergyCorrFunc=True,
-#             JETCorrPayload = 'AK4PFchs',
-#             JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
-#             )
 
 jetToolbox( process, 'ak4', 'ak4JetSubs', 'noOutput',
         updateCollection='slimmedJets',
@@ -81,7 +69,6 @@ jetToolbox( process, 'ak4', 'ak4JetSubs', 'noOutput',
         postFix='updated'
         )
 
-### ak 0.8 PUPPI jets
 jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput',
             PUMethod='PUPPI',
             updateCollection='slimmedJetsAK8',
@@ -98,7 +85,10 @@ jetToolbox( process, 'ak8', 'ak8PUPPIJetToolbox', 'noOutput',
             # addPUJetID=True,
             # addEnergyCorrFunc=True
             )
+##########################################################################################################################
 
+
+##########################################################################################################################
 process.load("ggAnalysis.ggNtuplizer.ggNtuplizer_miniAOD_cfi")
 process.ggNtuplizer.year=cms.int32(2017)
 process.ggNtuplizer.doGenParticles=cms.bool(True)
@@ -115,11 +105,42 @@ process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
 process.ggNtuplizer.runOnSherpa = cms.bool(True)
 process.ggNtuplizer.patTriggerResults = cms.InputTag("TriggerResults", "", "RECO")
 # process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
+##########################################################################################################################
 
+
+##########################################################################################################################
+process.load('RecoMET.METFilters.ecalBadCalibFilter_cfi')
+
+baddetEcallist = cms.vuint32(
+    [872439604,872422825,872420274,872423218,
+     872423215,872416066,872435036,872439336,
+     872420273,872436907,872420147,872439731,
+     872436657,872420397,872439732,872439339,
+     872439603,872422436,872439861,872437051,
+     872437052,872420649,872422436,872421950,
+     872437185,872422564,872421566,872421695,
+     872421955,872421567,872437184,872421951,
+     872421694,872437056,872437057,872437313])
+
+process.ecalBadCalibReducedMINIAODFilter = cms.EDFilter(
+    "EcalBadCalibFilter",
+    EcalRecHitSource = cms.InputTag("reducedEgamma:reducedEERecHits"),
+    ecalMinEt        = cms.double(50.),
+    baddetEcal    = baddetEcallist,
+    taggingMode = cms.bool(True),
+    debug = cms.bool(False)
+    )
+
+process.ggNtuplizer.ecalBadCalibFilter = cms.InputTag("ecalBadCalibReducedMINIAODFilter")
+##########################################################################################################################
+
+##########################################################################################################################
 process.p = cms.Path(
+  process.ecalBadCalibReducedMINIAODFilter *
   process.fullPatMetSequenceModifiedMET *
   process.egammaPostRecoSeq *
   process.ggNtuplizer
   )
 
-#print process.dumpPython()
+# print process.dumpPython()
+##########################################################################################################################

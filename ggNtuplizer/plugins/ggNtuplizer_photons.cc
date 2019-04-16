@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Int_t          nPho_;
+UChar_t          nPho_;
 vector<float>  phoE_;
 vector<float>  phoSigmaE_;
 vector<float>  phoEt_;
@@ -67,7 +67,7 @@ vector<float>    phoResol_rho_up_;
 vector<float>    phoResol_rho_dn_;
 vector<float>    phoResol_phi_up_;
 vector<float>    phoResol_phi_dn_;
-vector<Int_t> pho_gen_index_;
+vector<Short_t> pho_gen_index_;
 
 //Necessary for the Photon Footprint removal
 template <class T, class U>
@@ -82,7 +82,7 @@ bool isInFootprint(const T& thefootprint, const U& theCandidate) {
 
 
 void ggNtuplizer::branchesPhotons(TTree* tree) {
-  // tree->Branch("nPho",                    &nPho_);
+  tree->Branch("nPho",                    &nPho_);
   tree->Branch("phoE",                    &phoE_);
   tree->Branch("phoSigmaE",               &phoSigmaE_);
   tree->Branch("phoEt",                   &phoEt_);
@@ -372,7 +372,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
 
     if(doGenParticles_){
       const reco::GenParticle * phoGen_ = iPho->genParticle(); // I don't know what matching algoritm is used - https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2017#MC_Truth
-      Int_t phoGenPos_ = (phoGen_ == nullptr) ? -999 : std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) phoGen_);
+      Short_t phoGenPos_ = (phoGen_ == nullptr) ? -999 : std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) phoGen_);
       // if(phoGenPos_>=0) std::cout<<"pho->genParticle->pdgID "<<phoGen_->pdgId()<<" prunedGenParticle("<<phoGenPos_<<")->pdgid() "<< (&*genParticlesHandle->begin()+phoGenPos_)->pdgId()<<std::endl;
       pho_gen_index_.push_back(phoGenPos_);
     }

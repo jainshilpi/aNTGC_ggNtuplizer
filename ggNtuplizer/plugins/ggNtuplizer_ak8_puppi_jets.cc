@@ -9,11 +9,20 @@
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 
+
+////////////////////////////////////////////////////////////////////////
+/////Generate ROOT dictionary for std::vector<std::vector<Char_t> >
+// #include <vector>
+// #ifdef __MAKECINT__
+// #pragma link C++ class std::vector<std::vector<Char_t> >+;
+// #endif
+////////////////////////////////////////////////////////////////////////
+
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
-Int_t         nAK8PuppiJet_;
-vector<Int_t> AK8PuppiJet_Charge_;
+UChar_t         nAK8PuppiJet_;
+vector<Char_t> AK8PuppiJet_Charge_;
 vector<float> AK8PuppiJet_Pt_;
 vector<float> AK8PuppiJet_En_;
 vector<float> AK8PuppiJet_RawPt_;
@@ -29,8 +38,8 @@ vector<float> AK8PuppiJet_CHF_;
 vector<float> AK8PuppiJet_NHF_;
 vector<float> AK8PuppiJet_CEF_;
 vector<float> AK8PuppiJet_NEF_;
-vector<int>   AK8PuppiJet_NCH_;
-vector<int>   AK8PuppiJet_NNP_;
+vector<UChar_t>   AK8PuppiJet_NCH_;
+vector<UChar_t>   AK8PuppiJet_NNP_;
 vector<float> AK8PuppiJet_MUF_;
 // vector<float> AK8PuppiJet_puppiMultiplicity_;
 // vector<float> AK8PuppiJet_neutral_puppiMultiplicity_;
@@ -75,13 +84,13 @@ vector<float> AK8PuppiJet_GenJetEta_;
 vector<float> AK8PuppiJet_GenJetPhi_;
 // vector<int>   AK8PuppiJet_GenJetIndex_;
 // vector<float> AK8PuppiJet_GenPartonIndex_;
-vector<int>             AK8PuppiJet_nSDSJpuppi_ ;
+vector<UChar_t>             AK8PuppiJet_nSDSJpuppi_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiPt_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiEta_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiMass_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiPhi_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiE_ ;
-vector< vector<int > >  AK8PuppiJet_SDSJpuppiCharge_ ;
+vector< vector<Short_t > >  AK8PuppiJet_SDSJpuppiCharge_ ;
 vector< vector<int > >  AK8PuppiJet_SDSJpuppiFlavour_;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiCSV_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppinb1ecf2_;
@@ -91,7 +100,7 @@ vector< vector<float> > AK8PuppiJet_SDSJpuppinb2ecf3_;
 
 
 void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
-	// tree->Branch("nAK8PUPPIJet",                  &nAK8PuppiJet_);
+	tree->Branch("nAK8PUPPIJet",                  &nAK8PuppiJet_);
 	tree->Branch("AK8PuppiJet_Charge",                 &AK8PuppiJet_Charge_);
 	tree->Branch("AK8PuppiJet_Pt",                 &AK8PuppiJet_Pt_);
 	tree->Branch("AK8PuppiJet_En",                 &AK8PuppiJet_En_);
@@ -145,15 +154,17 @@ void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
 	tree->Branch("AK8PuppiJet_nb1ecf3",           &AK8PuppiJet_nb1ecf3_);
 	tree->Branch("AK8PuppiJet_nb2ecf2",           &AK8PuppiJet_nb2ecf2_);
 	tree->Branch("AK8PuppiJet_nb2ecf3",           &AK8PuppiJet_nb2ecf3_);
-	tree->Branch("AK8PuppiJet_PartonFlavour",       &AK8PuppiJet_PartonFlavour_);
-	tree->Branch("AK8PuppiJet_HadronFlavour",        &AK8PuppiJet_HadronFlavour_);
+	if (doGenParticles_) {
+		tree->Branch("AK8PuppiJet_PartonFlavour",       &AK8PuppiJet_PartonFlavour_);
+		tree->Branch("AK8PuppiJet_HadronFlavour",        &AK8PuppiJet_HadronFlavour_);
 		// tree->Branch("AK8PuppiJet_GenJetIndex",    &AK8PuppiJet_GenJetIndex_);
 	// tree->Branch("AK8PuppiJet_GenPartonIndex",    &AK8PuppiJet_GenPartonIndex_);
-	tree->Branch("AK8PuppiJet_GenJetEn",       &AK8PuppiJet_GenJetEn_);
-	tree->Branch("AK8PuppiJet_GenJetPt",       &AK8PuppiJet_GenJetPt_);
-	tree->Branch("AK8PuppiJet_GenJetEta",      &AK8PuppiJet_GenJetEta_);
-	tree->Branch("AK8PuppiJet_GenJetPhi",      &AK8PuppiJet_GenJetPhi_);
-	// tree->Branch("AK8PuppiJet_nSDSJpuppi",            &AK8PuppiJet_nSDSJpuppi_);
+		tree->Branch("AK8PuppiJet_GenJetEn",       &AK8PuppiJet_GenJetEn_);
+		tree->Branch("AK8PuppiJet_GenJetPt",       &AK8PuppiJet_GenJetPt_);
+		tree->Branch("AK8PuppiJet_GenJetEta",      &AK8PuppiJet_GenJetEta_);
+		tree->Branch("AK8PuppiJet_GenJetPhi",      &AK8PuppiJet_GenJetPhi_);
+	}
+	tree->Branch("AK8PuppiJet_nSDSJpuppi",            &AK8PuppiJet_nSDSJpuppi_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiPt",           &AK8PuppiJet_SDSJpuppiPt_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiEta",          &AK8PuppiJet_SDSJpuppiEta_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiMass",         &AK8PuppiJet_SDSJpuppiMass_);
@@ -249,7 +260,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 
 	edm::Handle<double> rhoHandle;
 	e.getByToken(rhoLabel_, rhoHandle);
-	float rho_ = *(rhoHandle.product()); 
+	float rho_ = *(rhoHandle.product());
 
 	edm::ESHandle<JetCorrectorParametersCollection> AK8JetCorParColl;
 	es.get<JetCorrectionsRecord>().get("AK8PFPuppi",AK8JetCorParColl);
@@ -307,7 +318,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		AK8PuppiJet_CEF_.push_back(CEMF);
 
 			//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
-		bool looseJetID = false;    
+		bool looseJetID = false;
 		bool tightJetID = false;
 		Bool_t tightLeptVetoID = false;
 		if (fabs(ijetAK8->eta()) <= 2.7) {
@@ -319,7 +330,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 			tightJetID = (NEMF>0.02 && NEMF <0.99 && NNP>2);
 			tightLeptVetoID = tightJetID;
 		} else {
-			looseJetID = (NEMF<0.90 && NNP>10); 
+			looseJetID = (NEMF<0.90 && NNP>10);
 			tightJetID = (NEMF<0.90 && NNP>10 && NHF > 0.02);
 			tightLeptVetoID = tightJetID;
 		}
@@ -355,7 +366,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		if (std::abs(ijetAK8->eta()) < 5.2){
 			AK8jecUnc->setJetEta(ijetAK8->eta());
 			// here you must use the CORRECTED jet pt
-			AK8jecUnc->setJetPt(ijetAK8->pt()); 
+			AK8jecUnc->setJetPt(ijetAK8->pt());
 			AK8PuppiJet_JECUnc_.push_back(AK8jecUnc->getUncertainty(true));
 		} else {
 			AK8PuppiJet_JECUnc_.push_back(-1.);
@@ -392,7 +403,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 			Float_t _genJetEn = -999.;
 			Float_t _genJetPhi = -999.;
 			Float_t _genJetEta = -999.;
-			// if(ijetAK8->genParton()) 
+			// if(ijetAK8->genParton())
 			if(ijetAK8->genJet()){
       			// _genJetIndex
 				_genJetPt = ijetAK8->genJet()->pt();
@@ -421,7 +432,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 			std::vector<float> vecSDSJpuppimass ;
 			std::vector<float> vecSDSJpuppiphi ;
 			std::vector<float> vecSDSJpuppie ;
-			std::vector<int > vecSDSJpuppicharge ;
+			std::vector<Short_t> vecSDSJpuppicharge ;
 			std::vector<int > vecSDSJpuppiflavour;
 			std::vector<float>  vecSDSJpuppinb1ecf2_;
 			std::vector<float>  vecSDSJpuppinb1ecf3_;
@@ -438,7 +449,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 				vecSDSJpuppiflavour.push_back(SDSJpuppi->partonFlavour());
 				vecSDSJpuppicharge.push_back(SDSJpuppi->charge());
 				vecSDSJpuppicsv.push_back(SDSJpuppi->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") );
-				vecSDSJpuppinb1ecf2_.push_back(SDSJpuppi->userFloat("nb1AK8PuppiSoftDropSubjets:ecfN2"));				
+				vecSDSJpuppinb1ecf2_.push_back(SDSJpuppi->userFloat("nb1AK8PuppiSoftDropSubjets:ecfN2"));
 				vecSDSJpuppinb1ecf3_.push_back(SDSJpuppi->userFloat("nb1AK8PuppiSoftDropSubjets:ecfN3"));
 				vecSDSJpuppinb2ecf2_.push_back(SDSJpuppi->userFloat("nb2AK8PuppiSoftDropSubjets:ecfN2"));
 				vecSDSJpuppinb2ecf3_.push_back(SDSJpuppi->userFloat("nb2AK8PuppiSoftDropSubjets:ecfN3"));

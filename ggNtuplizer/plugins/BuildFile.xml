@@ -37,5 +37,6 @@
 <use name="heppdt"/>
 <use name="root"/>
 <use name="boost"/>
-
+<Flags ROOTMAP="yes"/>
 <flags EDM_PLUGIN="1"/>
+

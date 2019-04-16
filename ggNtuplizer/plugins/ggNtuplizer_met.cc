@@ -4,42 +4,45 @@
 
 using namespace std;
 
-Int_t metFilters_;
-float genMET_;
-float genMETPhi_;
-float pfMET_;
-float pfMETPhi_;
-float pfMET_T1JERUp_;
-float pfMET_T1JERDo_;
-float pfMET_T1JESUp_;
-float pfMET_T1JESDo_;
-float pfMET_T1MESUp_;
-float pfMET_T1MESDo_;
-float pfMET_T1EESUp_;
-float pfMET_T1EESDo_;
-float pfMET_T1PESUp_;
-float pfMET_T1PESDo_;
-float pfMET_T1TESUp_;
-float pfMET_T1TESDo_;
-float pfMET_T1UESUp_;
-float pfMET_T1UESDo_;
-float pfMET_T1TxyPhi_;
-float pfMET_T1TxyPt_;
-float pfMETPhi_T1JESUp_;
-float pfMETPhi_T1JESDo_;
-float pfMETPhi_T1UESUp_;
-float pfMETPhi_T1UESDo_;
+UShort_t metFilters_;
+Float_t genMET_;
+Float_t genMETPhi_;
+Float_t pfMET_;
+Float_t pfMETPhi_;
+Float_t pfMET_T1JERUp_;
+Float_t pfMET_T1JERDo_;
+Float_t pfMET_T1JESUp_;
+Float_t pfMET_T1JESDo_;
+Float_t pfMET_T1MESUp_;
+Float_t pfMET_T1MESDo_;
+Float_t pfMET_T1EESUp_;
+Float_t pfMET_T1EESDo_;
+Float_t pfMET_T1PESUp_;
+Float_t pfMET_T1PESDo_;
+Float_t pfMET_T1TESUp_;
+Float_t pfMET_T1TESDo_;
+Float_t pfMET_T1UESUp_;
+Float_t pfMET_T1UESDo_;
+Float_t pfMET_T1TxyPhi_;
+Float_t pfMET_T1TxyPt_;
+Float_t pfMETPhi_T1JESUp_;
+Float_t pfMETPhi_T1JESDo_;
+Float_t pfMETPhi_T1UESUp_;
+Float_t pfMETPhi_T1UESDo_;
+// Float_t pfMET_caloMetSig_;
+Float_t pfMET_metSig_;
+Float_t pfMET_EtSig_;
 
-string filterNamesToCheck[9] = {
+const std::vector<std::string> filterNamesToCheck = {
+  "Flag_goodVertices",
+  "Flag_globalSuperTightHalo2016Filter",
   "Flag_HBHENoiseFilter",
   "Flag_HBHENoiseIsoFilter",
-  "Flag_globalSuperTightHalo2016Filter",
-  "Flag_goodVertices",
-  "Flag_eeBadScFilter",
   "Flag_EcalDeadCellTriggerPrimitiveFilter",
   "Flag_BadPFMuonFilter",
-  "Flag_ecalBadCalibFilter",
   "Flag_BadChargedCandidateFilter"
+  "Flag_eeBadScFilter",
+  "Flag_ecalBadCalibFilter",
 };
 
 void ggNtuplizer::branchesMET(TTree* tree) {
@@ -68,19 +71,21 @@ void ggNtuplizer::branchesMET(TTree* tree) {
   tree->Branch("pfMETPhi_T1JESDo", &pfMETPhi_T1JESDo_);
   tree->Branch("pfMETPhi_T1UESUp", &pfMETPhi_T1UESUp_);
   tree->Branch("pfMETPhi_T1UESDo", &pfMETPhi_T1UESDo_);
-
+  // tree->Branch("pfMET_caloMetSig", &pfMET_caloMetSig_);
+  tree->Branch("pfMET_metSig", &pfMET_metSig_);
+  tree->Branch("pfMET_EtSig", &pfMET_EtSig_);
 }
 
 void ggNtuplizer::fillMET(const edm::Event& e, const edm::EventSetup& es) {
   metFilters_ = 0;
   if (addFilterInfoMINIAOD_) {
     edm::Handle<edm::TriggerResults> patFilterResultsHandle;
-    e.getByToken(trgResultsLabel_, patFilterResultsHandle);
+    e.getByToken(patTrgResultsLabel_, patFilterResultsHandle);
     edm::TriggerResults const& patFilterResults = *patFilterResultsHandle;
 
     auto&& filterNames = e.triggerNames(patFilterResults);
 
-    // === the following lines allow us to find the filters stored in the event ! ===
+    ////=== the following lines allow us to find the filters stored in the event ! ===
     // edm::TriggerNames const& triggerNames = e.triggerNames(patFilterResults);
     // for ( edm::TriggerNames::Strings::const_iterator triggerName = triggerNames.triggerNames().begin(); triggerName != triggerNames.triggerNames().end(); ++triggerName){
     //   int triggerId = triggerNames.triggerIndex(*triggerName);
@@ -89,11 +94,17 @@ void ggNtuplizer::fillMET(const edm::Event& e, const edm::EventSetup& es) {
     //     std::cout << " triggerName = " << (*triggerName) << " " << triggerDecision << std::endl;
     //   }
     // }
-    for (unsigned iF = 0; iF < 9; ++iF){
+    for (unsigned iF = 0; iF < filterNamesToCheck.size(); iF++){
       unsigned index = filterNames.triggerIndex(filterNamesToCheck[iF]);
       if( index == filterNames.size() ) LogDebug("METFilters") << filterNamesToCheck[iF] << " is missing, exiting";
-      else if (!patFilterResults.accept(index)) metFilters_ += pow(2, iF+1);
+      else if (!patFilterResults.accept(index)) metFilters_ += std::pow(2, iF);
     }
+
+    //////https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#Accessing_the_filter_decision_in
+    edm::Handle< bool > passecalBadCalibFilterUpdate ;
+    e.getByToken(ecalBadCalibFilterUpdateToken_, passecalBadCalibFilterUpdate);
+    Bool_t _passecalBadCalibFilterUpdate =  (*passecalBadCalibFilterUpdate );
+    if(!_passecalBadCalibFilterUpdate) metFilters_ += std::pow(2, filterNamesToCheck.size());
   }
 
   edm::Handle<edm::View<pat::MET> > pfMETHandle;
@@ -132,6 +143,10 @@ void ggNtuplizer::fillMET(const edm::Event& e, const edm::EventSetup& es) {
     pfMETPhi_T1JESDo_ = pfMET->shiftedPhi(pat::MET::JetEnDown);
     pfMETPhi_T1UESUp_ = pfMET->shiftedPhi(pat::MET::UnclusteredEnUp);
     pfMETPhi_T1UESDo_ = pfMET->shiftedPhi(pat::MET::UnclusteredEnDown);
+
+    // pfMET_caloMetSig_ = pfMET->caloMetSignificance();
+    pfMET_metSig_ = pfMET->metSignificance();
+    pfMET_EtSig_ = pfMET->mEtSig();
 
     if (!e.isRealData()) {
       genMET_    = pfMET->genMET()->et();

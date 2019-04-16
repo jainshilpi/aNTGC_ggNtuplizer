@@ -19,12 +19,12 @@ float            genPho2_;
 float            pdfWeight_;
 vector<float>    pdfSystWeight_;
 
-Int_t            nPUInfo_;
-vector<int>      nPU_;
-vector<int>      puBX_;
+UShort_t            nPUInfo_;
+vector<UShort_t>      nPU_;
+vector<Short_t>      puBX_;
 vector<float>    puTrue_;
 
-Int_t nMC_;
+UShort_t nMC_;
 vector<int>      mcPID;
 vector<float>    mcVtx;
 vector<float>    mcVty;
@@ -41,9 +41,9 @@ vector<float>    mcMomPt;
 vector<float>    mcMomMass;
 vector<float>    mcMomEta;
 vector<float>    mcMomPhi;
-vector<int>      mcIndex;
-vector<UShort_t> mcStatusFlag;
-vector<UShort_t>  mcParentage;
+vector<Short_t>      mcIndex;
+vector<UChar_t> mcStatusFlag;
+vector<UChar_t>  mcParentage;
 vector<Char_t>  mcPromptStatusType_;
 Char_t  mcHasDirectPromptPho_;
 vector<int>      mcStatus;
@@ -402,7 +402,8 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
       mcEt     .push_back(p->et());
       mcStatus .push_back(p->status());
 
-      UShort_t tmpStatusFlag = 0;
+
+      UChar_t tmpStatusFlag = 0;
       if (ip->fromHardProcessFinalState()) setbit(tmpStatusFlag, 0);
       if (ip->isPromptFinalState())        setbit(tmpStatusFlag, 1);
       if (ip->isHardProcess())  setbit(tmpStatusFlag, 2);
@@ -411,6 +412,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
       if(ip->isLastCopyBeforeFSR()) setbit(tmpStatusFlag, 5);
       if(ip->fromHardProcessBeforeFSR()) setbit(tmpStatusFlag, 6);
       if(ip->isPromptDecayed()) setbit(tmpStatusFlag, 7);
+
 
       // if genParticle is W or Z, check its decay type
       if ( ip->pdgId() == 23 || abs(ip->pdgId()) == 24 ) {
@@ -436,7 +438,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
       float mcMomMass_  = -999.;
       float mcMomEta_   = -999.;
       float mcMomPhi_   = -999.;
-      UShort_t temp_mcParentage = 0;
+      UChar_t temp_mcParentage = 0;
       if (!runOnSherpa_) {
        Int_t pIndex= std::distance(genParticlesHandle->begin(),ip);
        if(pIndex >= 0){

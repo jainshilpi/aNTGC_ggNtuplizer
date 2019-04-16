@@ -47,15 +47,15 @@ public:
 
   explicit ggNtuplizer(const edm::ParameterSet&);
   ~ggNtuplizer();
-  
+
   //   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-  
+
 private:
 
   //   virtual void beginJob() {};
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
-  
+
   void initTriggerFilters(const edm::Event&);
   ULong64_t matchSingleElectronTriggerFilters(double pt, double eta, double phi);
   ULong64_t matchDoubleElectronTriggerFilters(double pt, double eta, double phi);
@@ -67,7 +67,7 @@ private:
   ULong64_t matchL1TriggerFilters(double pt, double eta, double phi);
   Double_t deltaPhi(Double_t phi1, Double_t phi2);
   Double_t deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2);
-  Double_t getMiniIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands, const reco::Candidate* ptcl,  
+  Double_t getMiniIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands, const reco::Candidate* ptcl,
    double r_iso_min, double r_iso_max, double kt_scale, bool charged_only);
 
   void branchesGlobalEvent(TTree*);
@@ -98,8 +98,8 @@ private:
   // void fillAK8PUPPIJets    (const edm::Event&, const edm::EventSetup&);
 
   bool development_;
-  bool addFilterInfoAOD_;  
-  bool addFilterInfoMINIAOD_;  
+  bool addFilterInfoAOD_;
+  bool addFilterInfoMINIAOD_;
   bool doNoHFMET_;
   bool doGenParticles_;
   bool runOnParticleGun_;
@@ -139,20 +139,21 @@ private:
   edm::EDGetTokenT<vector<pat::Tau> >              tauCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           ebReducedRecHitCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           eeReducedRecHitCollection_;
-  edm::EDGetTokenT<EcalRecHitCollection>           esReducedRecHitCollection_; 
+  edm::EDGetTokenT<EcalRecHitCollection>           esReducedRecHitCollection_;
   edm::EDGetTokenT<reco::PhotonCollection>         recophotonCollection_;
   edm::EDGetTokenT<reco::TrackCollection>          tracklabel_;
-  edm::EDGetTokenT<reco::GsfElectronCollection>    gsfElectronlabel_;
-  edm::EDGetTokenT<edm::View<reco::GsfTrack> >     gsfTracks_;
-  edm::EDGetTokenT<reco::PFCandidateCollection>    pfAllParticles_;
-  edm::EDGetTokenT<vector<pat::PackedCandidate> >  pckPFCdsLabel_;
-  edm::EDGetTokenT<edm::View<reco::Candidate> >    recoCdsLabel_;
-  edm::EDGetTokenT<edm::View<pat::Jet> >           ak4PFJetsCHSLabel_;
-  edm::EDGetTokenT<edm::View<pat::Jet> >           ak4PFJetsPUPPILabel_;
-  edm::EDGetTokenT<edm::View<pat::Jet> >           ak8JetsPUPPILabel_;
+  edm::EDGetTokenT<reco::GsfElectronCollection>     gsfElectronlabel_;
+  edm::EDGetTokenT<edm::View<reco::GsfTrack> >      gsfTracks_;
+  edm::EDGetTokenT<reco::PFCandidateCollection>     pfAllParticles_;
+  edm::EDGetTokenT<vector<pat::PackedCandidate> >   pckPFCdsLabel_;
+  edm::EDGetTokenT<edm::View<reco::Candidate> >     recoCdsLabel_;
+  edm::EDGetTokenT<edm::View<pat::Jet> >            ak4PFJetsCHSLabel_;
+  edm::EDGetTokenT<edm::View<pat::Jet> >            ak4PFJetsPUPPILabel_;
+  edm::EDGetTokenT<edm::View<pat::Jet> >            ak8JetsPUPPILabel_;
   edm::EDGetTokenT<std::vector<reco::GenJet> >      ak4PFJetsCHSGenJetLabel_;
-  edm::EDGetTokenT<reco::JetTagCollection>         boostedDoubleSVLabel_;
-  edm::EDGetTokenT<pat::PackedCandidateCollection> pckPFCandidateCollection_;
+  edm::EDGetTokenT<reco::JetTagCollection>          boostedDoubleSVLabel_;
+  edm::EDGetTokenT<pat::PackedCandidateCollection>  pckPFCandidateCollection_;
+  edm::EDGetTokenT<Bool_t>                          ecalBadCalibFilterUpdateToken_;
 
   // for MET filters
   edm::EDGetTokenT<bool> BadChCandFilterToken_;
@@ -168,7 +169,7 @@ private:
   TH1F    *hGenWeightSign_;
   TH1F    *hSumGenWeightSign_;
   TH1F    *hSumGenWeight_;
-  
+
   HLTPrescaleProvider hltPrescaleProvider_;
 };
 

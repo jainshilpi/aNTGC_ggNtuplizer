@@ -17,8 +17,8 @@
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
-Int_t			nAK4CHSJet_;
-vector<Int_t>  AK4CHSJet_Charge_;
+UChar_t			nAK4CHSJet_;
+vector<Char_t>  AK4CHSJet_Charge_;
 vector<float>  AK4CHSJet_Pt_;
 vector<float>  AK4CHSJet_En_;
 vector<float>  AK4CHSJet_Eta_;
@@ -41,12 +41,12 @@ vector<float>  AK4CHSJet_CHF_;
 vector<float>  AK4CHSJet_NHF_;
 vector<float>  AK4CHSJet_CEF_;
 vector<float>  AK4CHSJet_NEF_;
-vector<int>    AK4CHSJet_NCH_;
-vector<int>    AK4CHSJet_NNP_;
+vector<UShort_t>    AK4CHSJet_NCH_;
+vector<UShort_t>    AK4CHSJet_NNP_;
 vector<float>  AK4CHSJet_MUF_;
 vector<float>  AK4CHSJet_HFHAE_;
 vector<float>  AK4CHSJet_HFEME_;
-vector<int>    AK4CHSJet_NConstituents_;
+vector<UShort_t>    AK4CHSJet_NConstituents_;
 vector<float>  AK4CHSJet_CSV2BJetTags_;
 vector<float>  AK4CHSJet_DeepCSVTags_b_;
 vector<float>  AK4CHSJet_DeepCSVTags_bb_;
@@ -74,12 +74,12 @@ vector<Float_t> AK4CHSJet_JER_SFup_;
 vector<Float_t> AK4CHSJet_JER_SFdown_;
 vector<ULong64_t> AK4CHSJet_FiredTrgs_;
 //gen-info
-vector<Int_t>  AK4CHSJet_GenJetIndex_;
-vector<Int_t>    AK4CHSJet_GenPartonIndex_;
+vector<Short_t>  AK4CHSJet_GenJetIndex_;
+vector<Short_t>    AK4CHSJet_GenPartonIndex_;
 
 
 void ggNtuplizer::branchesAK4CHSJets(TTree* tree) {
-	// tree->Branch("nAK4CHSJet",                &nAK4CHSJet_);
+	tree->Branch("nAK4CHSJet",                &nAK4CHSJet_);
 	tree->Branch("AK4CHSJet_Charge",               &AK4CHSJet_Charge_);
 	tree->Branch("AK4CHSJet_Pt",               &AK4CHSJet_Pt_);
 	tree->Branch("AK4CHSJet_En",               &AK4CHSJet_En_);

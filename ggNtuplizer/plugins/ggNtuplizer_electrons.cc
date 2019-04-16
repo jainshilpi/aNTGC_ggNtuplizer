@@ -11,8 +11,8 @@ using namespace std;
 using namespace reco;
 
 // (local) variables associated with tree branches
-Int_t          nEle_;
-vector<int>    eleCharge_;
+UChar_t          nEle_;
+vector<Char_t>    eleCharge_;
 vector<Bool_t>    eleChargeConsistent_;
 vector<float>  eleEn_;
 vector<float>  eleSCEn_;
@@ -40,7 +40,7 @@ vector<float>  eledPhiAtVtx_;
 vector<float>  eleSigmaIEtaIEtaFull5x5_;
 vector<float>  eleSigmaIPhiIPhiFull5x5_;
 vector<Bool_t>    eleConvVeto_;
-vector<int>    eleMissHits_;
+vector<Short_t>    eleMissHits_;
 vector<float>  eleESEffSigmaRR_;
 vector<float>  elePFChIso_;
 vector<float>  elePFPhoIso_;
@@ -66,11 +66,12 @@ vector<float>  eleResol_rho_up_;
 vector<float>  eleResol_rho_dn_;
 vector<float>  eleResol_phi_up_;
 vector<float>  eleResol_phi_dn_;
+vector<Short_t> eleGenIndex_;
 
 
 void ggNtuplizer::branchesElectrons(TTree* tree) {
 
-  // tree->Branch("nEle",                    &nEle_);
+  tree->Branch("nEle",                    &nEle_);
   tree->Branch("eleCharge",               &eleCharge_);
   tree->Branch("eleChargeConsistent",     &eleChargeConsistent_);
   tree->Branch("eleEn",                   &eleEn_);
@@ -124,6 +125,9 @@ void ggNtuplizer::branchesElectrons(TTree* tree) {
   tree->Branch("eleResol_rho_dn",             &eleResol_rho_dn_);
   tree->Branch("eleResol_phi_up",             &eleResol_phi_up_);
   tree->Branch("eleResol_phi_dn",             &eleResol_phi_dn_);
+  if(doGenParticles_){
+    tree->Branch("eleGenIndex",          &eleGenIndex_);
+  }
 
 }
 
@@ -183,6 +187,7 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
   eleResol_rho_dn_            .clear();
   eleResol_phi_up_            .clear();
   eleResol_phi_dn_            .clear();
+  eleGenIndex_                .clear();
   nEle_ = 0;
 
   edm::Handle<edm::View<pat::Electron> > electronHandle;
@@ -279,6 +284,16 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
     eleIDMVANoIso_.push_back(iEle->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV2Values"));
     elePFClusEcalIso_.push_back(iEle->ecalPFClusterIso());
     elePFClusHcalIso_.push_back(iEle->hcalPFClusterIso());
+
+
+    if(doGenParticles_){
+      edm::Handle<vector<reco::GenParticle>> genParticlesHandle;
+      e.getByToken(genParticlesCollection_, genParticlesHandle);
+      const reco::GenParticle * eleGen_ = iEle->genParticle();
+      Short_t eleGenPos_ = (eleGen_ == nullptr) ? -999 : std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) eleGen_);
+      eleGenIndex_.push_back(eleGenPos_);
+    }
+
     nEle_++;
   }
 };

@@ -5,7 +5,7 @@ using namespace edm;
 
 void ggNtuplizer::endJob() {
   tree_->BuildIndex("run", "event");
-  std::cout<<"TTree "<<tree_->GetName()<<" indexed on run and event."<<std::endl<<" Complete!"<<std::endl;
+  std::cout<<"\tTTree "<<tree_->GetName()<<" indexed on run and event."<<std::endl<<" Complete!"<<std::endl;
 };
 
 
@@ -74,6 +74,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
 
   ak4PFJetsCHSGenJetLabel_              = consumes<std::vector<reco::GenJet> >               (ps.getParameter<InputTag>("ak4PFJetsCHSGenJetLabel"));
   newparticles_              =                                          ps.getParameter< vector<int > >("newParticles");
+  ecalBadCalibFilterUpdateToken_ = consumes< Bool_t >(ps.getParameter<InputTag>("ecalBadCalibFilter"));
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data");

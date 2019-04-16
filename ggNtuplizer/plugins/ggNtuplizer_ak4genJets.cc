@@ -4,7 +4,7 @@
 using namespace std;
 
 // (local) variables associated with tree branches
-Int_t            nGenAK4Jets_;
+UChar_t        nGenAK4Jets_;
 vector<float>  GenAK4JetEn_;
 vector<float>  GenAK4JetPt_;
 vector<float>  GenAK4JetEta_;
@@ -16,13 +16,13 @@ vector<float>  GenAK4JetINVenergy_;
 
 void ggNtuplizer::branchesGenAK4JetPart(TTree* tree) {
 
-  // tree->Branch("nGenAK4Jets",     &nGenAK4Jets_);
+  tree->Branch("nGenAK4Jets",     &nGenAK4Jets_);
   tree->Branch("GenAK4JetEn",       &GenAK4JetEn_);
   tree->Branch("GenAK4JetPt",       &GenAK4JetPt_);
   tree->Branch("GenAK4JetEta",      &GenAK4JetEta_);
   tree->Branch("GenAK4JetPhi",      &GenAK4JetPhi_);
   tree->Branch("GenAK4JetEMenergy",      &GenAK4JetEMenergy_);
-  tree->Branch("GenAK4JetHADenergy",      &GenAK4JetHADenergy_); 
+  tree->Branch("GenAK4JetHADenergy",      &GenAK4JetHADenergy_);
 }
 
 void ggNtuplizer::fillGenAK4JetInfo(const edm::Event& e) {
@@ -35,7 +35,7 @@ void ggNtuplizer::fillGenAK4JetInfo(const edm::Event& e) {
   GenAK4JetEMenergy_.clear();
   GenAK4JetHADenergy_.clear();
   GenAK4JetINVenergy_.clear();
-  
+
   if(doGenJets_){
 
     edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
@@ -48,7 +48,7 @@ void ggNtuplizer::fillGenAK4JetInfo(const edm::Event& e) {
       edm::LogWarning("ggNtuplizer") << "Could not find GenJet vector named ";
       return;
     }
-    
+
     nGenAK4Jets_= ak4PFJetsCHSgenjets->size();
 
     for (vector<reco::GenJet>::const_iterator ip = ak4PFJetsCHSgenjets->begin(); ip != ak4PFJetsCHSgenjets->end(); ++ip) {
