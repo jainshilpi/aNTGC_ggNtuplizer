@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 import sys
 
@@ -43,7 +45,7 @@ config.Data.publication = False
 config.Data.allowNonValidInputDataset = True
 config.Data.outLFNDirBase = '%s' % mainOutputDir
 config.Data.splitting     = 'FileBased'
-config.Data.unitsPerJob   = 1000
+config.Data.unitsPerJob   = 5
 config.Data.ignoreLocality = False
 #config.Data.totalUnits = #totalUnits
 submit(config)
