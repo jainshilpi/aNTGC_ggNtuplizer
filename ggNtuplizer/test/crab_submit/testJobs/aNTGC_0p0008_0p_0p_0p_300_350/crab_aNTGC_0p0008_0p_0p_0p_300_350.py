@@ -20,7 +20,7 @@ def submit(config):
 
 workarea='/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/testJobs//aNTGC_0p0008_0p_0p_0p_300_350/'
 
-mainOutputDir = '#mainOutputDir'
+mainOutputDir = '/store/user/mwadud/aNTGC/ggNtuplizerSkimTest/'
 
 
 config.General.requestName = 'aNTGC_0p0008_0p_0p_0p_300_350'
@@ -29,7 +29,7 @@ config.General.workArea = '%s' % workarea
 
 
 config.Site.storageSite = 'T2_US_Wisconsin'
-config.Site.whitelist = ['T3_US_FNALLPC']
+config.Site.whitelist = ['T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss']
 config.Site.blacklist = ['T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech']
 
 
@@ -37,13 +37,13 @@ config.JobType.psetName  = '/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_1
 config.JobType.pluginName  = 'Analysis'
 
 
-config.Data.inputDBS = '#inputDBS'
+config.Data.inputDBS = 'phys03'
 config.Data.inputDataset = '/aNTGC_0p0008_0p_0p_0p_300_350/mwadud-aNTGC_0p0008_0p_0p_0p_300_350_MINIAODSIM-8b3f0a6dce9f2bd2c845840a26003c60/USER'
 config.Data.publication = False
 config.Data.allowNonValidInputDataset = True
 config.Data.outLFNDirBase = '%s' % mainOutputDir
 config.Data.splitting     = 'FileBased'
-config.Data.unitsPerJob   = #unitsperjob
+config.Data.unitsPerJob   = 100
 config.Data.ignoreLocality = False
 #config.Data.totalUnits = #totalUnits
 submit(config)
