@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# input_datasets="datasets.txt"
-input_datasets="2016_mc_samples.txt"
-writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobs/xsecs2016/"
-# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
-psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
+input_datasets="datasets.txt"
+# input_datasets="2016_mc_samples.txt"
+writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsUpdatedAnalyzer/"
+psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
-mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkim/xSecs/'
+mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkimV2/'
 
 
-maxFiles=500
+maxFiles=5000
 inputDBS=global
 
 
@@ -21,20 +21,27 @@ voms-proxy-init --voms cms
 
 
 crab_cfg_template=crab_submit.py
-units_perjob=10
+units_perjob=5
 splitting='FileBased'
-# blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
-# whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
-blacklist=""
-whitelist="'T3_US_FNALLPC'"
-
-submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S').log
+blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
+whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
+# blacklist=""
+# whitelist="'T3_US_FNALLPC'"
 
 mkdir -p ${writedir}
+submit_log_file=${writedir}/crab_submitted_datasets_$(date '+%d_%m_%Y_%H_%M_%S').log
+
+echo "*************************************************************************" | tee --append ${submit_log_file}
+echo "Git Info" | tee --append ${submit_log_file}
+git remote -v | tee --append ${submit_log_file}
+git branch -a | tee --append ${submit_log_file}
+git rev-parse HEAD | tee --append ${submit_log_file}
+echo "*************************************************************************" | tee --append ${submit_log_file}
+
+
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
 	datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
-	# jobName=${datasetName#"/"}_$(date '+%d_%m_%Y_%H_%M_%S');
 	jobName=${datasetName#"/"}
 
 	# jobName=$(echo ${dataset////_})

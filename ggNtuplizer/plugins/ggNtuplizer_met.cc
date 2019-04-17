@@ -101,7 +101,7 @@ void ggNtuplizer::fillMET(const edm::Event& e, const edm::EventSetup& es) {
     }
 
     //////https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#Accessing_the_filter_decision_in
-    edm::Handle< bool > passecalBadCalibFilterUpdate ;
+    edm::Handle<bool> passecalBadCalibFilterUpdate ;
     e.getByToken(ecalBadCalibFilterUpdateToken_, passecalBadCalibFilterUpdate);
     Bool_t _passecalBadCalibFilterUpdate =  (*passecalBadCalibFilterUpdate );
     if(!_passecalBadCalibFilterUpdate) metFilters_ += std::pow(2, filterNamesToCheck.size());
