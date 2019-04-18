@@ -56,6 +56,7 @@ ggNtuplizer = cms.EDAnalyzer("ggNtuplizer",
                  ak4PFJetsCHSSrc           = cms.InputTag("slimmedJets"),
                  ak4PFJetsPUPPISrc           = cms.InputTag("slimmedJetsPuppi"),
                  ak4PFJetsCHSGenJetLabel      = cms.InputTag("slimmedGenJets"),
+                 ak8GenJetLabel                 = cms.InputTag("slimmedGenJetsAK8"),
                  ak8JetsPUPPISrc                 = cms.InputTag("slimmedJetsAK8"),
                  tauSrc                    = cms.InputTag("slimmedTaus"),
 

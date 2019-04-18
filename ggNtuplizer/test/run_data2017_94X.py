@@ -13,7 +13,7 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v11', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_ReReco_EOY17_v6')
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring('file:F8DDFDC7-8AD6-E711-BCA2-4C79BA1811CB.root')
@@ -68,7 +68,6 @@ jetToolbox( process, 'ak4', 'ak4JetSubs', 'noOutput',
         runOnMC=False,
         updateCollection='slimmedJets',
         JETCorrPayload='AK4PFchs',
-        JETCorrLevels = ['L1FastJet', 'L2Relative', 'L3Absolute'],
         postFix='updated'
         )
 

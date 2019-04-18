@@ -8,7 +8,8 @@
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
-
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "SimDataFormats/JetMatching/interface/JetFlavourInfo.h"
 
 ////////////////////////////////////////////////////////////////////////
 /////Generate ROOT dictionary for std::vector<std::vector<Char_t> >
@@ -78,12 +79,12 @@ vector<float>  AK8PuppiJet_nb2ecf2_;
 vector<float>  AK8PuppiJet_nb2ecf3_;
 vector<int>   AK8PuppiJet_PartonFlavour_;
 vector<int>   AK8PuppiJet_HadronFlavour_;
-vector<float> AK8PuppiJet_GenJetEn_;
-vector<float> AK8PuppiJet_GenJetPt_;
-vector<float> AK8PuppiJet_GenJetEta_;
-vector<float> AK8PuppiJet_GenJetPhi_;
-// vector<int>   AK8PuppiJet_GenJetIndex_;
-// vector<float> AK8PuppiJet_GenPartonIndex_;
+// vector<float> AK8PuppiJet_GenJetEn_;
+// vector<float> AK8PuppiJet_GenJetPt_;
+// vector<float> AK8PuppiJet_GenJetEta_;
+// vector<float> AK8PuppiJet_GenJetPhi_;
+vector<Short_t>   AK8PuppiJet_GenJetIndex_;
+// vector<vector<Short_t>> AK8PuppiJet_GenPartonPID_;
 vector<UChar_t>             AK8PuppiJet_nSDSJpuppi_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiPt_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiEta_ ;
@@ -157,12 +158,12 @@ void ggNtuplizer::branchesAK8PUPPIJets(TTree* tree) {
 	if (doGenParticles_) {
 		tree->Branch("AK8PuppiJet_PartonFlavour",       &AK8PuppiJet_PartonFlavour_);
 		tree->Branch("AK8PuppiJet_HadronFlavour",        &AK8PuppiJet_HadronFlavour_);
-		// tree->Branch("AK8PuppiJet_GenJetIndex",    &AK8PuppiJet_GenJetIndex_);
-	// tree->Branch("AK8PuppiJet_GenPartonIndex",    &AK8PuppiJet_GenPartonIndex_);
-		tree->Branch("AK8PuppiJet_GenJetEn",       &AK8PuppiJet_GenJetEn_);
-		tree->Branch("AK8PuppiJet_GenJetPt",       &AK8PuppiJet_GenJetPt_);
-		tree->Branch("AK8PuppiJet_GenJetEta",      &AK8PuppiJet_GenJetEta_);
-		tree->Branch("AK8PuppiJet_GenJetPhi",      &AK8PuppiJet_GenJetPhi_);
+		tree->Branch("AK8PuppiJet_GenJetIndex",    &AK8PuppiJet_GenJetIndex_);
+		// tree->Branch("AK8PuppiJet_GenPartonPID",    &AK8PuppiJet_GenPartonPID_);
+		// tree->Branch("AK8PuppiJet_GenJetEn",       &AK8PuppiJet_GenJetEn_);
+		// tree->Branch("AK8PuppiJet_GenJetPt",       &AK8PuppiJet_GenJetPt_);
+		// tree->Branch("AK8PuppiJet_GenJetEta",      &AK8PuppiJet_GenJetEta_);
+		// tree->Branch("AK8PuppiJet_GenJetPhi",      &AK8PuppiJet_GenJetPhi_);
 	}
 	tree->Branch("AK8PuppiJet_nSDSJpuppi",            &AK8PuppiJet_nSDSJpuppi_);
 	tree->Branch("AK8PuppiJet_SDSJpuppiPt",           &AK8PuppiJet_SDSJpuppiPt_);
@@ -234,12 +235,12 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 	AK8PuppiJet_nb2ecf3_.clear();
 	AK8PuppiJet_PartonFlavour_.clear();
 	AK8PuppiJet_HadronFlavour_.clear();
-	// AK8PuppiJet_GenJetIndex_.clear();
-	// AK8PuppiJet_GenPartonIndex_.clear();
-	AK8PuppiJet_GenJetEn_.clear();
-	AK8PuppiJet_GenJetPt_.clear();
-	AK8PuppiJet_GenJetEta_.clear();
-	AK8PuppiJet_GenJetPhi_.clear();
+	AK8PuppiJet_GenJetIndex_.clear();
+	// AK8PuppiJet_GenPartonPID_.clear();
+	// AK8PuppiJet_GenJetEn_.clear();
+	// AK8PuppiJet_GenJetPt_.clear();
+	// AK8PuppiJet_GenJetEta_.clear();
+	// AK8PuppiJet_GenJetPhi_.clear();
 	AK8PuppiJet_nSDSJpuppi_ .clear();
 	AK8PuppiJet_SDSJpuppiPt_ .clear();
 	AK8PuppiJet_SDSJpuppiEta_ .clear();
@@ -257,6 +258,9 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 
 	edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
 	if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
+
+	edm::Handle<std::vector<reco::GenJet>> ak8genjetsHandle;
+	if(doGenParticles_)e.getByToken(ak8GenJetLabel_,ak8genjetsHandle);
 
 	edm::Handle<double> rhoHandle;
 	e.getByToken(rhoLabel_, rhoHandle);
@@ -394,34 +398,28 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 
 		AK8PuppiJet_PartonFlavour_.push_back(ijetAK8->partonFlavour());
 		AK8PuppiJet_HadronFlavour_.push_back(ijetAK8->hadronFlavour());
-		// AK8PuppiJet_GenJetIndex_.push_back(ijetAK8->);
 
 		if(doGenParticles_){
-			// Int_t _genIndex = -99;
-      		// Int_t _genJetIndex = -99;
-			Float_t _genJetPt = -999.;
-			Float_t _genJetEn = -999.;
-			Float_t _genJetPhi = -999.;
-			Float_t _genJetEta = -999.;
-			// if(ijetAK8->genParton())
-			if(ijetAK8->genJet()){
-      			// _genJetIndex
-				_genJetPt = ijetAK8->genJet()->pt();
-				_genJetEn = ijetAK8->genJet()->energy();
-				_genJetPhi = ijetAK8->genJet()->phi();
-				_genJetEta = ijetAK8->genJet()->eta();
+			Int_t _genJetIndex = -99;
+			if (ijetAK8->genJet() && ak8genjetsHandle.isValid()) {
+				_genJetIndex = std::distance(ak8genjetsHandle->begin(), (vector<reco::GenJet>::const_iterator) ijetAK8->genJet());
 			}
+			AK8PuppiJet_GenJetIndex_.push_back(_genJetIndex);
 
-			// if(ijetAK8->genParton()){
-			// 	_genIndex = std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator)ijetAK8->genParton());
-			// 	cout<<_genIndex<<endl;
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// Exception Message:
+			// RefCore: A request to resolve a reference to a product of type 'std::vector<reco::GenParticle>' with ProductID '3:2895'
+			// can not be satisfied because the product cannot be found.
+			// Probably the branch containing the product is not stored in the input file.
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// std::vector<Short_t> __genPartonPIDs;
+			// if(ijetAK8->jetFlavourInfo().getPartons().empty () == 0){
+			// 	for(reco::GenParticleRefVector::const_iterator iParton = ijetAK8->jetFlavourInfo().getPartons().begin(); iParton != ijetAK8->jetFlavourInfo().getPartons().end(); iParton++){
+			// 		__genPartonPIDs.push_back((*iParton)->pdgId());
+			// 		cout<<" ak8jet parton index "<<(*iParton)->pdgId()<<endl;
+			// 	}
 			// }
-			// AK8PuppiJet_GenPartonIndex_.push_back(_genIndex);
-			// cout<<ijetAK8->genParton()->pt()<<endl;
-			AK8PuppiJet_GenJetEn_.push_back(_genJetEn);
-			AK8PuppiJet_GenJetPt_.push_back(_genJetPt);
-			AK8PuppiJet_GenJetEta_.push_back(_genJetEta);
-			AK8PuppiJet_GenJetPhi_.push_back(_genJetPhi);
+			// AK8PuppiJet_GenPartonPID_.push_back(__genPartonPIDs);
 		}
 
 		if (dumpSoftDrop_) {

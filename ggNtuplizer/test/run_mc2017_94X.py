@@ -14,7 +14,7 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
@@ -101,8 +101,9 @@ process.ggNtuplizer.dumpTaus=cms.bool(False)
 process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger")
 process.ggNtuplizer.ak4PFJetsCHSSrc=cms.InputTag("selectedPatJetsAK4PFCHSupdated")
 process.ggNtuplizer.ak4PFJetsCHSGenJetLabel      = cms.InputTag("selectedPatJetsAK4PFCHSupdated","genJets","ggKit")
+process.ggNtuplizer.ak8GenJetLabel      = cms.InputTag("selectedPatJetsAK8PFPUPPI","genJets","ggKit")
 process.ggNtuplizer.ak8JetsPUPPISrc=cms.InputTag("selectedPatJetsAK8PFPUPPI")
-process.ggNtuplizer.runOnSherpa = cms.bool(True)
+process.ggNtuplizer.runOnSherpa = cms.bool(False)
 process.ggNtuplizer.patTriggerResults = cms.InputTag("TriggerResults", "", "PAT")
 # process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
 ##########################################################################################################################

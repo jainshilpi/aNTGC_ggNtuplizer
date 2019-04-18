@@ -93,7 +93,10 @@ private:
   void fillAK4CHSJets       (const edm::Event&, const edm::EventSetup&);
   void fillAK8PUPPIJets(const edm::Event&, const edm::EventSetup&);
   void branchesGenAK4JetPart(TTree*);
-  void fillGenAK4JetInfo(const edm::Event&);
+  void branchesGenAK8JetPart(TTree*);
+  void fillGenAK4JetInfo(const edm::Event&, Float_t );
+  void fillGenAK8JetInfo(const edm::Event&, Float_t );
+
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);
   // void fillAK8PUPPIJets    (const edm::Event&, const edm::EventSetup&);
 
@@ -151,6 +154,7 @@ private:
   edm::EDGetTokenT<edm::View<pat::Jet> >            ak4PFJetsPUPPILabel_;
   edm::EDGetTokenT<edm::View<pat::Jet> >            ak8JetsPUPPILabel_;
   edm::EDGetTokenT<std::vector<reco::GenJet> >      ak4PFJetsCHSGenJetLabel_;
+  edm::EDGetTokenT<std::vector<reco::GenJet> >      ak8GenJetLabel_;
   edm::EDGetTokenT<reco::JetTagCollection>          boostedDoubleSVLabel_;
   edm::EDGetTokenT<pat::PackedCandidateCollection>  pckPFCandidateCollection_;
   edm::EDGetTokenT<Bool_t>                          ecalBadCalibFilterUpdateToken_;

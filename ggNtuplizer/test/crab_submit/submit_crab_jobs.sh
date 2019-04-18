@@ -4,6 +4,7 @@ input_datasets="datasets.txt"
 # input_datasets="2016_mc_samples.txt"
 writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsUpdatedAnalyzer/"
 psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+#psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
 # psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
 mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkimV2/'
@@ -41,11 +42,12 @@ echo "*************************************************************************"
 
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
-	datasetName=$(echo ${dataset} | cut -f1,2 -d'/')
-	jobName=${datasetName#"/"}
+	jobName=$(echo ${dataset} | cut -f1,2 -d'/')
+	jobName=${jobName#"/"}
 
-	# jobName=$(echo ${dataset////_})
-	# jobName=${jobName#"_"}
+#	jobName=$(echo ${dataset////_})
+#	jobName=${jobName#"_"}
+#	jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
 
 	jobDir=${writedir}/${jobName}/
 
