@@ -11,7 +11,7 @@ using namespace std;
 using namespace reco;
 
 // (local) variables associated with tree branches
-UChar_t          nEle_;
+UShort_t          nEle_;
 vector<Char_t>    eleCharge_;
 vector<Bool_t>    eleChargeConsistent_;
 vector<float>  eleEn_;
@@ -40,7 +40,7 @@ vector<float>  eledPhiAtVtx_;
 vector<float>  eleSigmaIEtaIEtaFull5x5_;
 vector<float>  eleSigmaIPhiIPhiFull5x5_;
 vector<Bool_t>    eleConvVeto_;
-vector<Short_t>    eleMissHits_;
+vector<UChar_t>    eleMissHits_;
 vector<float>  eleESEffSigmaRR_;
 vector<float>  elePFChIso_;
 vector<float>  elePFPhoIso_;
@@ -267,7 +267,7 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
     eleResol_phi_dn_ .push_back(iEle->userFloat("energySigmaPhiDown"));
 
     // VID decisions
-    UShort_t tmpeleIDbit = 0;
+    UChar_t tmpeleIDbit = 0;
     bool isPassVeto   = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-veto");
     if (isPassVeto)   setbit(tmpeleIDbit, 0);
     bool isPassLoose  = iEle->electronID("cutBasedElectronID-Fall17-94X-V2-loose");

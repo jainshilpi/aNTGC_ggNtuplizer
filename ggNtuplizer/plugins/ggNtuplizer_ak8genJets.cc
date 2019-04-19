@@ -4,7 +4,7 @@
 using namespace std;
 
 // (local) variables associated with tree branches
-UChar_t        nGenAK8Jets_;
+UShort_t        nGenAK8Jets_;
 vector<float>  GenAK8JetEn_;
 vector<float>  GenAK8JetPt_;
 vector<float>  GenAK8JetEta_;

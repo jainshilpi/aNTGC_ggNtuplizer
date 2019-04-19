@@ -5,7 +5,7 @@
 using namespace std;
 
 // (local) variables associated with tree branches
-UChar_t             nMu_;
+UShort_t             nMu_;
 vector<float>     muPt_;
 vector<float>     muEn_;
 vector<float>     muEta_;

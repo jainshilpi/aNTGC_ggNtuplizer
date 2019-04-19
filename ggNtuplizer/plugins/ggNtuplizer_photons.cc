@@ -6,7 +6,7 @@
 
 using namespace std;
 
-UChar_t          nPho_;
+UShort_t          nPho_;
 vector<float>  phoE_;
 vector<float>  phoSigmaE_;
 vector<float>  phoEt_;

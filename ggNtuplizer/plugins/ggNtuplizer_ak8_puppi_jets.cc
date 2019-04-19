@@ -22,7 +22,7 @@
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
-UChar_t         nAK8PuppiJet_;
+UShort_t         nAK8PuppiJet_;
 vector<Char_t> AK8PuppiJet_Charge_;
 vector<float> AK8PuppiJet_Pt_;
 vector<float> AK8PuppiJet_En_;
@@ -85,7 +85,7 @@ vector<int>   AK8PuppiJet_HadronFlavour_;
 // vector<float> AK8PuppiJet_GenJetPhi_;
 vector<Short_t>   AK8PuppiJet_GenJetIndex_;
 // vector<vector<Short_t>> AK8PuppiJet_GenPartonPID_;
-vector<UChar_t>             AK8PuppiJet_nSDSJpuppi_ ;
+vector<UShort_t>             AK8PuppiJet_nSDSJpuppi_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiPt_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiEta_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiMass_ ;

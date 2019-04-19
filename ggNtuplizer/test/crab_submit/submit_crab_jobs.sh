@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#input_datasets="data2017.txt"
-input_datasets="datasets.txt"
+input_datasets="data2017.txt"
+#input_datasets="datasets.txt"
 # input_datasets="2016_mc_samples.txt"
 writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsUpdatedAnalyzer/"
-psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
-#psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
+#psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
 # psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
 mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkimV2/'

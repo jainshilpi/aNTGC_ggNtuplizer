@@ -17,7 +17,7 @@
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
-UChar_t			nAK4CHSJet_;
+UShort_t			nAK4CHSJet_;
 vector<Char_t>  AK4CHSJet_Charge_;
 vector<float>  AK4CHSJet_Pt_;
 vector<float>  AK4CHSJet_En_;
