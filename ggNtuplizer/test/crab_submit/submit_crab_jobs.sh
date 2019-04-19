@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#input_datasets="data2017.txt"
 input_datasets="datasets.txt"
 # input_datasets="2016_mc_samples.txt"
 writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsUpdatedAnalyzer/"
@@ -22,7 +23,7 @@ voms-proxy-init --voms cms
 
 
 crab_cfg_template=crab_submit.py
-units_perjob=5
+units_perjob=2
 splitting='FileBased'
 blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
 whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
@@ -49,34 +50,34 @@ do
 #	jobName=${jobName#"_"}
 #	jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
 
-	jobDir=${writedir}/${jobName}/
+jobDir=${writedir}/${jobName}/
 
-	echo "Submitting " ${jobName}
-	echo "Job directory: "${jobDir}
-	echo "Write site: " ${writeSite}
+echo "Submitting " ${jobName}
+echo "Job directory: "${jobDir}
+echo "Write site: " ${writeSite}
 
-	if [ -d "$jobDir" ]; then
-		echo "Error! Directory "$jobDir "exists!"
-		exit
-	fi
+if [ -d "$jobDir" ]; then
+	echo "Error! Directory "$jobDir "exists!"
+	exit
+fi
 
-	mkdir -p ${jobDir}
+mkdir -p ${jobDir}
 
-	crab_cfg_file=${jobDir}/crab_${jobName}.py
-	cp ${crab_cfg_template} ${crab_cfg_file}
+crab_cfg_file=${jobDir}/crab_${jobName}.py
+cp ${crab_cfg_template} ${crab_cfg_file}
 
-	sed -i 's|#psetname|'$psetname'|g' ${crab_cfg_file}
-	sed -i 's|#workarea|'$jobDir'|g' ${crab_cfg_file}
-	sed -i 's|#jobname|'$jobName'|g' ${crab_cfg_file}
-	sed -i 's|#inputDataset|'$dataset'|g' ${crab_cfg_file}
-	sed -i 's|#storageSite|'$writeSite'|g' ${crab_cfg_file}
-	sed -i 's|#whitelist|'$whitelist'|g' ${crab_cfg_file}
-	sed -i 's|#blacklist|'$blacklist'|g' ${crab_cfg_file}
-	sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
-	sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
-	sed -i 's|#mainOutputDir|'$mainOutputDir'|g' ${crab_cfg_file}
+sed -i 's|#psetname|'$psetname'|g' ${crab_cfg_file}
+sed -i 's|#workarea|'$jobDir'|g' ${crab_cfg_file}
+sed -i 's|#jobname|'$jobName'|g' ${crab_cfg_file}
+sed -i 's|#inputDataset|'$dataset'|g' ${crab_cfg_file}
+sed -i 's|#storageSite|'$writeSite'|g' ${crab_cfg_file}
+sed -i 's|#whitelist|'$whitelist'|g' ${crab_cfg_file}
+sed -i 's|#blacklist|'$blacklist'|g' ${crab_cfg_file}
+sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
+sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
+sed -i 's|#mainOutputDir|'$mainOutputDir'|g' ${crab_cfg_file}
 
-	sed -i 's|#inputDBS|'$inputDBS'|g' ${crab_cfg_file}
+sed -i 's|#inputDBS|'$inputDBS'|g' ${crab_cfg_file}
 
 
 	# sed -i 's|#config.Data.totalUnits|'config.Data.totalUnits'|g' ${crab_cfg_file}

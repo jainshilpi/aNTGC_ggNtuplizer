@@ -91,7 +91,7 @@ vector< vector<float> > AK8PuppiJet_SDSJpuppiEta_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiMass_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiPhi_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiE_ ;
-vector< vector<Short_t > >  AK8PuppiJet_SDSJpuppiCharge_ ;
+vector< vector<Char_t > >  AK8PuppiJet_SDSJpuppiCharge_ ;
 vector< vector<int > >  AK8PuppiJet_SDSJpuppiFlavour_;
 vector< vector<float> > AK8PuppiJet_SDSJpuppiCSV_ ;
 vector< vector<float> > AK8PuppiJet_SDSJpuppinb1ecf2_;
@@ -256,8 +256,8 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 	AK8PuppiJet_SDSJpuppinb2ecf3_.clear();
 	nAK8PuppiJet_ = 0;
 
-	edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
-	if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
+	// edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
+	// if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
 
 	edm::Handle<std::vector<reco::GenJet>> ak8genjetsHandle;
 	if(doGenParticles_)e.getByToken(ak8GenJetLabel_,ak8genjetsHandle);
@@ -300,7 +300,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		AK8PuppiJet_tau3_.push_back(ijetAK8->userFloat("NjettinessAK8Puppi:tau3"));
 		AK8PuppiJet_tau4_.push_back(ijetAK8->userFloat("NjettinessAK8Puppi:tau4"));
 
-		    	//jet PF Loose ID
+		//jet PF Loose ID
 		double NHF      = ijetAK8->neutralHadronEnergyFraction();
 		double NEMF     = ijetAK8->neutralEmEnergyFraction();
 		double CHF      = ijetAK8->chargedHadronEnergyFraction();
@@ -310,10 +310,10 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		double CEMF     = ijetAK8->chargedEmEnergyFraction();
 		double MUF      = ijetAK8->muonEnergyFraction();
 
-		AK8PuppiJet_NEF_.push_back(ijetAK8->neutralEmEnergyFraction());
+		AK8PuppiJet_NEF_.push_back(NEMF);
 		AK8PuppiJet_NCH_.push_back(CHM);
 		AK8PuppiJet_NNP_.push_back(NNP);
-		AK8PuppiJet_MUF_.push_back(ijetAK8->muonEnergyFraction());
+		AK8PuppiJet_MUF_.push_back(MUF);
 		// AK8PuppiJet_puppiMultiplicity_.push_back(ijetAK8->userFloat("patPuppiJetSpecificProducer:puppiMultiplicity"));
 		// AK8PuppiJet_neutral_puppiMultiplicity_.push_back(ijetAK8->userFloat("patPuppiJetSpecificProducer:neutralPuppiMultiplicity"));
 
@@ -321,7 +321,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 		AK8PuppiJet_NHF_.push_back(NHF);
 		AK8PuppiJet_CEF_.push_back(CEMF);
 
-			//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
+		//https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017?rev=7
 		bool looseJetID = false;
 		bool tightJetID = false;
 		Bool_t tightLeptVetoID = false;
@@ -413,11 +413,26 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 			// Probably the branch containing the product is not stored in the input file.
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// std::vector<Short_t> __genPartonPIDs;
-			// if(ijetAK8->jetFlavourInfo().getPartons().empty () == 0){
-			// 	for(reco::GenParticleRefVector::const_iterator iParton = ijetAK8->jetFlavourInfo().getPartons().begin(); iParton != ijetAK8->jetFlavourInfo().getPartons().end(); iParton++){
-			// 		__genPartonPIDs.push_back((*iParton)->pdgId());
-			// 		cout<<" ak8jet parton index "<<(*iParton)->pdgId()<<endl;
+			// const reco::GenParticleRefVector & partonsRefVector = ijetAK8->jetFlavourInfo().getPartons();
+			// if(partonsRefVector.empty () == 0){
+
+			// 	for(UInt_t i = 0; i < partonsRefVector.size(); i++){
+			// 		const reco::GenParticle* part = partonsRefVector.at(i).get();
+			// 		cout<<part->pdgId()<<endl;
 			// 	}
+				// cout<<partonsRefVector.size()<<endl;
+				// for(reco::GenParticleRefVector::const_iterator iParton = partonsRefVector.begin(); iParton != partonsRefVector.end(); ++iParton){
+
+				// 	const reco::GenParticle& part = **iParton;
+				// 	cout<<part.pdgId()<<endl;
+
+				// 	const reco::GenParticle * _part = &(**iParton);
+
+				// 	Short_t partGenPos_ = (_part == nullptr) ? -999 : std::distance(genParticlesHandle->begin(), (vector<reco::GenParticle>::const_iterator) _part);
+
+				// 	// __genPartonPIDs.push_back((*iParton)->pdgId());
+				// 	cout<<" ak8jet parton pdgID "<<_part->pdgId()<<"  index  "<< partGenPos_<<endl;
+				// }
 			// }
 			// AK8PuppiJet_GenPartonPID_.push_back(__genPartonPIDs);
 		}
@@ -430,7 +445,7 @@ void ggNtuplizer::fillAK8PUPPIJets(const edm::Event& e, const edm::EventSetup& e
 			std::vector<float> vecSDSJpuppimass ;
 			std::vector<float> vecSDSJpuppiphi ;
 			std::vector<float> vecSDSJpuppie ;
-			std::vector<Short_t> vecSDSJpuppicharge ;
+			std::vector<Char_t> vecSDSJpuppicharge ;
 			std::vector<int > vecSDSJpuppiflavour;
 			std::vector<float>  vecSDSJpuppinb1ecf2_;
 			std::vector<float>  vecSDSJpuppinb1ecf3_;

@@ -385,7 +385,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
       if (abs(ip->pdgId()) == newparticles_[inp]) newParticle = true;
     }
 
-    if ( heavyParticle || photonOrLepton || quarks || newParticle || quarks || gluons || stableFinalStateParticle) {
+    if ( heavyParticle || photonOrLepton || newParticle || quarks || gluons || stableFinalStateParticle) {
 
       const reco::Candidate *p = (const reco::Candidate*)&(*ip);
       if (!runOnParticleGun_ && !p->mother()) continue;

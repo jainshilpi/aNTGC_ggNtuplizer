@@ -34,11 +34,7 @@
 <use name="SimTracker/Records"/>
 <use name="SimTracker/TrackerHitAssociation"/>
 <use name="TrackingTools/IPTools"/>
-<use name="DataFormats/HepMCCandidate"/>
 <use name="SimDataFormats/JetMatching"/>
 <use name="heppdt"/>
 <use name="root"/>
 <use name="boost"/>
-<Flags ROOTMAP="yes"/>
-<flags EDM_PLUGIN="1"/>
-
