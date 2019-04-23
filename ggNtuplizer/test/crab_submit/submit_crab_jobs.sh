@@ -43,12 +43,12 @@ echo "*************************************************************************"
 
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
-	jobName=$(echo ${dataset} | cut -f1,2 -d'/')
-	jobName=${jobName#"/"}
+#	jobName=$(echo ${dataset} | cut -f1,2 -d'/')
+#	jobName=${jobName#"/"}
 
-#	jobName=$(echo ${dataset////_})
-#	jobName=${jobName#"_"}
-#	jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
+	jobName=$(echo ${dataset////_})
+	jobName=${jobName#"_"}
+	jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
 
 jobDir=${writedir}/${jobName}/
 
