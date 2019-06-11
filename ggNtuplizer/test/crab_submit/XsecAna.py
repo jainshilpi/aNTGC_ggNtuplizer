@@ -9,7 +9,7 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 
 
 options = VarParsing ('analysis')
-options.inputFiles="file:../049CDDCC-4741-E911-BAF6-0025905A60AA.root"
+options.inputFiles="file:../2016ZLLGJetMINIAODSIM.root"
 options.parseArguments()
 
 process = cms.Process('ANA')

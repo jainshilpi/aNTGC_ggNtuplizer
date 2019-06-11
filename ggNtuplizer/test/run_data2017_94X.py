@@ -6,13 +6,10 @@ process = cms.Process('ggKit')
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-#process.load("Configuration.Geometry.GeometryIdeal_cff" )
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff" )
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v11', '')
-#process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_ReReco_EOY17_v6')
-#process.Tracer = cms.Service("Tracer")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.source = cms.Source("PoolSource",

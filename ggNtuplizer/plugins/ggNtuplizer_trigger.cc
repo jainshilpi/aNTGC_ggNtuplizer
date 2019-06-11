@@ -315,8 +315,8 @@ if (eleSingleFilters.size() == 0) {
     edm::Handle<edm::TriggerResults> trgResultsHandle;
     e.getByToken(trgResultsLabel_, trgResultsHandle);
 
-    edm::Handle<std::string> filterLabels_;
-    e.getByLabel("slimmedPatTrigger:filterLabels", filterLabels_);
+    // edm::Handle<std::string> filterLabels_;
+    // e.getByLabel("slimmedPatTrigger:filterLabels", filterLabels_);
 
     for (pat::TriggerObjectStandAlone obj : *triggerHandleMiniAOD) {
         obj.unpackFilterLabels(e, *trgResultsHandle);

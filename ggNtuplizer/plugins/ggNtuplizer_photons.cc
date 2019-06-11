@@ -69,6 +69,7 @@ vector<float>    phoResol_phi_up_;
 vector<float>    phoResol_phi_dn_;
 vector<Short_t> pho_gen_index_;
 
+
 //Necessary for the Photon Footprint removal
 template <class T, class U>
 bool isInFootprint(const T& thefootprint, const U& theCandidate) {
@@ -271,78 +272,93 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
 
     // VID decisions
     UShort_t tmpphoIDbit = 0;
-    // https://twiki.cern.ch/twiki/bin/view/CMS/EgammaRunIIRecommendations?rev=9#Fall17v2_AN1
-    bool isPassLoose  = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-loose");
-    if (isPassLoose)  setbit(tmpphoIDbit, 0);
-    bool isPassMedium = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-medium");
-    if (isPassMedium) setbit(tmpphoIDbit, 1);
-    bool isPassTight  = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-tight");
-    if (isPassTight)  setbit(tmpphoIDbit, 2);
-    bool isPassMVAv1wp80  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp80");
-    if (isPassMVAv1wp80)  setbit(tmpphoIDbit, 3);
-    bool isPassMVAv1wp90  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp90");
-    if (isPassMVAv1wp90)  setbit(tmpphoIDbit, 4);
-    phoIDbit_.push_back(tmpphoIDbit);
+
+    if(year_ == 2017){
+    //// https://twiki.cern.ch/twiki/bin/view/CMS/EgammaRunIIRecommendations?rev=9#Fall17v2_AN1
+      bool isPassLoose  = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-loose");
+      if (isPassLoose)  setbit(tmpphoIDbit, 0);
+      bool isPassMedium = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-medium");
+      if (isPassMedium) setbit(tmpphoIDbit, 1);
+      bool isPassTight  = iPho->photonID("cutBasedPhotonID-Fall17-94X-V2-tight");
+      if (isPassTight)  setbit(tmpphoIDbit, 2);
+      bool isPassMVAv1wp80  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp80");
+      if (isPassMVAv1wp80)  setbit(tmpphoIDbit, 3);
+      bool isPassMVAv1wp90  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp90");
+      if (isPassMVAv1wp90)  setbit(tmpphoIDbit, 4);
+    } else if( year_ == 2016){
+     bool isPassLoose  = iPho->photonID("cutBasedPhotonID-Spring16-V2p2-loose");
+     if (isPassLoose)  setbit(tmpphoIDbit, 0);
+     bool isPassMedium = iPho->photonID("cutBasedPhotonID-Spring16-V2p2-medium");
+     if (isPassMedium) setbit(tmpphoIDbit, 1);
+     bool isPassTight  = iPho->photonID("cutBasedPhotonID-Spring16-V2p2-tight");
+     if (isPassTight)  setbit(tmpphoIDbit, 2);
+     bool isPassMVAv1wp80  = iPho->photonID("mvaPhoID-Spring16-nonTrig-V1-wp80");
+     if (isPassMVAv1wp80)  setbit(tmpphoIDbit, 3);
+     bool isPassMVAv1wp90  = iPho->photonID("mvaPhoID-Spring16-nonTrig-V1-wp90");
+     if (isPassMVAv1wp90)  setbit(tmpphoIDbit, 4);
+   }
+
+   phoIDbit_.push_back(tmpphoIDbit);
 
     // systematics for energy scale and resolution
-    phoScale_stat_up_.push_back(iPho->userFloat("energyScaleStatUp"));
-    phoScale_stat_dn_.push_back(iPho->userFloat("energyScaleStatDown"));
-    phoScale_syst_up_.push_back(iPho->userFloat("energyScaleSystUp"));
-    phoScale_syst_dn_.push_back(iPho->userFloat("energyScaleSystDown"));
-    phoScale_gain_up_.push_back(iPho->userFloat("energyScaleGainUp"));
-    phoScale_gain_dn_.push_back(iPho->userFloat("energyScaleGainDown"));
-    phoResol_rho_up_ .push_back(iPho->userFloat("energySigmaRhoUp"));
-    phoResol_rho_dn_ .push_back(iPho->userFloat("energySigmaRhoDown"));
-    phoResol_phi_up_ .push_back(iPho->userFloat("energySigmaPhiUp"));
-    phoResol_phi_dn_ .push_back(iPho->userFloat("energySigmaPhiDown"));
+   phoScale_stat_up_.push_back(iPho->userFloat("energyScaleStatUp"));
+   phoScale_stat_dn_.push_back(iPho->userFloat("energyScaleStatDown"));
+   phoScale_syst_up_.push_back(iPho->userFloat("energyScaleSystUp"));
+   phoScale_syst_dn_.push_back(iPho->userFloat("energyScaleSystDown"));
+   phoScale_gain_up_.push_back(iPho->userFloat("energyScaleGainUp"));
+   phoScale_gain_dn_.push_back(iPho->userFloat("energyScaleGainDown"));
+   phoResol_rho_up_ .push_back(iPho->userFloat("energySigmaRhoUp"));
+   phoResol_rho_dn_ .push_back(iPho->userFloat("energySigmaRhoDown"));
+   phoResol_phi_up_ .push_back(iPho->userFloat("energySigmaPhiUp"));
+   phoResol_phi_dn_ .push_back(iPho->userFloat("energySigmaPhiDown"));
 
     ///////////////////////////////SATURATED/UNSATURATED ///from ggFlash////
-    DetId seed = (iPho->superCluster()->seed()->hitsAndFractions())[0].first;
-    bool isBarrel = seed.subdetId() == EcalBarrel;
-    const EcalRecHitCollection * rechits = (isBarrel?lazyTool.getEcalEBRecHitCollection():lazyTool.getEcalEERecHitCollection());
+   DetId seed = (iPho->superCluster()->seed()->hitsAndFractions())[0].first;
+   bool isBarrel = seed.subdetId() == EcalBarrel;
+   const EcalRecHitCollection * rechits = (isBarrel?lazyTool.getEcalEBRecHitCollection():lazyTool.getEcalEERecHitCollection());
 
-    EcalRecHitCollection::const_iterator theSeedHit = rechits->find(seed);
-    if (theSeedHit != rechits->end()) {
+   EcalRecHitCollection::const_iterator theSeedHit = rechits->find(seed);
+   if (theSeedHit != rechits->end()) {
       //std::cout<<"(*theSeedHit).time()"<<(*theSeedHit).time()<<"seed energy: "<<(*theSeedHit).energy()<<std::endl;
 
-      phoSeedTime_  .push_back((*theSeedHit).time());
-      phoSeedEnergy_.push_back((*theSeedHit).energy());
-    } else{
-      phoSeedTime_  .push_back(-99.);
-      phoSeedEnergy_.push_back(-99.);
-    }
+    phoSeedTime_  .push_back((*theSeedHit).time());
+    phoSeedEnergy_.push_back((*theSeedHit).energy());
+  } else{
+    phoSeedTime_  .push_back(-99.);
+    phoSeedEnergy_.push_back(-99.);
+  }
 
-    unsigned short nSaturated = 0, nLeRecovered = 0, nNeighRecovered = 0, nGain1 = 0, nGain6 = 0, nWeired = 0;
-    int isSaturated       = 0;
-    int isSaturated_gain6 = 0;
+  unsigned short nSaturated = 0, nLeRecovered = 0, nNeighRecovered = 0, nGain1 = 0, nGain6 = 0, nWeired = 0;
+  int isSaturated       = 0;
+  int isSaturated_gain6 = 0;
 
-    UShort_t tmpxtalbit = 0;
+  UShort_t tmpxtalbit = 0;
 
-    auto matrix5x5 = lazyTool.matrixDetId(seed,-2,+2,-2,+2);
-    for (auto & deId : matrix5x5 ) {
+  auto matrix5x5 = lazyTool.matrixDetId(seed,-2,+2,-2,+2);
+  for (auto & deId : matrix5x5 ) {
       /// cout << "matrix " << deId.rawId() << endl;
-      auto rh = rechits->find(deId);
-      if( rh != rechits->end() ) {
-       nSaturated += rh->checkFlag( EcalRecHit::kSaturated );
-       nLeRecovered += rh->checkFlag( EcalRecHit::kLeadingEdgeRecovered );
-       nNeighRecovered += rh->checkFlag( EcalRecHit::kNeighboursRecovered );
-       nGain1 += rh->checkFlag( EcalRecHit::kHasSwitchToGain1 );
-       nGain6 += rh->checkFlag( EcalRecHit::kHasSwitchToGain6 );
-       nWeired += rh->checkFlag( EcalRecHit::kWeird ) || rh->checkFlag( EcalRecHit::kDiWeird );
+    auto rh = rechits->find(deId);
+    if( rh != rechits->end() ) {
+     nSaturated += rh->checkFlag( EcalRecHit::kSaturated );
+     nLeRecovered += rh->checkFlag( EcalRecHit::kLeadingEdgeRecovered );
+     nNeighRecovered += rh->checkFlag( EcalRecHit::kNeighboursRecovered );
+     nGain1 += rh->checkFlag( EcalRecHit::kHasSwitchToGain1 );
+     nGain6 += rh->checkFlag( EcalRecHit::kHasSwitchToGain6 );
+     nWeired += rh->checkFlag( EcalRecHit::kWeird ) || rh->checkFlag( EcalRecHit::kDiWeird );
 
-       if( rh->checkFlag( EcalRecHit::kHasSwitchToGain1 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated){
+     if( rh->checkFlag( EcalRecHit::kHasSwitchToGain1 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated){
       //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
-         setbit(tmpxtalbit, 0);
-         isSaturated = 1;
+       setbit(tmpxtalbit, 0);
+       isSaturated = 1;
 	     //break;
-       }
+     }
 
-       if( rh->checkFlag( EcalRecHit::kHasSwitchToGain6 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated_gain6){
+     if( rh->checkFlag( EcalRecHit::kHasSwitchToGain6 ) && rh->checkFlag( EcalRecHit::kSaturated ) && !isSaturated_gain6){
         //this is to fill only once, i.e. only if xtal has this, no need to check for other xtals
-         setbit(tmpxtalbit, 1);
-         isSaturated_gain6 = 1;
+       setbit(tmpxtalbit, 1);
+       isSaturated_gain6 = 1;
 	       //break;
-       }
+     }
       }//if( rh != rechits->end() )
 
       if (nWeired>0) setbit(tmpxtalbit,2);

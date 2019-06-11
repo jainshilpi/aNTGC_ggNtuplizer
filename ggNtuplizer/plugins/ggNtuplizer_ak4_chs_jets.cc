@@ -387,10 +387,24 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
       	AK4CHSJet_ID_.push_back(jetIDdecision);
 
     	// PUJet ID from slimmedJets - not available for PUPPI
-      	AK4CHSJet_PUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant")); // not for PUPPI https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2017#Jets
-      	AK4CHSJet_PUFullID_.emplace_back(iJet->userInt("pileupJetId:fullId"));
 
-      	AK4CHSJet_qgLikelihood_.emplace_back(iJet->userFloat("QGTagger:qgLikelihood"));
+      	Float_t tmpPUID = -999;
+      	Char_t tmpPUfullID = -99;
+
+      	if(iJet->hasUserFloat("AK4PFCHSupdatedpileupJetIdEvaluator.:fullDiscriminant")) tmpPUID = iJet->userFloat("AK4PFCHSupdatedpileupJetIdEvaluator:fullDiscriminant");
+      	else if(iJet->hasUserFloat("pileupJetId:fullDiscriminant")) tmpPUID = iJet->userFloat("pileupJetId:fullDiscriminant");
+
+      	if(iJet->hasUserInt("AK4PFCHSupdatedpileupJetIdEvaluator:fullId")) tmpPUfullID = iJet->userInt("AK4PFCHSupdatedpileupJetIdEvaluator:fullId");
+      	else if(iJet->hasUserInt("pileupJetId:fullId")) tmpPUfullID = iJet->userInt("pileupJetId:fullId");
+
+      	AK4CHSJet_PUID_.push_back(tmpPUID); // not for PUPPI https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2017#Jets
+      	AK4CHSJet_PUFullID_.emplace_back(tmpPUfullID);
+
+      	Float_t tmp_qgLikelihood = -999.;
+      	if(iJet->hasUserFloat("QGTagger:qgLikelihood")) tmp_qgLikelihood = iJet->userFloat("QGTagger:qgLikelihood");
+      	else if(iJet->hasUserFloat("QGTaggerAK4PFCHS:qgLikelihood")) tmp_qgLikelihood = iJet->userFloat("QGTaggerAK4PFCHS:qgLikelihood");
+      	else if(iJet->hasUserFloat("QGTaggerAK4PFCHSupdated:qgLikelihood")) tmp_qgLikelihood = iJet->userFloat("QGTaggerAK4PFCHSupdated:qgLikelihood");
+      	AK4CHSJet_qgLikelihood_.emplace_back(tmp_qgLikelihood);
     	// gen jet and parton
       	if (doGenParticles_) {
       		int jetGenPartonIndex = -99;

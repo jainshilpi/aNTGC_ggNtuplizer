@@ -1,18 +1,32 @@
 #!/bin/bash
 
-input_datasets="data2017.txt"
-#input_datasets="datasets.txt"
+input_datasets="METbackgroundsV1.txt"
+# input_datasets="2016SinglePhoton.txt"
+#input_datasets="metXsecSamples.txt"
+# input_datasets="METsignalsMINIAODSIM.txt"
+# input_datasets="data2017.txt"
 # input_datasets="2016_mc_samples.txt"
-writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsUpdatedAnalyzer/"
-#psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
-psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
-# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
+#writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMETv1/"
+# writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMET2016v1/"
+writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMETxSecs/"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit//XsecAna.py"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2016_94X.py"
+#setname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
+psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
-mainOutputDir='/store/user/mwadud/aNTGC/ggNtuplizerSkimV2/'
+#mainOutputDir='/store/user/mwadud/aNTGCmet/ggNtuplizerMETv1/'
+#mainOutputDir='/store/user/mwadud/aNTGCmet/ggNtuplizerMET2016v1/'
+mainOutputDir='/store/user/mwadud/aNTGCmet/xsecsMET/'
 
+
+lumiMaskFile="https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
+
+# lumiMaskFile="https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/Final/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
 
 maxFiles=5000
 inputDBS=global
+# inputDBS=phys03
 
 
 ################################################################################################################
@@ -25,8 +39,8 @@ voms-proxy-init --voms cms
 crab_cfg_template=crab_submit.py
 units_perjob=2
 splitting='FileBased'
-blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico','T2_US_Caltech'"
-whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Cornell','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss'"
+blacklist="'T2_US_Florida','T2_US_Vanderbilt','T3_US_PuertoRico'"
+whitelist="'T3_US_UCR','T3_US_FNALLPC','T2_US_Purdue','T3_US_Rice','T3_US_Rutgers','T3_US_FIU','T3_US_FIT','T3_US_PSC','T3_US_OSU','T3_US_TAMU','T3_US_UMD','T3_US_VC3_NotreDame','T3_US_SDSC','T3_US_Colorado','T3_US_OSG','T3_US_Princeton_ICSE','T3_US_NERSC','T3_US_Baylor','T2_US_Nebraska','T2_US_UCSD','T2_US_Wisconsin','T2_US_MIT','T3_US_TACC','T3_US_TTU','T3_US_UMiss','T2_US_Caltech'"
 # blacklist=""
 # whitelist="'T3_US_FNALLPC'"
 
@@ -43,45 +57,54 @@ echo "*************************************************************************"
 
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
-#	jobName=$(echo ${dataset} | cut -f1,2 -d'/')
-#	jobName=${jobName#"/"}
+	jobName=$(echo ${dataset} | cut -f1,2 -d'/')
+	jobName=${jobName#"/"}
 
-	jobName=$(echo ${dataset////_})
-	jobName=${jobName#"_"}
-	jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
+	# jobName=$(echo ${dataset////_})
+	# jobName=${jobName#"_"}
+	# jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
 
-jobDir=${writedir}/${jobName}/
+	jobDir=${writedir}/${jobName}/
 
-echo "Submitting " ${jobName}
-echo "Job directory: "${jobDir}
-echo "Write site: " ${writeSite}
+	# rm -rf $jobDir
 
-if [ -d "$jobDir" ]; then
-	echo "Error! Directory "$jobDir "exists!"
-	exit
-fi
+	# rm -rf crab_${jobName}/
 
-mkdir -p ${jobDir}
+	echo "Submitting " ${jobName}
+	echo "Job directory: "${jobDir}
+	echo "Write site: " ${writeSite}
 
-crab_cfg_file=${jobDir}/crab_${jobName}.py
-cp ${crab_cfg_template} ${crab_cfg_file}
+	if [ -d "$jobDir" ]; then
+		echo "Error! Directory "$jobDir "exists!"
+		echo -e "\t\t\tSkipping!\n\n"
+		# exit
+		continue
+	fi
 
-sed -i 's|#psetname|'$psetname'|g' ${crab_cfg_file}
-sed -i 's|#workarea|'$jobDir'|g' ${crab_cfg_file}
-sed -i 's|#jobname|'$jobName'|g' ${crab_cfg_file}
-sed -i 's|#inputDataset|'$dataset'|g' ${crab_cfg_file}
-sed -i 's|#storageSite|'$writeSite'|g' ${crab_cfg_file}
-sed -i 's|#whitelist|'$whitelist'|g' ${crab_cfg_file}
-sed -i 's|#blacklist|'$blacklist'|g' ${crab_cfg_file}
-sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
-sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
-sed -i 's|#mainOutputDir|'$mainOutputDir'|g' ${crab_cfg_file}
+	mkdir -p ${jobDir}
 
-sed -i 's|#inputDBS|'$inputDBS'|g' ${crab_cfg_file}
+	crab_cfg_file=${jobDir}/crab_${jobName}.py
+	cp ${crab_cfg_template} ${crab_cfg_file}
+
+	sed -i 's|#psetname|'$psetname'|g' ${crab_cfg_file}
+	sed -i 's|#workarea|'$jobDir'|g' ${crab_cfg_file}
+	sed -i 's|#jobname|'$jobName'|g' ${crab_cfg_file}
+	sed -i 's|#inputDataset|'$dataset'|g' ${crab_cfg_file}
+	sed -i 's|#storageSite|'$writeSite'|g' ${crab_cfg_file}
+	sed -i 's|#whitelist|'$whitelist'|g' ${crab_cfg_file}
+	sed -i 's|#blacklist|'$blacklist'|g' ${crab_cfg_file}
+	sed -i 's|#splitting|'$splitting'|g' ${crab_cfg_file}
+	sed -i 's|#unitsperjob|'$units_perjob'|g' ${crab_cfg_file}
+	sed -i 's|#mainOutputDir|'$mainOutputDir'|g' ${crab_cfg_file}
+
+	sed -i 's|#inputDBS|'$inputDBS'|g' ${crab_cfg_file}
 
 
 	# sed -i 's|#config.Data.totalUnits|'config.Data.totalUnits'|g' ${crab_cfg_file}
 	# sed -i 's|#totalUnits|'$maxFiles'|g' ${crab_cfg_file}
+
+	# sed -i 's|#config.Data.lumiMask|'config.Data.lumiMask'|g' ${crab_cfg_file}
+	# sed -i 's|#lumiMaskFile|'${lumiMaskFile}'|g' ${crab_cfg_file}
 
 	python ${crab_cfg_file} | tee --append ${submit_log_file}
 done

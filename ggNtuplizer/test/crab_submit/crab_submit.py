@@ -48,4 +48,5 @@ config.Data.splitting     = '#splitting'
 config.Data.unitsPerJob   = #unitsperjob
 config.Data.ignoreLocality = True
 #config.Data.totalUnits = #totalUnits
+#config.Data.lumiMask = '#lumiMaskFile'
 submit(config)
