@@ -138,8 +138,8 @@ void ggNtuplizer::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Verte
 
   for (edm::View<pat::Muon>::const_iterator iMu = muonHandle->begin(); iMu != muonHandle->end(); ++iMu) {
 
-    if (iMu->pt() < 3) continue;
-    if (! (iMu->isPFMuon() || iMu->isGlobalMuon() || iMu->isTrackerMuon())) continue;
+    // if (iMu->pt() < 3) continue;
+    // if (! (iMu->isPFMuon() || iMu->isGlobalMuon() || iMu->isTrackerMuon())) continue;
 
     muPt_    .push_back(iMu->pt());
     muEn_    .push_back(iMu->energy());

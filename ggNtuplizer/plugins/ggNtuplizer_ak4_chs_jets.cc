@@ -249,9 +249,9 @@ void ggNtuplizer::fillAK4CHSJets(const edm::Event& e, const edm::EventSetup& es)
 
 	for (edm::View<pat::Jet>::const_iterator iJet = ak4PFJetsCHSHandle->begin(); iJet != ak4PFJetsCHSHandle->end(); ++iJet) {
 
-		if (iJet->pt() < 30.) continue;
+		// if (iJet->pt() < 30.) continue;
 
-		if((!iJet->isPFJet()) && (!iJet->isJPTJet())) continue;
+		// if((!iJet->isPFJet()) && (!iJet->isJPTJet())) continue;
 
 		AK4CHSJet_Charge_.push_back(    iJet->charge());
 		AK4CHSJet_Pt_.push_back(    iJet->pt());

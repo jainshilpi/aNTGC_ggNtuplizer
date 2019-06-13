@@ -4,6 +4,7 @@
 #include "TTree.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -32,6 +33,8 @@
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
 //#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
 #include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
+#include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "iterator"
 
 using namespace std;
@@ -96,6 +99,12 @@ private:
   void branchesGenAK8JetPart(TTree*);
   void fillGenAK4JetInfo(const edm::Event&, Float_t );
   void fillGenAK8JetInfo(const edm::Event&, Float_t );
+
+  Float_t ECALrecHitE( const DetId & id, const EcalRecHitCollection & recHits, int di = 0, int dj = 0);
+  Float_t swissCross(const DetId& id, const EcalRecHitCollection & recHits);
+  void branchesECALSC(TTree* tree);
+  void fillECALSC(const edm::Event& e, const edm::EventSetup& es);
+  Float_t getLICTD(const reco::SuperCluster & sc, noZS::EcalClusterLazyTools & ltNoZS);
 
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);
   // void fillAK8PUPPIJets    (const edm::Event&, const edm::EventSetup&);
