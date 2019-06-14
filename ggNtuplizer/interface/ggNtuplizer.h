@@ -100,11 +100,11 @@ private:
   void fillGenAK4JetInfo(const edm::Event&, Float_t );
   void fillGenAK8JetInfo(const edm::Event&, Float_t );
 
-  Float_t ECALrecHitE( const DetId & id, const EcalRecHitCollection & recHits, int di = 0, int dj = 0);
-  Float_t swissCross(const DetId& id, const EcalRecHitCollection & recHits);
+  Float_t ECALrecHitE( const DetId & id, const EcalRecHitCollection *recHits, int di = 0, int dj = 0);
+  Float_t swissCross(const DetId& id, noZS::EcalClusterLazyTools & ltNoZS);
   void branchesECALSC(TTree* tree);
   void fillECALSC(const edm::Event& e, const edm::EventSetup& es);
-  Float_t getLICTD(const reco::SuperCluster & sc, noZS::EcalClusterLazyTools & ltNoZS);
+  Float_t getLICTD(const reco::SuperCluster *sc, noZS::EcalClusterLazyTools & ltNoZS, Float_t &_maxEnXtalTime, UChar_t & _nL1Spike, UChar_t & _nDiweird, UChar_t & _nWeird, UChar_t & _nSaturated, UChar_t & _nOutOfTime, UChar_t & _nXtals, UChar_t & _maxEnXtalBits, Float_t & _maxEnXtalSwissCross);
 
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);
   // void fillAK8PUPPIJets    (const edm::Event&, const edm::EventSetup&);
@@ -152,6 +152,7 @@ private:
   edm::EDGetTokenT<EcalRecHitCollection>           ebReducedRecHitCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           eeReducedRecHitCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           esReducedRecHitCollection_;
+  edm::EDGetTokenT<std::vector<reco::SuperCluster>>           ecalSCcollection_;
   edm::EDGetTokenT<reco::PhotonCollection>         recophotonCollection_;
   edm::EDGetTokenT<reco::TrackCollection>          tracklabel_;
   edm::EDGetTokenT<reco::GsfElectronCollection>     gsfElectronlabel_;

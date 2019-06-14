@@ -13,12 +13,12 @@ vector<float>  phoPhi_;
 vector<float>  phoCalibE_;
 vector<float>  phoSigmaCalibE_;
 vector<float>  phoCalibEt_;
-vector<float>  phoSCE_;
-vector<float>  phoSCRawE_;
+// vector<float>  phoSCE_;
+// vector<float>  phoSCRawE_;
 vector<float>  phoESEnP1_;
 vector<float>  phoESEnP2_;
-vector<float>  phoSCEta_;
-vector<float>  phoSCPhi_;
+// vector<float>  phoSCEta_;
+// vector<float>  phoSCPhi_;
 vector<UChar_t> phoFiducialRegion_;
 vector<float>  phoSCEtaWidth_;
 vector<float>  phoSCPhiWidth_;
@@ -47,7 +47,7 @@ vector<ULong64_t> phoFiredTripleTrgs_;
 vector<ULong64_t> phoFiredL1Trgs_;
 vector<float>  phoSeedTime_;
 vector<float>  phoSeedEnergy_;
-vector<float>  phoSeedTimeFull5x5_;
+// vector<float>  phoSeedTimeFull5x5_;
 vector<float>  phoMIPChi2_;
 vector<float>  phoMIPTotEnergy_;
 vector<float>  phoMIPSlope_;
@@ -90,12 +90,12 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phoCalibE",               &phoCalibE_);
   tree->Branch("phoSigmaCalibE",          &phoSigmaCalibE_);
   tree->Branch("phoCalibEt",              &phoCalibEt_);
-  tree->Branch("phoSCE",                  &phoSCE_);
-  tree->Branch("phoSCRawE",               &phoSCRawE_);
+  // tree->Branch("phoSCE",                  &phoSCE_);
+  // tree->Branch("phoSCRawE",               &phoSCRawE_);
   tree->Branch("phoESEnP1",               &phoESEnP1_);
   tree->Branch("phoESEnP2",               &phoESEnP2_);
-  tree->Branch("phoSCEta",                &phoSCEta_);
-  tree->Branch("phoSCPhi",                &phoSCPhi_);
+  // tree->Branch("phoSCEta",                &phoSCEta_);
+  // tree->Branch("phoSCPhi",                &phoSCPhi_);
   tree->Branch("phoFiducialRegion",       &phoFiducialRegion_);
   tree->Branch("phoSCEtaWidth",           &phoSCEtaWidth_);
   tree->Branch("phoSCPhiWidth",           &phoSCPhiWidth_);
@@ -124,7 +124,7 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phoFiredL1Trgs",          &phoFiredL1Trgs_);
   tree->Branch("phoSeedTime",             &phoSeedTime_);
   tree->Branch("phoSeedEnergy",           &phoSeedEnergy_);
-  tree->Branch("phoSeedTimeFull5x5",              &phoSeedTimeFull5x5_);
+  // tree->Branch("phoSeedTimeFull5x5",              &phoSeedTimeFull5x5_);
   tree->Branch("phoMIPChi2",                      &phoMIPChi2_);
   tree->Branch("phoMIPTotEnergy",                 &phoMIPTotEnergy_);
   tree->Branch("phoMIPSlope",                     &phoMIPSlope_);
@@ -160,12 +160,12 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   phoCalibE_              .clear();
   phoSigmaCalibE_         .clear();
   phoCalibEt_             .clear();
-  phoSCE_                 .clear();
-  phoSCRawE_              .clear();
+  // phoSCE_                 .clear();
+  // phoSCRawE_              .clear();
   phoESEnP1_              .clear();
   phoESEnP2_              .clear();
-  phoSCEta_               .clear();
-  phoSCPhi_               .clear();
+  // phoSCEta_               .clear();
+  // phoSCPhi_               .clear();
   phoFiducialRegion_      .clear();
   phoSCEtaWidth_          .clear();
   phoSCPhiWidth_          .clear();
@@ -195,7 +195,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   phoxtalBits_            .clear();
   phoSeedTime_            .clear();
   phoSeedEnergy_          .clear();
-  phoSeedTimeFull5x5_   .clear();
+  // phoSeedTimeFull5x5_   .clear();
   phoMIPChi2_           .clear();
   phoMIPTotEnergy_      .clear();
   phoMIPSlope_          .clear();
@@ -230,10 +230,14 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   edm::Handle<vector<reco::GenParticle>> genParticlesHandle;
   if(doGenParticles_) e.getByToken(genParticlesCollection_, genParticlesHandle);
 
+  edm::Handle<std::vector<reco::SuperCluster>> ecalSChandle;
+  e.getByToken(ecalSCcollection_, ecalSChandle);
+
   EcalClusterLazyTools       lazyTool    (e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
   noZS::EcalClusterLazyTools lazyToolnoZS(e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
 
-  for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho) {
+  for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho){
+    if(iPho->et() < 15.) continue;
     phoE_             .push_back(iPho->energy());
     phoCalibE_        .push_back(iPho->userFloat("ecalEnergyPostCorr"));
     phoEt_            .push_back(iPho->et());
@@ -242,12 +246,12 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     phoSigmaCalibE_   .push_back(iPho->userFloat("ecalEnergyErrPostCorr"));
     phoEta_           .push_back(iPho->eta());
     phoPhi_           .push_back(iPho->phi());
-    phoSCE_           .push_back(iPho->superCluster()->energy());
-    phoSCRawE_        .push_back(iPho->superCluster()->rawEnergy());
+    // phoSCE_           .push_back(iPho->superCluster()->energy());
+    // phoSCRawE_        .push_back(iPho->superCluster()->rawEnergy());
     phoESEnP1_        .push_back(iPho->superCluster()->preshowerEnergyPlane1());
     phoESEnP2_        .push_back(iPho->superCluster()->preshowerEnergyPlane2());
-    phoSCEta_         .push_back(iPho->superCluster()->eta());
-    phoSCPhi_         .push_back(iPho->superCluster()->phi());
+    // phoSCEta_         .push_back(iPho->superCluster()->eta());
+    // phoSCPhi_         .push_back(iPho->superCluster()->phi());
     phoSCEtaWidth_    .push_back(iPho->superCluster()->etaWidth());
     phoSCPhiWidth_    .push_back(iPho->superCluster()->phiWidth());
     phoSCBrem_        .push_back(iPho->superCluster()->phiWidth()/(*iPho).superCluster()->etaWidth());
@@ -264,7 +268,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
 
     phoSeedBCE_        .push_back(iPho->superCluster()->seed()->energy());
     phoSeedBCEta_      .push_back(iPho->superCluster()->seed()->eta());
-    phoSeedTimeFull5x5_.push_back(lazyToolnoZS.SuperClusterSeedTime(*(iPho->superCluster())));
+    // phoSeedTimeFull5x5_.push_back(lazyToolnoZS.SuperClusterSeedTime(*(iPho->superCluster())));
     phoMIPChi2_        .push_back(iPho->mipChi2());
     phoMIPTotEnergy_   .push_back(iPho->mipTotEnergy());
     phoMIPSlope_       .push_back(iPho->mipSlope());
@@ -296,10 +300,10 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     if (isPassMVAv2wp80)  setbit(tmpphoIDbit, 3);
     bool isPassMVAv2wp90  = iPho->photonID("mvaPhoID-RunIIFall17-v2-wp90");
     if (isPassMVAv2wp90)  setbit(tmpphoIDbit, 4);
-    bool isPassMVAisov2wp80  = iPho->photonID("mvaPhoID-Fall17-iso-V2-wp80");
-    if (isPassMVAisov2wp80)  setbit(tmpphoIDbit, 5);
-    bool isPassMVAisov2wp90  = iPho->photonID("mvaPhoID-Fall17-iso-V2-wp90");
-    if (isPassMVAisov2wp90)  setbit(tmpphoIDbit, 6);
+    // bool isPassMVAisov2wp80  = iPho->photonID("mvaPhoID-Fall17-iso-V2-wp80");
+    // if (isPassMVAisov2wp80)  setbit(tmpphoIDbit, 5);
+    // bool isPassMVAisov2wp90  = iPho->photonID("mvaPhoID-Fall17-iso-V2-wp90");
+    // if (isPassMVAisov2wp90)  setbit(tmpphoIDbit, 6);
     if (!(iPho->mipIsHalo()))  setbit(tmpphoIDbit, 7);
      //  } else if( year_ == 2016){
      //   bool isPassLoose  = iPho->photonID("cutBasedPhotonID-Spring16-V2p2-loose");

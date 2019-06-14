@@ -58,6 +58,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   ebReducedRecHitCollection_  = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("ebReducedRecHitCollection"));
   eeReducedRecHitCollection_  = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("eeReducedRecHitCollection"));
   esReducedRecHitCollection_  = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("esReducedRecHitCollection"));
+  ecalSCcollection_           = consumes<std::vector<reco::SuperCluster>>(ps.getParameter<InputTag>("ecalSCcollection"));
   recophotonCollection_       = consumes<reco::PhotonCollection>        (ps.getParameter<InputTag>("recoPhotonSrc"));
   tracklabel_                 = consumes<reco::TrackCollection>         (ps.getParameter<InputTag>("TrackLabel"));
   gsfElectronlabel_           = consumes<reco::GsfElectronCollection>   (ps.getParameter<InputTag>("gsfElectronLabel"));
@@ -94,6 +95,8 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   branchesMuons(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
+
+  branchesECALSC(tree_);
 }
 
 ggNtuplizer::~ggNtuplizer() {
@@ -139,6 +142,8 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   if (dumpAK8Jets_) fillAK8PUPPIJets(e,es);
   if(dumpJets_ && doGenParticles_) fillGenAK4JetInfo(e, vtx.z());
   if(dumpAK8Jets_ && doGenParticles_) fillGenAK8JetInfo(e, vtx.z());
+
+  fillECALSC(e, es);
 
   tree_->Fill();
   hEvents_->Fill(0.8);
