@@ -37,3 +37,5 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+/test/crab_submit/jobs*
