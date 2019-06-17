@@ -3,21 +3,22 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
 
+
 using namespace std;
 
 // (local) variables associated with tree branches
 Int_t       run_;
 Long64_t    event_;
-Int_t       lumis_;
+UShort_t    lumis_;
 Bool_t      isData_;
-UChar_t       nVtx_;
-UChar_t       nGoodVtx_;
+UChar_t     nVtx_;
+UChar_t     nGoodVtx_;
 Bool_t      isPVGood_;
-float       vtx_;
-float       vty_;
-float       vtz_;
-float       rho_;
-float       rhoCentral_;
+Float_t     vtx_;
+Float_t     vty_;
+Float_t     vtz_;
+Float_t     rho_;
+Float_t     rhoCentral_;
 ULong64_t   HLTEleMuX_;
 ULong64_t   HLTPho_;
 ULong64_t   HLTPhoRejectedByPS_;
@@ -26,6 +27,10 @@ ULong64_t   HLTEleMuXIsPrescaled_;
 ULong64_t   HLTPhoIsPrescaled_;
 ULong64_t   HLTJetIsPrescaled_;
 // vector<int> phoPrescale_;
+Float_t     ecalPrefireW_;
+Float_t     ecalPrefireWup_;
+Float_t     ecalPrefireWdn_;
+UShort_t    beamHaloSummary_;
 
 void ggNtuplizer::branchesGlobalEvent(TTree* tree) {
 
@@ -50,6 +55,14 @@ void ggNtuplizer::branchesGlobalEvent(TTree* tree) {
   tree->Branch("HLTJetIsPrescaled",    &HLTJetIsPrescaled_);
 
   // if (!doGenParticles_) tree->Branch("phoPrescale",          &phoPrescale_);
+  if(getECALprefiringWeights_){
+    tree->Branch("ecalPrefireW",    &ecalPrefireW_);
+    tree->Branch("ecalPrefireWup",    &ecalPrefireWup_);
+    tree->Branch("ecalPrefireWdn",    &ecalPrefireWdn_);
+  }
+
+  tree->Branch("beamHaloSummary",    &beamHaloSummary_);
+
 }
 
 void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es) {
@@ -75,6 +88,32 @@ void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es
 
   edm::Handle<reco::VertexCollection> vtxHandle;
   e.getByToken(vtxLabel_, vtxHandle);
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////// beam halo summary ///////////////////////////////////////////////////
+  edm::Handle<reco::BeamHaloSummary> beamHaloSummaryHandle;
+  e.getByToken(beamHaloSummaryToken_, beamHaloSummaryHandle);
+
+  beamHaloSummary_ = 0;
+  if(beamHaloSummaryHandle.isValid()){
+    if(beamHaloSummaryHandle->CSCLooseHaloId()) setbit(beamHaloSummary_, 0);
+    if(beamHaloSummaryHandle->CSCTightHaloId()) setbit(beamHaloSummary_, 1);
+    if(beamHaloSummaryHandle->CSCTightHaloId2015()) setbit(beamHaloSummary_, 2);
+    if(beamHaloSummaryHandle->CSCTightHaloIdTrkMuUnveto()) setbit(beamHaloSummary_, 3);
+    if(beamHaloSummaryHandle->EcalLooseHaloId()) setbit(beamHaloSummary_, 4);
+    if(beamHaloSummaryHandle->EcalTightHaloId()) setbit(beamHaloSummary_, 5);
+    if(beamHaloSummaryHandle->EventSmellsLikeHalo()) setbit(beamHaloSummary_, 6);
+    if(beamHaloSummaryHandle->ExtremeTightId()) setbit(beamHaloSummary_, 7);
+    if(beamHaloSummaryHandle->GlobalLooseHaloId()) setbit(beamHaloSummary_, 8);
+    if(beamHaloSummaryHandle->GlobalSuperTightHaloId2016()) setbit(beamHaloSummary_, 9);
+    if(beamHaloSummaryHandle->GlobalTightHaloId()) setbit(beamHaloSummary_, 10);
+    if(beamHaloSummaryHandle->GlobalTightHaloId2016()) setbit(beamHaloSummary_, 11);
+    if(beamHaloSummaryHandle->HcalLooseHaloId()) setbit(beamHaloSummary_, 12);
+    if(beamHaloSummaryHandle->HcalTightHaloId()) setbit(beamHaloSummary_, 13);
+    if(beamHaloSummaryHandle->LooseId()) setbit(beamHaloSummary_, 14);
+    if(beamHaloSummaryHandle->TightId()) setbit(beamHaloSummary_, 15);
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
   nVtx_     = -1;
   nGoodVtx_ = -1;
@@ -435,7 +474,20 @@ void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es
       HLTJet_            |= (isFired << bitJet);
       HLTJetIsPrescaled_ |= (isPrescaled << bitJet);
     }
+  }
 
+  if(getECALprefiringWeights_){
+    edm::Handle<double> theprefweight;
+    e.getByToken(prefweight_token, theprefweight ) ;
+    ecalPrefireW_ = (*theprefweight);
+
+    edm::Handle<double> theprefweightup;
+    e.getByToken(prefweightup_token, theprefweightup ) ;
+    ecalPrefireWup_ = (*theprefweightup);
+
+    edm::Handle<double> theprefweightdown;
+    e.getByToken(prefweightdown_token, theprefweightdown ) ;
+    ecalPrefireWdn_ = (*theprefweightdown);
   }
 
 }

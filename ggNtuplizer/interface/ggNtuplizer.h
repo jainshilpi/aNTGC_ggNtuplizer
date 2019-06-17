@@ -28,6 +28,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/METReco/interface/BeamHaloSummary.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 //#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
@@ -78,6 +79,7 @@ private:
   void branchesGenPart    (TTree*);
   void branchesMET        (TTree*);
   void branchesPhotons    (TTree*);
+  void branchesPhotonsOOT(TTree*);
   void branchesElectrons  (TTree*);
   // void branchesHFElectrons(TTree*);
   void branchesMuons      (TTree*);
@@ -90,6 +92,7 @@ private:
   void fillGenPart    (const edm::Event&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
   void fillPhotons    (const edm::Event&, const edm::EventSetup&);
+  void fillPhotonsOOT    (const edm::Event&, const edm::EventSetup&);
   void fillElectrons  (const edm::Event&, const edm::EventSetup&, math::XYZPoint&);
   // void fillHFElectrons(const edm::Event&);
   void fillMuons      (const edm::Event&, math::XYZPoint&, const reco::Vertex);
@@ -103,7 +106,9 @@ private:
   Float_t ECALrecHitE( const DetId & id, const EcalRecHitCollection *recHits, int di = 0, int dj = 0);
   Float_t swissCross(const DetId& id, noZS::EcalClusterLazyTools & ltNoZS);
   void branchesECALSC(TTree* tree);
+  void branchesECALOOTSC(TTree* tree);
   void fillECALSC(const edm::Event& e, const edm::EventSetup& es);
+  void fillECALOOTSC(const edm::Event& e, const edm::EventSetup& es);
   Float_t getLICTD(const reco::SuperCluster *sc, noZS::EcalClusterLazyTools & ltNoZS, Float_t &_maxEnXtalTime, UChar_t & _nL1Spike, UChar_t & _nDiweird, UChar_t & _nWeird, UChar_t & _nSaturated, UChar_t & _nOutOfTime, UChar_t & _nXtals, UChar_t & _maxEnXtalBits, Float_t & _maxEnXtalSwissCross);
 
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);
@@ -125,12 +130,15 @@ private:
   bool dumpPDFSystWeight_;
   bool dumpHFElectrons_;
   int  year_;
+  Bool_t doOOTphotons_;
 
   vector<int> newparticles_;
 
   double trgFilterDeltaPtCut_;
   double trgFilterDeltaRCut_;
 
+
+  edm::EDGetTokenT<reco::BeamHaloSummary>           beamHaloSummaryToken_;
   edm::EDGetTokenT<reco::VertexCollection>         vtxLabel_;
   edm::EDGetTokenT<reco::VertexCollection>         vtxBSLabel_;
   edm::EDGetTokenT<double>                         rhoLabel_;
@@ -147,12 +155,14 @@ private:
   edm::EDGetTokenT<edm::View<pat::MET> >           pfMETlabel_;
   edm::EDGetTokenT<edm::View<pat::Electron> >      electronCollection_;
   edm::EDGetTokenT<edm::View<pat::Photon> >        photonCollection_;
+  edm::EDGetTokenT<edm::View<pat::Photon> >        photonOOTCollection_;
   edm::EDGetTokenT<edm::View<pat::Muon> >          muonCollection_;
   edm::EDGetTokenT<vector<pat::Tau> >              tauCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           ebReducedRecHitCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           eeReducedRecHitCollection_;
   edm::EDGetTokenT<EcalRecHitCollection>           esReducedRecHitCollection_;
   edm::EDGetTokenT<std::vector<reco::SuperCluster>>           ecalSCcollection_;
+  edm::EDGetTokenT<std::vector<reco::SuperCluster>>           ecalSC_OOT_collection_;
   edm::EDGetTokenT<reco::PhotonCollection>         recophotonCollection_;
   edm::EDGetTokenT<reco::TrackCollection>          tracklabel_;
   edm::EDGetTokenT<reco::GsfElectronCollection>     gsfElectronlabel_;
@@ -168,6 +178,11 @@ private:
   edm::EDGetTokenT<reco::JetTagCollection>          boostedDoubleSVLabel_;
   edm::EDGetTokenT<pat::PackedCandidateCollection>  pckPFCandidateCollection_;
   edm::EDGetTokenT<Bool_t>                          ecalBadCalibFilterUpdateToken_;
+
+  Bool_t                                            getECALprefiringWeights_;
+  edm::EDGetTokenT<double>                          prefweight_token;
+  edm::EDGetTokenT<double>                          prefweightup_token;
+  edm::EDGetTokenT<double>                          prefweightdown_token;
 
   // for MET filters
   edm::EDGetTokenT<bool> BadChCandFilterToken_;

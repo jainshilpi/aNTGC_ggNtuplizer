@@ -1,28 +1,28 @@
 #!/bin/bash
 
-input_datasets="METbackgroundsV1.txt"
+# input_datasets="METbackgroundsV1.txt"
 # input_datasets="2016SinglePhoton.txt"
 #input_datasets="metXsecSamples.txt"
 # input_datasets="METsignalsMINIAODSIM.txt"
-# input_datasets="data2017.txt"
+input_datasets="data2017.txt"
 # input_datasets="2016_mc_samples.txt"
-#writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMETv1/"
+writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMETv2/"
 # writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMET2016v1/"
-writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMETxSecs/"
+# writedir="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/jobsMETxSecs/"
 # psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit//XsecAna.py"
 # psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2016_94X.py"
 #setname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_mc2017_94X.py"
-# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
-psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
+psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/run_data2017_94X.py"
+# psetname="/afs/cern.ch/work/m/mwadud/private/naTGC/CMSSW_9_4_13/src/ggAnalysis/ggNtuplizer/test/crab_submit/XsecAna.py"
 writeSite="T2_US_Wisconsin"
-#mainOutputDir='/store/user/mwadud/aNTGCmet/ggNtuplizerMETv1/'
-#mainOutputDir='/store/user/mwadud/aNTGCmet/ggNtuplizerMET2016v1/'
-mainOutputDir='/store/user/mwadud/aNTGCmet/xsecsMET/'
+mainOutputDir='/store/user/mwadud/aNTGCmet/ggNtuplizerMETv2/'
+# mainOutputDir='/store/user/mwadud/aNTGCmet/ggNtuplizerMET2016v1/'
+# mainOutputDir='/store/user/mwadud/aNTGCmet/xsecsMET/'
 
 
-lumiMaskFile="https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
+# lumiMaskFile="https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
 
-# lumiMaskFile="https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/Final/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
+lumiMaskFile="https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/Final/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
 
 maxFiles=5000
 inputDBS=global
@@ -57,12 +57,12 @@ echo "*************************************************************************"
 
 for dataset in `sed '/^$/d' ${input_datasets}`;
 do
-	jobName=$(echo ${dataset} | cut -f1,2 -d'/')
-	jobName=${jobName#"/"}
+	# jobName=$(echo ${dataset} | cut -f1,2 -d'/')
+	# jobName=${jobName#"/"}
 
-	# jobName=$(echo ${dataset////_})
-	# jobName=${jobName#"_"}
-	# jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
+	jobName=$(echo ${dataset////_})
+	jobName=${jobName#"_"}
+	jobName=$(echo ${jobName} | sed 's/[^a-zA-Z0-9]//g')
 
 	jobDir=${writedir}/${jobName}/
 
@@ -103,8 +103,8 @@ do
 	# sed -i 's|#config.Data.totalUnits|'config.Data.totalUnits'|g' ${crab_cfg_file}
 	# sed -i 's|#totalUnits|'$maxFiles'|g' ${crab_cfg_file}
 
-	# sed -i 's|#config.Data.lumiMask|'config.Data.lumiMask'|g' ${crab_cfg_file}
-	# sed -i 's|#lumiMaskFile|'${lumiMaskFile}'|g' ${crab_cfg_file}
+	sed -i 's|#config.Data.lumiMask|'config.Data.lumiMask'|g' ${crab_cfg_file}
+	sed -i 's|#lumiMaskFile|'${lumiMaskFile}'|g' ${crab_cfg_file}
 
 	python ${crab_cfg_file} | tee --append ${submit_log_file}
 done

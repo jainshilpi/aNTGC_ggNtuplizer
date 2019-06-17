@@ -26,6 +26,19 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCt
 ##########################################################################################################################
 
 
+
+##########################################################################################################################
+### ECAL prefiring correction
+from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
+process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+    DataEra = cms.string("2017BtoF"),
+    UseJetEMPt = cms.bool(False),
+    PrefiringRateSystematicUncty = cms.double(0.2),
+    SkipWarnings = False)
+##########################################################################################################################
+
+
+
 ##########################################################################################################################
 ### fix a bug in the ECAL-Tracker momentum combination when applying the scale and smearing
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
@@ -40,6 +53,7 @@ setupEgammaPostRecoSeq(process,
      'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V2_cff']
  )
 ##########################################################################################################################
+
 
 
 ##########################################################################################################################
@@ -103,6 +117,7 @@ process.ggNtuplizer.runOnSherpa = cms.bool(True)
 # process.ggNtuplizer.patTriggerResults = cms.InputTag("TriggerResults", "", "PAT")
 process.ggNtuplizer.patTriggerResults = cms.InputTag("TriggerResults", "", "RECO")
 # process.ggNtuplizer.triggerEvent=cms.InputTag("slimmedPatTrigger", "", "RECO")
+process.ggNtuplizer.getECALprefiringWeights = cms.bool(True)
 ##########################################################################################################################
 
 
@@ -134,6 +149,7 @@ process.ggNtuplizer.ecalBadCalibFilter = cms.InputTag("ecalBadCalibReducedMINIAO
 
 ##########################################################################################################################
 process.p = cms.Path(
+  process.prefiringweight *
   process.ecalBadCalibReducedMINIAODFilter *
   process.fullPatMetSequenceModifiedMET *
   process.egammaPostRecoSeq *

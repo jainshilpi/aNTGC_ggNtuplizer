@@ -13,11 +13,21 @@ ggNtuplizer::ggNtuplizer(const edm::ParameterSet& ps) :
 hltPrescaleProvider_(ps, consumesCollector(), *this)
 {
 
+  getECALprefiringWeights_      = ps.getParameter<bool>("getECALprefiringWeights");
+  if(getECALprefiringWeights_){
+    prefweight_token              = consumes< double >(edm::InputTag("prefiringweight:nonPrefiringProb"));
+    prefweightup_token            = consumes< double >(edm::InputTag("prefiringweight:nonPrefiringProbUp"));
+    prefweightdown_token          = consumes< double >(edm::InputTag("prefiringweight:nonPrefiringProbDown"));
+  }
+
+
   development_                = ps.getParameter<bool>("development");
   addFilterInfoAOD_           = ps.getParameter<bool>("addFilterInfoAOD");
   addFilterInfoMINIAOD_       = ps.getParameter<bool>("addFilterInfoMINIAOD");
   doNoHFMET_                  = ps.getParameter<bool>("doNoHFMET");
 
+
+  doOOTphotons_               = ps.getParameter<bool>("doOOTphotons");
   doGenParticles_             = ps.getParameter<bool>("doGenParticles");
   runOnParticleGun_           = ps.getParameter<bool>("runOnParticleGun");
   runOnSherpa_                = ps.getParameter<bool>("runOnSherpa");
@@ -33,6 +43,7 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   trgFilterDeltaPtCut_        = ps.getParameter<double>("trgFilterDeltaPtCut");
   trgFilterDeltaRCut_         = ps.getParameter<double>("trgFilterDeltaRCut");
 
+  beamHaloSummaryToken_       = consumes<reco::BeamHaloSummary>         (ps.getParameter<InputTag>("beamHaloSummary"));
   vtxLabel_                   = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("VtxLabel"));
   vtxBSLabel_                 = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("VtxBSLabel"));
   rhoLabel_                   = consumes<double>                        (ps.getParameter<InputTag>("rhoLabel"));
@@ -54,11 +65,13 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   BadPFMuonFilterToken_       = consumes<bool>                          (ps.getParameter<edm::InputTag>("BadPFMuonFilter"));
 
   photonCollection_           = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonSrc"));
+  photonOOTCollection_        = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonOOTSrc"));
   muonCollection_             = consumes<View<pat::Muon> >              (ps.getParameter<InputTag>("muonSrc"));
   ebReducedRecHitCollection_  = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("ebReducedRecHitCollection"));
   eeReducedRecHitCollection_  = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("eeReducedRecHitCollection"));
   esReducedRecHitCollection_  = consumes<EcalRecHitCollection>          (ps.getParameter<InputTag>("esReducedRecHitCollection"));
   ecalSCcollection_           = consumes<std::vector<reco::SuperCluster>>(ps.getParameter<InputTag>("ecalSCcollection"));
+  ecalSC_OOT_collection_      = consumes<std::vector<reco::SuperCluster>>(ps.getParameter<InputTag>("ecalSCOOTcollection"));
   recophotonCollection_       = consumes<reco::PhotonCollection>        (ps.getParameter<InputTag>("recoPhotonSrc"));
   tracklabel_                 = consumes<reco::TrackCollection>         (ps.getParameter<InputTag>("TrackLabel"));
   gsfElectronlabel_           = consumes<reco::GsfElectronCollection>   (ps.getParameter<InputTag>("gsfElectronLabel"));
@@ -91,12 +104,15 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   if(dumpAK8Jets_ && doGenParticles_) branchesGenAK8JetPart(tree_);
   branchesMET(tree_);
   branchesPhotons(tree_);
+  branchesECALSC(tree_);
+  if(doOOTphotons_) {
+    branchesPhotonsOOT(tree_);
+    branchesECALOOTSC(tree_);
+  }
   branchesElectrons(tree_);
   branchesMuons(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
-
-  branchesECALSC(tree_);
 }
 
 ggNtuplizer::~ggNtuplizer() {
@@ -138,6 +154,10 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillElectrons(e, es, pv);
   fillMuons(e, pv, vtx);
   fillPhotons(e, es);
+  if(doOOTphotons_) {
+    fillPhotonsOOT(e, es);
+    fillECALOOTSC(e, es);
+  }
   if (dumpJets_) fillAK4CHSJets(e,es);
   if (dumpAK8Jets_) fillAK8PUPPIJets(e,es);
   if(dumpJets_ && doGenParticles_) fillGenAK4JetInfo(e, vtx.z());

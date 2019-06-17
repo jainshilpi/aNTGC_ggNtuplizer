@@ -8,16 +8,16 @@ enum PROMPT_STATUS_TYPE {
 };
 
 // (local) variables associated with tree branches
-vector<float>    pdf_;
-float            pthat_;
-float            processID_;
-float            genWeight_;
-float            genHT_;
-float            genPho1_;
-float            genPho2_;
+vector<Float_t>    pdf_;
+// Float_t            pthat_;
+// Float_t            processID_;
+Float_t            genWeight_;
+Float_t            genHT_;
+Float_t            genPho1_;
+Float_t            genPho2_;
 // TString          EventTag_;
-float            pdfWeight_;
-vector<float>    pdfSystWeight_;
+Float_t            pdfWeight_;
+vector<Float_t>    pdfSystWeight_;
 
 UChar_t            nPUInfo_;
 UChar_t      nPU_;
@@ -28,32 +28,32 @@ UChar_t    puTrue_;
 // vector<UChar_t>    puTrue_;
 
 UShort_t nMC_;
-vector<int>      mcPID;
-vector<float>    mcVtx;
-vector<float>    mcVty;
-vector<float>    mcVtz;
-vector<float>    mcPt;
-vector<float>    mcMass;
-vector<float>    mcEta;
-vector<float>    mcPhi;
-vector<float>    mcE;
-vector<float>    mcEt;
-vector<int>      mcGMomPID;
-vector<int>      mcMomPID;
-vector<float>    mcMomPt;
-vector<float>    mcMomMass;
-vector<float>    mcMomEta;
-vector<float>    mcMomPhi;
+vector<Int_t>      mcPID;
+vector<Float_t>    mcVtx;
+vector<Float_t>    mcVty;
+vector<Float_t>    mcVtz;
+vector<Float_t>    mcPt;
+vector<Float_t>    mcMass;
+vector<Float_t>    mcEta;
+vector<Float_t>    mcPhi;
+vector<Float_t>    mcE;
+vector<Float_t>    mcEt;
+vector<Int_t>      mcGMomPID;
+vector<Int_t>      mcMomPID;
+vector<Float_t>    mcMomPt;
+vector<Float_t>    mcMomMass;
+vector<Float_t>    mcMomEta;
+vector<Float_t>    mcMomPhi;
 vector<Short_t>      mcIndex;
 vector<UShort_t> mcStatusFlag;
 vector<UChar_t>  mcParentage;
 vector<Char_t>  mcPromptStatusType_;
 Char_t  mcHasDirectPromptPho_;
 vector<Short_t>      mcStatus;
-vector<float>    mcCalIsoDR03;
-vector<float>    mcTrkIsoDR03;
-vector<float>    mcCalIsoDR04;
-vector<float>    mcTrkIsoDR04;
+vector<Float_t>    mcCalIsoDR03;
+vector<Float_t>    mcTrkIsoDR03;
+vector<Float_t>    mcCalIsoDR04;
+vector<Float_t>    mcTrkIsoDR04;
 
 
 PROMPT_STATUS_TYPE getPromptStatus(const reco::GenParticle& p, const edm::Handle<vector<reco::GenParticle>>& particles) {
@@ -71,12 +71,12 @@ PROMPT_STATUS_TYPE getPromptStatus(const reco::GenParticle& p, const edm::Handle
 };
 
 
-float getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
+Float_t getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
 	reco::GenParticleCollection::const_iterator thisPart,
-	float dRMax, bool removeMu, bool removeNu) {
+	Float_t dRMax, bool removeMu, bool removeNu) {
 
   // Returns Et sum.
-	float etSum = 0;
+	Float_t etSum = 0;
 
 	for (reco::GenParticleCollection::const_iterator p = handle->begin(); p != handle->end(); ++p) {
 		if (p == thisPart) continue;
@@ -86,7 +86,7 @@ float getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
 		if (thisPart->collisionId() != p->collisionId())
 			continue;
 
-		int pdgCode = abs(p->pdgId());
+		Int_t pdgCode = abs(p->pdgId());
 
     // skip muons/neutrinos, if requested
 		if (removeMu && pdgCode == 13) continue;
@@ -96,7 +96,7 @@ float getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
     // if (p->et() < 0) continue;
 
     // must be within deltaR cone
-		float dR = reco::deltaR(thisPart->momentum(), p->momentum());
+		Float_t dR = reco::deltaR(thisPart->momentum(), p->momentum());
 		if (dR > dRMax) continue;
 
 		etSum += p->et();
@@ -105,11 +105,11 @@ float getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
 	return etSum;
 }
 
-float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
-	reco::GenParticleCollection::const_iterator thisPart, float dRMax) {
+Float_t getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
+	reco::GenParticleCollection::const_iterator thisPart, Float_t dRMax) {
 
    // Returns pT sum without counting neutral particles.
-	float ptSum = 0;
+	Float_t ptSum = 0;
 
 	for (reco::GenParticleCollection::const_iterator p = handle->begin(); p != handle->end(); ++p) {
 		if (p == thisPart) continue;
@@ -124,7 +124,7 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
       // if (p->pt() < 0) continue;
 
       // must be within deltaR cone
-      float dR = reco::deltaR(thisPart->momentum(), p->momentum());
+      Float_t dR = reco::deltaR(thisPart->momentum(), p->momentum());
       if (dR > dRMax) continue;
 
       ptSum += p->pt();
@@ -136,8 +136,8 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
 void ggNtuplizer::branchesGenInfo(TTree* tree, edm::Service<TFileService> &fs) {
 
 	tree->Branch("pdf",           &pdf_);
-	tree->Branch("pthat",         &pthat_);
-	tree->Branch("processID",     &processID_);
+	// tree->Branch("pthat",         &pthat_);
+	// tree->Branch("processID",     &processID_);
 	tree->Branch("genWeight",     &genWeight_);
 	tree->Branch("genHT",         &genHT_);
 	tree->Branch("genPho1",       &genPho1_);
@@ -194,8 +194,8 @@ void ggNtuplizer::branchesGenPart(TTree* tree) {
 void ggNtuplizer::fillGenInfo(const edm::Event& e) {
 
   // cleanup from previous execution
-	pthat_     = -99;
-	processID_ = -99;
+	// pthat_     = -99;
+	// processID_ = -99;
 	genWeight_ = -99;
 	genHT_     = -99;
 	genPho1_   = -99;
@@ -224,8 +224,8 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
       pdf_.push_back(genEventInfoHandle->pdf()->scalePDF);    // scale of the hard interaction
   }
 
-  if (genEventInfoHandle->hasBinningValues()) pthat_ = genEventInfoHandle->binningValues()[0];
-  processID_ = genEventInfoHandle->signalProcessID();
+  // if (genEventInfoHandle->hasBinningValues()) pthat_ = genEventInfoHandle->binningValues()[0];
+  // processID_ = genEventInfoHandle->signalProcessID();
   genWeight_ = genEventInfoHandle->weight();
   if (genWeight_ >= 0) hGenWeightSign_->Fill(0.5);
   else hGenWeightSign_->Fill(-0.5);
@@ -245,10 +245,10 @@ if (lheEventProduct.isValid()){
 	const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
 	std::vector<lhef::HEPEUP::FiveVector> lheParticles = lheEvent.PUP;
 	size_t numParticles = lheParticles.size();
-	int nMCPho = 0;
+	Int_t nMCPho = 0;
 	for ( size_t idxParticle = 0; idxParticle < numParticles; ++idxParticle ) {
-		int absPdgId = TMath::Abs(lheEvent.IDUP[idxParticle]);
-		int status = lheEvent.ISTUP[idxParticle];
+		Int_t absPdgId = TMath::Abs(lheEvent.IDUP[idxParticle]);
+		Int_t status = lheEvent.ISTUP[idxParticle];
       if (status == 1 && ((absPdgId >= 1 && absPdgId <= 6) || absPdgId == 21) ){// quarks and gluons
         // first entry is px, second py
       	lheHt += TMath::Sqrt(TMath::Power(lheParticles[idxParticle][0], 2.) + TMath::Power(lheParticles[idxParticle][1], 2.));
@@ -357,12 +357,12 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
 		return;
 	}
 
-	int genIndex = 0;
+	Int_t genIndex = 0;
 
 	for (vector<reco::GenParticle>::const_iterator ip = genParticlesHandle->begin(); ip != genParticlesHandle->end(); ++ip) {
 		genIndex++;
 
-		int status = ip->status();
+		Int_t status = ip->status();
 
 		bool stableFinalStateParticle = (status == 1) && (ip->pt() > 5.0);
 
@@ -439,12 +439,12 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
 			if((ip->pdgId() == 22) && (_mcPromptStatysType == DIRECTPROMPT)) setbit(mcHasDirectPromptPho_, 0);
 			if((ip->pdgId() == 22) && (ip->isPromptFinalState())) setbit(mcHasDirectPromptPho_, 1);
 
-			int mcGMomPID_ = -999;
-			int mcMomPID_  = -999;
-			float mcMomPt_    = -999.;
-			float mcMomMass_  = -999.;
-			float mcMomEta_   = -999.;
-			float mcMomPhi_   = -999.;
+			Int_t mcGMomPID_ = -999;
+			Int_t mcMomPID_  = -999;
+			Float_t mcMomPt_    = -999.;
+			Float_t mcMomMass_  = -999.;
+			Float_t mcMomEta_   = -999.;
+			Float_t mcMomPhi_   = -999.;
 			UChar_t temp_mcParentage = 0;
 			if (!runOnSherpa_) {
 				Int_t pIndex= std::distance(genParticlesHandle->begin(),ip);
