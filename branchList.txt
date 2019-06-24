@@ -1,332 +1,332 @@
-        Int_t,  run
-        Long64_t,       event
-        UShort_t,       lumis
-        UChar_t,        nVtx
-        UChar_t,        nGoodVtx
-        Bool_t, isPVGood
-        Float_t,        vtx
-        Float_t,        vty
-        Float_t,        vtz
-        Float_t,        rho
-        Float_t,        rhoCentral
-        ULong64_t,      HLTEleMuX
-        ULong64_t,      HLTPho
-        ULong64_t,      HLTPhoRejectedByPS
-        ULong64_t,      HLTJet
-        ULong64_t,      HLTEleMuXIsPrescaled
-        ULong64_t,      HLTPhoIsPrescaled
-        ULong64_t,      HLTJetIsPrescaled
-        UShort_t,       beamHaloSummary
-        UShort_t,       metFilters
-        Float_t,        pfMET
-        Float_t,        pfMETPhi
-        Float_t,        pfMET_T1JERUp
-        Float_t,        pfMET_T1JERDo
-        Float_t,        pfMET_T1JESUp
-        Float_t,        pfMET_T1JESDo
-        Float_t,        pfMET_T1UESUp
-        Float_t,        pfMET_T1UESDo
-        Float_t,        pfMETPhi_T1JESUp
-        Float_t,        pfMETPhi_T1JESDo
-        Float_t,        pfMETPhi_T1UESUp
-        Float_t,        pfMETPhi_T1UESDo
-        Float_t,        pfMET_metSig
-        Float_t,        pfMET_EtSig
-        UShort_t,       nPho
-        vector<float>,  phoE
-        vector<float>,  phoSigmaE
-        vector<float>,  phoEt
-        vector<float>,  phoEta
-        vector<float>,  phoPhi
-        vector<float>,  phoCalibE
-        vector<float>,  phoSigmaCalibE
-        vector<float>,  phoCalibEt
-        vector<short>,  phoSCindex
-        vector<float>,  phoESEnP1
-        vector<float>,  phoESEnP2
-        vector<unsigned char>,  phoFiducialRegion
-        vector<unsigned char>,  phoQualityBits
-        vector<float>,  phoR9
-        vector<float>,  phoHoverE
-        vector<float>,  phoESEffSigmaRR
-        vector<float>,  phoSigmaIEtaIEtaFull5x5
-        vector<float>,  phoSigmaIEtaIPhiFull5x5
-        vector<float>,  phoSigmaIPhiIPhiFull5x5
-        vector<float>,  phoE2x2Full5x5
-        vector<float>,  phoE5x5Full5x5
-        vector<float>,  phoR9Full5x5
-        vector<float>,  phoSeedBCE
-        vector<float>,  phoSeedBCEta
-        vector<float>,  phoPFChIso
-        vector<float>,  phoPFPhoIso
-        vector<float>,  phoPFNeuIso
-        vector<float>,  phoPFChWorstIso
-        vector<float>,  phoIDMVA
-        vector<ULong64_t>,      phoFiredSingleTrgs
-        vector<ULong64_t>,      phoFiredDoubleTrgs
-        vector<ULong64_t>,      phoFiredTripleTrgs
-        vector<ULong64_t>,      phoFiredL1Trgs
-        vector<float>,  phoSeedTime
-        vector<float>,  phoSeedEnergy
-        vector<float>,  phoMIPChi2
-        vector<float>,  phoMIPTotEnergy
-        vector<float>,  phoMIPSlope
-        vector<float>,  phoMIPIntercept
-        vector<short>,  phoMIPNhitCone
-        vector<unsigned char>,  phoIDbit
-        vector<float>,  phoScale_stat_up
-        vector<float>,  phoScale_stat_dn
-        vector<float>,  phoScale_syst_up
-        vector<float>,  phoScale_syst_dn
-        vector<float>,  phoScale_gain_up
-        vector<float>,  phoScale_gain_dn
-        vector<float>,  phoResol_rho_up
-        vector<float>,  phoResol_rho_dn
-        vector<float>,  phoResol_phi_up
-        vector<float>,  phoResol_phi_dn
-        UShort_t,       necalSC
-        vector<unsigned short>, ecalSCindex
-        vector<float>,  ecalSCeta
-        vector<float>,  ecalSCphi
-        vector<float>,  ecalSCEn
-        vector<float>,  ecalSCRawEn
-        vector<float>,  ecalSCetaWidth
-        vector<float>,  ecalSCphiWidth
-        vector<float>,  ecalSC_LICTD
-        vector<unsigned char>,  ecalSC_nL1Spike
-        vector<unsigned char>,  ecalSC_nDiweird
-        vector<unsigned char>,  ecalSC_nWeird
-        vector<unsigned char>,  ecalSC_nSaturated
-        vector<unsigned char>,  ecalSC_nOutOfTime
-        vector<unsigned char>,  ecalSC_nXtals
-        vector<float>,  ecalSC_maxEnXtalTime
-        vector<float>,  ecalSC_maxEnXtalSwissCross
-        vector<unsigned char>,  ecalSC_maxEnXtalBits
-        UShort_t,       nootPho
-        vector<float>,  ootPho_E
-        vector<float>,  ootPho_Et
-        vector<float>,  ootPho_Eta
-        vector<float>,  ootPho_Phi
-        vector<short>,  ootPho_SCindex
-        vector<unsigned char>,  ootPho_FiducialRegion
-        vector<unsigned char>,  ootPho_QualityBits
-        vector<float>,  ootPho_R9
-        vector<float>,  ootPho_HoverE
-        vector<float>,  ootPho_ESEffSigmaRR
-        vector<float>,  ootPho_SigmaIEtaIEtaFull5x5
-        vector<float>,  ootPho_SigmaIEtaIPhiFull5x5
-        vector<float>,  ootPho_SigmaIPhiIPhiFull5x5
-        vector<float>,  ootPho_R9Full5x5
-        vector<ULong64_t>,      ootPho_FiredSingleTrgs
-        vector<ULong64_t>,      ootPho_FiredDoubleTrgs
-        vector<ULong64_t>,      ootPho_FiredTripleTrgs
-        vector<ULong64_t>,      ootPho_FiredL1Trgs
-        vector<float>,  ootPho_SeedTime
-        vector<float>,  ootPho_SeedEnergy
-        vector<float>,  ootPho_MIPChi2
-        vector<float>,  ootPho_MIPTotEnergy
-        vector<float>,  ootPho_MIPSlope
-        vector<float>,  ootPho_MIPIntercept
-        vector<short>,  ootPho_MIPNhitCone
-        vector<unsigned char>,  ootPho_IDbit
-        UShort_t,       necalootSC
-        vector<unsigned short>, ecalootSC_index
-        vector<float>,  ecalootSC_eta
-        vector<float>,  ecalootSC_phi
-        vector<float>,  ecalootSC_En
-        vector<float>,  ecalootSC_RawEn
-        vector<float>,  ecalootSC_etaWidth
-        vector<float>,  ecalootSC_phiWidth
-        vector<float>,  ecalootSC_LICTD
-        vector<unsigned char>,  ecalootSC_nL1Spike
-        vector<unsigned char>,  ecalootSC_nDiweird
-        vector<unsigned char>,  ecalootSC_nWeird
-        vector<unsigned char>,  ecalootSC_nSaturated
-        vector<unsigned char>,  ecalootSC_nOutOfTime
-        vector<unsigned char>,  ecalootSC_nXtals
-        vector<float>,  ecalootSC_maxEnXtalTime
-        vector<float>,  ecalootSC_maxEnXtalSwissCross
-        vector<unsigned char>,  ecalootSC_maxEnXtalBits
-        UShort_t,       nEle
-        vector<char>,   eleCharge
-        vector<float>,  eleEn
-        vector<float>,  eleEcalEn
-        vector<float>,  elePt
-        vector<float>,  elePtError
-        vector<float>,  eleEta
-        vector<float>,  elePhi
-        vector<float>,  eleR9
-        vector<float>,  eleCalibPt
-        vector<float>,  eleCalibEn
-        vector<short>,  eleSCindex
-        vector<float>,  eleHoverE
-        vector<float>,  eleEoverP
-        vector<float>,  eleEoverPout
-        vector<float>,  eleEoverPInv
-        vector<float>,  eleBrem
-        vector<float>,  eledEtaAtVtx
-        vector<float>,  eledPhiAtVtx
-        vector<float>,  eleSigmaIEtaIEtaFull5x5
-        vector<float>,  eleSigmaIPhiIPhiFull5x5
-        vector<unsigned char>,  eleQualityBits
-        vector<unsigned char>,  eleMissHits
-        vector<float>,  eleESEffSigmaRR
-        vector<float>,  elePFChIso
-        vector<float>,  elePFPhoIso
-        vector<float>,  elePFNeuIso
-        vector<float>,  elePFPUIso
-        vector<float>,  elePFClusEcalIso
-        vector<float>,  elePFClusHcalIso
-        vector<float>,  eleIDMVAIso
-        vector<float>,  eleIDMVANoIso
-        vector<float>,  eleR9Full5x5
-        vector<ULong64_t>,      eleFiredSingleTrgs
-        vector<ULong64_t>,      eleFiredDoubleTrgs
-        vector<ULong64_t>,      eleFiredL1Trgs
-        vector<unsigned char>,  eleIDbit
-        UShort_t,       nMu
-        vector<float>,  muPt
-        vector<float>,  muEn
-        vector<float>,  muEta
-        vector<float>,  muPhi
-        vector<char>,   muCharge
-        vector<short>,  muType
-        vector<int>,    muIDbit
-        vector<float>,  muD0
-        vector<float>,  muDz
-        vector<float>,  muSIP
-        vector<float>,  muChi2NDF
-        vector<float>,  muInnerD0
-        vector<float>,  muInnerDz
-        vector<short>,  muTrkLayers
-        vector<short>,  muPixelLayers
-        vector<short>,  muPixelHits
-        vector<short>,  muMuonHits
-        vector<short>,  muStations
-        vector<short>,  muMatches
-        vector<char>,   muTrkQuality
-        vector<float>,  muIsoTrk
-        vector<float>,  muPFChIso
-        vector<float>,  muPFPhoIso
-        vector<float>,  muPFNeuIso
-        vector<float>,  muPFPUIso
-        vector<ULong64_t>,      muFiredTrgs
-        vector<ULong64_t>,      muFiredL1Trgs
-        vector<float>,  muInnervalidFraction
-        vector<float>,  musegmentCompatibility
-        vector<float>,  muchi2LocalPosition
-        vector<float>,  mutrkKink
-        vector<float>,  muBestTrkPtError
-        vector<float>,  muBestTrkPt
-        vector<char>,   muBestTrkType
-        UShort_t,       nAK4CHSJet
-        vector<char>,   AK4CHSJet_Charge
-        vector<float>,  AK4CHSJet_Pt
-        vector<float>,  AK4CHSJet_En
-        vector<float>,  AK4CHSJet_Eta
-        vector<float>,  AK4CHSJet_Phi
-        vector<float>,  AK4CHSJet_RawPt
-        vector<float>,  AK4CHSJet_RawEn
-        vector<float>,  AK4CHSJet_Mt
-        vector<float>,  AK4CHSJet_Area
-        vector<float>,  AK4CHSJet_LeadTrackPt
-        vector<float>,  AK4CHSJet_LeadTrackEta
-        vector<float>,  AK4CHSJet_LeadTrackPhi
-        vector<int>,    AK4CHSJet_LepTrackPID
-        vector<float>,  AK4CHSJet_LepTrackPt
-        vector<float>,  AK4CHSJet_LepTrackEta
-        vector<float>,  AK4CHSJet_LepTrackPhi
-        vector<float>,  AK4CHSJet_ConsituentEtaPhiSpread
-        vector<float>,  AK4CHSJet_constituentPtDistribution
-        vector<float>,  AK4CHSJet_MaxConstituentDistance
-        vector<float>,  AK4CHSJet_CSV2BJetTags
-        vector<float>,  AK4CHSJet_DeepCSVTags_b
-        vector<float>,  AK4CHSJet_DeepCSVTags_bb
-        vector<float>,  AK4CHSJet_DeepCSVTags_c
-        vector<float>,  AK4CHSJet_DeepCSVTags_udsg
-        vector<float>,  AK4CHSJet_DeepFlavTags_bb
-        vector<float>,  AK4CHSJet_DeepFlavTags_bbb
-        vector<float>,  AK4CHSJet_DeepFlavTags_lepb
-        vector<float>,  AK4CHSJet_DeepFlavTags_c
-        vector<float>,  AK4CHSJet_DeepFlavTags_uds
-        vector<float>,  AK4CHSJet_DeepFlavTags_g
-        vector<float>,  AK4CHSJet_CombMVA2Tags
-        vector<char>,   AK4CHSJet_ID
-        vector<float>,  AK4CHSJet_PUID
-        vector<char>,   AK4CHSJet_PUFullID
-        vector<float>,  AK4CHSJet_qgLikelihood
-        vector<float>,  AK4CHSJet_JECUnc
-        vector<float>,  AK4CHSJet_JER_ptRes
-        vector<float>,  AK4CHSJet_JER_phiRes
-        vector<float>,  AK4CHSJet_JER_SF
-        vector<float>,  AK4CHSJet_JER_SFup
-        vector<float>,  AK4CHSJet_JER_SFdown
-        vector<ULong64_t>,      AK4CHSJet_FiredTrgs
-        vector<float>,  AK4CHSJet_CHF
-        vector<float>,  AK4CHSJet_NHF
-        vector<float>,  AK4CHSJet_CEF
-        vector<float>,  AK4CHSJet_NEF
-        vector<unsigned short>, AK4CHSJet_NCH
-        vector<unsigned short>, AK4CHSJet_NNP
-        vector<float>,  AK4CHSJet_MUF
-        UShort_t,       nAK8PUPPIJet
-        vector<char>,   AK8PuppiJet_Charge
-        vector<float>,  AK8PuppiJet_Pt
-        vector<float>,  AK8PuppiJet_En
-        vector<float>,  AK8PuppiJet_RawPt
-        vector<float>,  AK8PuppiJet_RawEn
-        vector<float>,  AK8PuppiJet_Eta
-        vector<float>,  AK8PuppiJet_Phi
-        vector<float>,  AK8PuppiJet_Mass
-        vector<float>,  AK8PuppiJet_tau1
-        vector<float>,  AK8PuppiJet_tau2
-        vector<float>,  AK8PuppiJet_tau3
-        vector<float>,  AK8PuppiJet_tau4
-        vector<float>,  AK8PuppiJet_CHF
-        vector<float>,  AK8PuppiJet_NHF
-        vector<float>,  AK8PuppiJet_CEF
-        vector<float>,  AK8PuppiJet_NEF
-        vector<unsigned char>,  AK8PuppiJet_NCH
-        vector<unsigned char>,  AK8PuppiJet_NNP
-        vector<float>,  AK8PuppiJet_MUF
-        vector<char>,   AK8PuppiJet_PFid
-        vector<float>,  AK8PuppiJet_PUPPISoftDropMass
-        vector<float>,  AK8PuppiJet_CHSPrunedMass
-        vector<float>,  AK8PuppiJet_CHSSoftDropMass
-        vector<float>,  AK8PuppiJet_pfBoostedDSVBTag
-        vector<float>,  AK8PuppiJet_CSV
-        vector<float>,  AK8PuppiJet_DDBvLTags_qcd
-        vector<float>,  AK8PuppiJet_DDBvLTags_Hbb
-        vector<float>,  AK8PuppiJet_DDCvLTags_qcd
-        vector<float>,  AK8PuppiJet_DDCvLTags_Hcc
-        vector<float>,  AK8PuppiJet_DDCvBTags_Hbb
-        vector<float>,  AK8PuppiJet_DDCvBTags_Hcc
-        vector<float>,  AK8PuppiJet_DDBDTags_bbcsLight
-        vector<float>,  AK8PuppiJet_DDBDTags_ccvsLight
-        vector<float>,  AK8PuppiJet_DDBDTags_TvsQCD
-        vector<float>,  AK8PuppiJet_DDBDTags_ZHccvsQCD
-        vector<float>,  AK8PuppiJet_DDBDTags_WvsQCD
-        vector<float>,  AK8PuppiJet_DDBDTags_ZHbbvsQCD
-        vector<float>,  AK8PuppiJet_JECUnc
-        vector<float>,  AK8PuppiJet_JER_sf
-        vector<float>,  AK8PuppiJet_JER_sf_up
-        vector<float>,  AK8PuppiJet_JER_sf_down
-        vector<float>,  AK8PuppiJet_JER_ptRes
-        vector<float>,  AK8PuppiJet_JER_phiRes
-        vector<float>,  AK8PuppiJet_nb1ecf2
-        vector<float>,  AK8PuppiJet_nb1ecf3
-        vector<float>,  AK8PuppiJet_nb2ecf2
-        vector<float>,  AK8PuppiJet_nb2ecf3
-        vector<unsigned short>, AK8PuppiJet_nSDSJpuppi
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppiPt
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppiEta
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppiMass
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppiPhi
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppiE
-        vector<vector<char> >,  AK8PuppiJet_SDSJpuppiCharge
-        vector<vector<int> >,   AK8PuppiJet_SDSJpuppiFlavour
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppiCSV
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppinb1ecf2
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppinb1ecf3
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppinb2ecf2
-        vector<vector<float> >, AK8PuppiJet_SDSJpuppinb2ecf3
+Int_t          run
+Long64_t               event
+UShort_t               lumis
+UChar_t        nVtx
+UChar_t        nGoodVtx
+Bool_t         isPVGood
+Float_t        vtx
+Float_t        vty
+Float_t        vtz
+Float_t        rho
+Float_t        rhoCentral
+ULong64_t              HLTEleMuX
+ULong64_t              HLTPho
+ULong64_t              HLTPhoRejectedByPS
+ULong64_t              HLTJet
+ULong64_t              HLTEleMuXIsPrescaled
+ULong64_t              HLTPhoIsPrescaled
+ULong64_t              HLTJetIsPrescaled
+UShort_t               beamHaloSummary
+UShort_t               metFilters
+Float_t        pfMET
+Float_t        pfMETPhi
+Float_t        pfMET_T1JERUp
+Float_t        pfMET_T1JERDo
+Float_t        pfMET_T1JESUp
+Float_t        pfMET_T1JESDo
+Float_t        pfMET_T1UESUp
+Float_t        pfMET_T1UESDo
+Float_t        pfMETPhi_T1JESUp
+Float_t        pfMETPhi_T1JESDo
+Float_t        pfMETPhi_T1UESUp
+Float_t        pfMETPhi_T1UESDo
+Float_t        pfMET_metSig
+Float_t        pfMET_EtSig
+UShort_t               nPho
+vector<float>          phoE
+vector<float>          phoSigmaE
+vector<float>          phoEt
+vector<float>          phoEta
+vector<float>          phoPhi
+vector<float>          phoCalibE
+vector<float>          phoSigmaCalibE
+vector<float>          phoCalibEt
+vector<short>          phoSCindex
+vector<float>          phoESEnP1
+vector<float>          phoESEnP2
+vector<unsigned char>          phoFiducialRegion
+vector<unsigned char>          phoQualityBits
+vector<float>          phoR9
+vector<float>          phoHoverE
+vector<float>          phoESEffSigmaRR
+vector<float>          phoSigmaIEtaIEtaFull5x5
+vector<float>          phoSigmaIEtaIPhiFull5x5
+vector<float>          phoSigmaIPhiIPhiFull5x5
+vector<float>          phoE2x2Full5x5
+vector<float>          phoE5x5Full5x5
+vector<float>          phoR9Full5x5
+vector<float>          phoSeedBCE
+vector<float>          phoSeedBCEta
+vector<float>          phoPFChIso
+vector<float>          phoPFPhoIso
+vector<float>          phoPFNeuIso
+vector<float>          phoPFChWorstIso
+vector<float>          phoIDMVA
+vector<ULong64_t>              phoFiredSingleTrgs
+vector<ULong64_t>              phoFiredDoubleTrgs
+vector<ULong64_t>              phoFiredTripleTrgs
+vector<ULong64_t>              phoFiredL1Trgs
+vector<float>          phoSeedTime
+vector<float>          phoSeedEnergy
+vector<float>          phoMIPChi2
+vector<float>          phoMIPTotEnergy
+vector<float>          phoMIPSlope
+vector<float>          phoMIPIntercept
+vector<short>          phoMIPNhitCone
+vector<unsigned char>          phoIDbit
+vector<float>          phoScale_stat_up
+vector<float>          phoScale_stat_dn
+vector<float>          phoScale_syst_up
+vector<float>          phoScale_syst_dn
+vector<float>          phoScale_gain_up
+vector<float>          phoScale_gain_dn
+vector<float>          phoResol_rho_up
+vector<float>          phoResol_rho_dn
+vector<float>          phoResol_phi_up
+vector<float>          phoResol_phi_dn
+UShort_t               necalSC
+vector<unsigned short>         ecalSCindex
+vector<float>          ecalSCeta
+vector<float>          ecalSCphi
+vector<float>          ecalSCEn
+vector<float>          ecalSCRawEn
+vector<float>          ecalSCetaWidth
+vector<float>          ecalSCphiWidth
+vector<float>          ecalSC_LICTD
+vector<unsigned char>          ecalSC_nL1Spike
+vector<unsigned char>          ecalSC_nDiweird
+vector<unsigned char>          ecalSC_nWeird
+vector<unsigned char>          ecalSC_nSaturated
+vector<unsigned char>          ecalSC_nOutOfTime
+vector<unsigned char>          ecalSC_nXtals
+vector<float>          ecalSC_maxEnXtalTime
+vector<float>          ecalSC_maxEnXtalSwissCross
+vector<unsigned char>          ecalSC_maxEnXtalBits
+UShort_t               nootPho
+vector<float>          ootPho_E
+vector<float>          ootPho_Et
+vector<float>          ootPho_Eta
+vector<float>          ootPho_Phi
+vector<short>          ootPho_SCindex
+vector<unsigned char>          ootPho_FiducialRegion
+vector<unsigned char>          ootPho_QualityBits
+vector<float>          ootPho_R9
+vector<float>          ootPho_HoverE
+vector<float>          ootPho_ESEffSigmaRR
+vector<float>          ootPho_SigmaIEtaIEtaFull5x5
+vector<float>          ootPho_SigmaIEtaIPhiFull5x5
+vector<float>          ootPho_SigmaIPhiIPhiFull5x5
+vector<float>          ootPho_R9Full5x5
+vector<ULong64_t>              ootPho_FiredSingleTrgs
+vector<ULong64_t>              ootPho_FiredDoubleTrgs
+vector<ULong64_t>              ootPho_FiredTripleTrgs
+vector<ULong64_t>              ootPho_FiredL1Trgs
+vector<float>          ootPho_SeedTime
+vector<float>          ootPho_SeedEnergy
+vector<float>          ootPho_MIPChi2
+vector<float>          ootPho_MIPTotEnergy
+vector<float>          ootPho_MIPSlope
+vector<float>          ootPho_MIPIntercept
+vector<short>          ootPho_MIPNhitCone
+vector<unsigned char>          ootPho_IDbit
+UShort_t               necalootSC
+vector<unsigned short>         ecalootSC_index
+vector<float>          ecalootSC_eta
+vector<float>          ecalootSC_phi
+vector<float>          ecalootSC_En
+vector<float>          ecalootSC_RawEn
+vector<float>          ecalootSC_etaWidth
+vector<float>          ecalootSC_phiWidth
+vector<float>          ecalootSC_LICTD
+vector<unsigned char>          ecalootSC_nL1Spike
+vector<unsigned char>          ecalootSC_nDiweird
+vector<unsigned char>          ecalootSC_nWeird
+vector<unsigned char>          ecalootSC_nSaturated
+vector<unsigned char>          ecalootSC_nOutOfTime
+vector<unsigned char>          ecalootSC_nXtals
+vector<float>          ecalootSC_maxEnXtalTime
+vector<float>          ecalootSC_maxEnXtalSwissCross
+vector<unsigned char>          ecalootSC_maxEnXtalBits
+UShort_t               nEle
+vector<char>           eleCharge
+vector<float>          eleEn
+vector<float>          eleEcalEn
+vector<float>          elePt
+vector<float>          elePtError
+vector<float>          eleEta
+vector<float>          elePhi
+vector<float>          eleR9
+vector<float>          eleCalibPt
+vector<float>          eleCalibEn
+vector<short>          eleSCindex
+vector<float>          eleHoverE
+vector<float>          eleEoverP
+vector<float>          eleEoverPout
+vector<float>          eleEoverPInv
+vector<float>          eleBrem
+vector<float>          eledEtaAtVtx
+vector<float>          eledPhiAtVtx
+vector<float>          eleSigmaIEtaIEtaFull5x5
+vector<float>          eleSigmaIPhiIPhiFull5x5
+vector<unsigned char>          eleQualityBits
+vector<unsigned char>          eleMissHits
+vector<float>          eleESEffSigmaRR
+vector<float>          elePFChIso
+vector<float>          elePFPhoIso
+vector<float>          elePFNeuIso
+vector<float>          elePFPUIso
+vector<float>          elePFClusEcalIso
+vector<float>          elePFClusHcalIso
+vector<float>          eleIDMVAIso
+vector<float>          eleIDMVANoIso
+vector<float>          eleR9Full5x5
+vector<ULong64_t>              eleFiredSingleTrgs
+vector<ULong64_t>              eleFiredDoubleTrgs
+vector<ULong64_t>              eleFiredL1Trgs
+vector<unsigned char>          eleIDbit
+UShort_t               nMu
+vector<float>          muPt
+vector<float>          muEn
+vector<float>          muEta
+vector<float>          muPhi
+vector<char>           muCharge
+vector<short>          muType
+vector<int>            muIDbit
+vector<float>          muD0
+vector<float>          muDz
+vector<float>          muSIP
+vector<float>          muChi2NDF
+vector<float>          muInnerD0
+vector<float>          muInnerDz
+vector<short>          muTrkLayers
+vector<short>          muPixelLayers
+vector<short>          muPixelHits
+vector<short>          muMuonHits
+vector<short>          muStations
+vector<short>          muMatches
+vector<char>           muTrkQuality
+vector<float>          muIsoTrk
+vector<float>          muPFChIso
+vector<float>          muPFPhoIso
+vector<float>          muPFNeuIso
+vector<float>          muPFPUIso
+vector<ULong64_t>              muFiredTrgs
+vector<ULong64_t>              muFiredL1Trgs
+vector<float>          muInnervalidFraction
+vector<float>          musegmentCompatibility
+vector<float>          muchi2LocalPosition
+vector<float>          mutrkKink
+vector<float>          muBestTrkPtError
+vector<float>          muBestTrkPt
+vector<char>           muBestTrkType
+UShort_t               nAK4CHSJet
+vector<char>           AK4CHSJet_Charge
+vector<float>          AK4CHSJet_Pt
+vector<float>          AK4CHSJet_En
+vector<float>          AK4CHSJet_Eta
+vector<float>          AK4CHSJet_Phi
+vector<float>          AK4CHSJet_RawPt
+vector<float>          AK4CHSJet_RawEn
+vector<float>          AK4CHSJet_Mt
+vector<float>          AK4CHSJet_Area
+vector<float>          AK4CHSJet_LeadTrackPt
+vector<float>          AK4CHSJet_LeadTrackEta
+vector<float>          AK4CHSJet_LeadTrackPhi
+vector<int>            AK4CHSJet_LepTrackPID
+vector<float>          AK4CHSJet_LepTrackPt
+vector<float>          AK4CHSJet_LepTrackEta
+vector<float>          AK4CHSJet_LepTrackPhi
+vector<float>          AK4CHSJet_ConsituentEtaPhiSpread
+vector<float>          AK4CHSJet_constituentPtDistribution
+vector<float>          AK4CHSJet_MaxConstituentDistance
+vector<float>          AK4CHSJet_CSV2BJetTags
+vector<float>          AK4CHSJet_DeepCSVTags_b
+vector<float>          AK4CHSJet_DeepCSVTags_bb
+vector<float>          AK4CHSJet_DeepCSVTags_c
+vector<float>          AK4CHSJet_DeepCSVTags_udsg
+vector<float>          AK4CHSJet_DeepFlavTags_bb
+vector<float>          AK4CHSJet_DeepFlavTags_bbb
+vector<float>          AK4CHSJet_DeepFlavTags_lepb
+vector<float>          AK4CHSJet_DeepFlavTags_c
+vector<float>          AK4CHSJet_DeepFlavTags_uds
+vector<float>          AK4CHSJet_DeepFlavTags_g
+vector<float>          AK4CHSJet_CombMVA2Tags
+vector<char>           AK4CHSJet_ID
+vector<float>          AK4CHSJet_PUID
+vector<char>           AK4CHSJet_PUFullID
+vector<float>          AK4CHSJet_qgLikelihood
+vector<float>          AK4CHSJet_JECUnc
+vector<float>          AK4CHSJet_JER_ptRes
+vector<float>          AK4CHSJet_JER_phiRes
+vector<float>          AK4CHSJet_JER_SF
+vector<float>          AK4CHSJet_JER_SFup
+vector<float>          AK4CHSJet_JER_SFdown
+vector<ULong64_t>              AK4CHSJet_FiredTrgs
+vector<float>          AK4CHSJet_CHF
+vector<float>          AK4CHSJet_NHF
+vector<float>          AK4CHSJet_CEF
+vector<float>          AK4CHSJet_NEF
+vector<unsigned short>         AK4CHSJet_NCH
+vector<unsigned short>         AK4CHSJet_NNP
+vector<float>          AK4CHSJet_MUF
+UShort_t               nAK8PUPPIJet
+vector<char>           AK8PuppiJet_Charge
+vector<float>          AK8PuppiJet_Pt
+vector<float>          AK8PuppiJet_En
+vector<float>          AK8PuppiJet_RawPt
+vector<float>          AK8PuppiJet_RawEn
+vector<float>          AK8PuppiJet_Eta
+vector<float>          AK8PuppiJet_Phi
+vector<float>          AK8PuppiJet_Mass
+vector<float>          AK8PuppiJet_tau1
+vector<float>          AK8PuppiJet_tau2
+vector<float>          AK8PuppiJet_tau3
+vector<float>          AK8PuppiJet_tau4
+vector<float>          AK8PuppiJet_CHF
+vector<float>          AK8PuppiJet_NHF
+vector<float>          AK8PuppiJet_CEF
+vector<float>          AK8PuppiJet_NEF
+vector<unsigned char>          AK8PuppiJet_NCH
+vector<unsigned char>          AK8PuppiJet_NNP
+vector<float>          AK8PuppiJet_MUF
+vector<char>           AK8PuppiJet_PFid
+vector<float>          AK8PuppiJet_PUPPISoftDropMass
+vector<float>          AK8PuppiJet_CHSPrunedMass
+vector<float>          AK8PuppiJet_CHSSoftDropMass
+vector<float>          AK8PuppiJet_pfBoostedDSVBTag
+vector<float>          AK8PuppiJet_CSV
+vector<float>          AK8PuppiJet_DDBvLTags_qcd
+vector<float>          AK8PuppiJet_DDBvLTags_Hbb
+vector<float>          AK8PuppiJet_DDCvLTags_qcd
+vector<float>          AK8PuppiJet_DDCvLTags_Hcc
+vector<float>          AK8PuppiJet_DDCvBTags_Hbb
+vector<float>          AK8PuppiJet_DDCvBTags_Hcc
+vector<float>          AK8PuppiJet_DDBDTags_bbcsLight
+vector<float>          AK8PuppiJet_DDBDTags_ccvsLight
+vector<float>          AK8PuppiJet_DDBDTags_TvsQCD
+vector<float>          AK8PuppiJet_DDBDTags_ZHccvsQCD
+vector<float>          AK8PuppiJet_DDBDTags_WvsQCD
+vector<float>          AK8PuppiJet_DDBDTags_ZHbbvsQCD
+vector<float>          AK8PuppiJet_JECUnc
+vector<float>          AK8PuppiJet_JER_sf
+vector<float>          AK8PuppiJet_JER_sf_up
+vector<float>          AK8PuppiJet_JER_sf_down
+vector<float>          AK8PuppiJet_JER_ptRes
+vector<float>          AK8PuppiJet_JER_phiRes
+vector<float>          AK8PuppiJet_nb1ecf2
+vector<float>          AK8PuppiJet_nb1ecf3
+vector<float>          AK8PuppiJet_nb2ecf2
+vector<float>          AK8PuppiJet_nb2ecf3
+vector<unsigned short>         AK8PuppiJet_nSDSJpuppi
+vector<vector<float> >         AK8PuppiJet_SDSJpuppiPt
+vector<vector<float> >         AK8PuppiJet_SDSJpuppiEta
+vector<vector<float> >         AK8PuppiJet_SDSJpuppiMass
+vector<vector<float> >         AK8PuppiJet_SDSJpuppiPhi
+vector<vector<float> >         AK8PuppiJet_SDSJpuppiE
+vector<vector<char> >          AK8PuppiJet_SDSJpuppiCharge
+vector<vector<int> >           AK8PuppiJet_SDSJpuppiFlavour
+vector<vector<float> >         AK8PuppiJet_SDSJpuppiCSV
+vector<vector<float> >         AK8PuppiJet_SDSJpuppinb1ecf2
+vector<vector<float> >         AK8PuppiJet_SDSJpuppinb1ecf3
+vector<vector<float> >         AK8PuppiJet_SDSJpuppinb2ecf2
+vector<vector<float> >         AK8PuppiJet_SDSJpuppinb2ecf3
