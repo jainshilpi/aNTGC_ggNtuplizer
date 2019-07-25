@@ -12,11 +12,11 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 200
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    'file:sherpa_aNTGC_0p0003_0p_0p_0p_500_1200_MASTER_cff_py_MINIAODSIM_8.root'
+    'file:beamHaloMINIAODSIM_122.root'
     ))
 
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
