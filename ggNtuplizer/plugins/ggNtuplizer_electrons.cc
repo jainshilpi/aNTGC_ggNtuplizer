@@ -25,7 +25,6 @@ vector<float>  elePhi_;
 vector<float>  eleR9_;
 vector<float>  eleCalibPt_;
 vector<float>  eleCalibEn_;
-std::vector<Short_t> eleSCindex_;
 // vector<float>  eleSCEta_;
 // vector<float>  eleSCPhi_;
 // vector<float>  eleSCRawEn_;
@@ -322,5 +321,19 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
     }
 
     nEle_++;
+  }
+};
+
+
+void ggNtuplizer::branchesEleECALSC(TTree* tree){
+  tree->Branch("eleDirectEcalSCindex",                        &eleDirectEcalSCindex_);
+};
+
+
+void ggNtuplizer::resolveEleECALSCindex(){
+  eleDirectEcalSCindex_.clear();
+  for(Short_t scIndex : eleSCindex_){
+    Short_t resolvedIndex = findSecondaryIndex(scIndex, ecalSCindex_);
+    eleDirectEcalSCindex_.push_back(resolvedIndex);
   }
 };

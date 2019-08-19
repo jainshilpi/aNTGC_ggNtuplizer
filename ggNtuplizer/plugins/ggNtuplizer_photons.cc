@@ -13,7 +13,6 @@ vector<Float_t>  phoPhi_;
 vector<Float_t>  phoCalibE_;
 vector<Float_t>  phoSigmaCalibE_;
 vector<Float_t>  phoCalibEt_;
-std::vector<Short_t> phoSCindex_;
 vector<Float_t>  phoESEnP1_;
 vector<Float_t>  phoESEnP2_;
 vector<UChar_t> phoFiducialRegion_;
@@ -357,7 +356,6 @@ vector<Float_t>  ootPho_E_;
 vector<Float_t>  ootPho_Et_;
 vector<Float_t>  ootPho_Eta_;
 vector<Float_t>  ootPho_Phi_;
-std::vector<Short_t> ootPho_SCindex_;
 vector<UChar_t> ootPho_FiducialRegion_;
 vector<UChar_t>   ootPho_QualityBits_;
 vector<Float_t>  ootPho_R9_;
@@ -572,4 +570,32 @@ void ggNtuplizer::fillPhotonsOOT(const edm::Event& e, const edm::EventSetup& es)
 
     nootPho_++;
   }
-}
+};
+
+
+void ggNtuplizer::branchesPhoECALSC(TTree* tree) {
+  tree->Branch("phoDirectEcalSCindex",                        &phoDirectEcalSCindex_);
+};
+
+
+void ggNtuplizer::branchesootPhoECALSC(TTree* tree) {
+  tree->Branch("ootPhoDirectEcalSCindex",                        &ootPhoDirectEcalSCindex_);
+};
+
+
+void ggNtuplizer::resolvePhoECALSCindex(){
+  phoDirectEcalSCindex_.clear();
+  for(Short_t scIndex : phoSCindex_){
+    Short_t resolvedIndex = findSecondaryIndex(scIndex, ecalSCindex_);
+    phoDirectEcalSCindex_.push_back(resolvedIndex);
+  }
+};
+
+
+void ggNtuplizer::resolveootPhoECALSCindex(){
+  ootPhoDirectEcalSCindex_.clear();
+  for(Short_t ootSCIndex : ootPho_SCindex_){
+    Short_t resolvedIndex = findSecondaryIndex(ootSCIndex, ecalootSCindex_);
+    ootPhoDirectEcalSCindex_.push_back(resolvedIndex);
+  }
+}; 

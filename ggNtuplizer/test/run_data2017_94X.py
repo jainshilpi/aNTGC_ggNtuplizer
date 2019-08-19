@@ -2,7 +2,20 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process('ggKit')
 
+import FWCore.ParameterSet.VarParsing as VarParsing
+options = VarParsing.VarParsing('analysis')
+options.outputFile = 'anTGCtree_data.root'
+options.inputFiles = 'file:F8DDFDC7-8AD6-E711-BCA2-4C79BA1811CB.root'
+options.maxEvents = 2000
+
+options.register('LumiMask',
+                  'Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt',
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.string,
+                  "LumiMask")
+
 ##########################################################################################################################
+
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
@@ -10,18 +23,24 @@ process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cf
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v11', '')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.source = cms.Source("PoolSource",
-                            fileNames = cms.untracked.vstring('file:F8DDFDC7-8AD6-E711-BCA2-4C79BA1811CB.root')
+                            fileNames = cms.untracked.vstring(options.inputFiles)
                             )
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
+
+##########################################################################################################################
+import FWCore.PythonUtilities.LumiList as LumiList
+process.source.lumisToProcess = LumiList.LumiList(filename = options.LumiMask).getVLuminosityBlockRange()
+##########################################################################################################################
+
+##########################################################################################################################
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
 process.load( "PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff" )
 process.load( "PhysicsTools.PatAlgos.selectionLayer1.selectedPatCandidates_cff" )
-process.TFileService = cms.Service("TFileService", fileName = cms.string('anTGCtree_data.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string(options.outputFile))
 ##########################################################################################################################
-
 
 ##########################################################################################################################
 ### fix a bug in the ECAL-Tracker momentum combination when applying the scale and smearing

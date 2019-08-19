@@ -104,12 +104,15 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   if(dumpAK8Jets_ && doGenParticles_) branchesGenAK8JetPart(tree_);
   branchesMET(tree_);
   branchesPhotons(tree_);
+  branchesPhoECALSC(tree_);
   branchesECALSC(tree_);
   if(doOOTphotons_) {
     branchesPhotonsOOT(tree_);
+    branchesootPhoECALSC(tree_);
     branchesECALOOTSC(tree_);
   }
   branchesElectrons(tree_);
+  branchesEleECALSC(tree_);
   branchesMuons(tree_);
   if (dumpJets_)        branchesAK4CHSJets(tree_);
   if (dumpAK8Jets_)     branchesAK8PUPPIJets(tree_);
@@ -151,19 +154,21 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
   }
 
   fillMET(e, es);
-  fillElectrons(e, es, pv);
   fillMuons(e, pv, vtx);
+  fillECALSC(e, es);
   fillPhotons(e, es);
+  resolvePhoECALSCindex();
+  fillElectrons(e, es, pv);
+  resolveEleECALSCindex();
   if(doOOTphotons_) {
     fillPhotonsOOT(e, es);
     fillECALOOTSC(e, es);
+    resolveootPhoECALSCindex();
   }
   if (dumpJets_) fillAK4CHSJets(e,es);
   if (dumpAK8Jets_) fillAK8PUPPIJets(e,es);
   if(dumpJets_ && doGenParticles_) fillGenAK4JetInfo(e, vtx.z());
   if(dumpAK8Jets_ && doGenParticles_) fillGenAK8JetInfo(e, vtx.z());
-
-  fillECALSC(e, es);
 
   tree_->Fill();
   hEvents_->Fill(0.8);

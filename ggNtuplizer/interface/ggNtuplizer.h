@@ -46,6 +46,7 @@ void setbit(typeA & x, typeB bit) {
   x |= (a << bit);
 }
 
+
 class ggNtuplizer : public edm::EDAnalyzer {
 public:
 
@@ -73,6 +74,8 @@ private:
   Double_t deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2);
   Double_t getMiniIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands, const reco::Candidate* ptcl,
    double r_iso_min, double r_iso_max, double kt_scale, bool charged_only);
+
+  Short_t findSecondaryIndex(const Short_t & searchIndex, const std::vector<UShort_t> & container);
 
   void branchesGlobalEvent(TTree*);
   void branchesGenInfo    (TTree*, edm::Service<TFileService>&);
@@ -105,10 +108,27 @@ private:
 
   Float_t ECALrecHitE( const DetId & id, const EcalRecHitCollection *recHits, int di = 0, int dj = 0);
   Float_t swissCross(const DetId& id, noZS::EcalClusterLazyTools & ltNoZS);
+
+
+  std::vector<Short_t> phoSCindex_;
+  std::vector<Short_t> ootPho_SCindex_;
+  std::vector<UShort_t> ecalSCindex_;
+  std::vector<UShort_t> ecalootSCindex_;
+  std::vector<Short_t> eleSCindex_;
+  std::vector<Short_t> phoDirectEcalSCindex_;
+  std::vector<Short_t> ootPhoDirectEcalSCindex_;
+  std::vector<Short_t> eleDirectEcalSCindex_;
+
   void branchesECALSC(TTree* tree);
   void branchesECALOOTSC(TTree* tree);
+  void branchesPhoECALSC(TTree* tree);
+  void branchesEleECALSC(TTree* tree);
+  void branchesootPhoECALSC(TTree* tree);
   void fillECALSC(const edm::Event& e, const edm::EventSetup& es);
   void fillECALOOTSC(const edm::Event& e, const edm::EventSetup& es);
+  void resolvePhoECALSCindex();
+  void resolveootPhoECALSCindex();
+  void resolveEleECALSCindex();
   Float_t getLICTD(const reco::SuperCluster *sc, noZS::EcalClusterLazyTools & ltNoZS, Float_t &_maxEnXtalTime, UChar_t & _nL1Spike, UChar_t & _nDiweird, UChar_t & _nWeird, UChar_t & _nSaturated, UChar_t & _nOutOfTime, UChar_t & _nXtals, UChar_t & _maxEnXtalBits, Float_t & _maxEnXtalSwissCross);
 
   // void fillAK4PUPPIJets       (const edm::Event&, const edm::EventSetup&);

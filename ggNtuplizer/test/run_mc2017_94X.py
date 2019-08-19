@@ -16,7 +16,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 200
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    'file:beamHaloMINIAODSIM_122.root'
+    'file:/afs/cern.ch/work/m/mwadud/private/naTGC/beamHalo/CMSSW_9_4_13/src/GeneratorInterface/BeamHaloGenerator/test/beamHaloMINIAODSIM.root'
     ))
 
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
