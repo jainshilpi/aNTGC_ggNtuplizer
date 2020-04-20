@@ -10,7 +10,8 @@ git cms-addpkg CondFormats/JetMETObjects <br>
 git cms-addpkg JetMETCorrections/Modules <br> 
 git cms-addpkg RecoBTag/Combined <br> 
 git cms-addpkg JetMETCorrections/Type1MET <br> 
-git cms-addpkg RecoMET/METFilters <br> 
+git cms-addpkg RecoMET/METFilters <br>
+git cms-merge-topic cms-egamma:EgammaPostRecoTools<br>
 git cms-addpkg RecoEgamma/PostRecoTools <br> 
 git cms-addpkg RecoEgamma/PhotonIdentification/ <br> 
 git cms-addpkg RecoEgamma/ElectronIdentification/ <br> 
