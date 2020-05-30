@@ -56,6 +56,8 @@ vector<Float_t>    phoResol_rho_dn_;
 vector<Float_t>    phoResol_phi_up_;
 vector<Float_t>    phoResol_phi_dn_;
 vector<Short_t> pho_gen_index_;
+vector<int>  phoNConvLegs_;
+vector<float>  phoZVtxWithConv_;
 
 
 //Necessary for the Photon Footprint removal
@@ -126,6 +128,9 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phoResol_phi_up",  &phoResol_phi_up_);
   tree->Branch("phoResol_phi_dn",  &phoResol_phi_dn_);
 
+  tree->Branch("phoNConvLegs",               &phoNConvLegs_);
+  tree->Branch("phoZVtxWithConv",               &phoZVtxWithConv_);
+
   if(doGenParticles_){
     tree->Branch("pho_gen_index",  &pho_gen_index_);
   }
@@ -187,6 +192,9 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   phoResol_phi_dn_ .clear();
   pho_gen_index_.clear();
 
+  phoZVtxWithConv_     .clear();
+  phoNConvLegs_        .clear();
+
   nPho_ = 0;
 
   edm::Handle<edm::View<pat::Photon> > photonHandle;
@@ -205,6 +213,53 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
 
   EcalClusterLazyTools       lazyTool    (e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
   noZS::EcalClusterLazyTools lazyToolnoZS(e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
+
+
+  
+  //reco::BeamSpot beamSpot;
+  math::XYZPoint beamSpot;
+  edm::Handle<reco::BeamSpot> beamSpotHandle;
+  e.getByToken(offlinebeamSpot_, beamSpotHandle);
+  
+  if (beamSpotHandle.isValid()) {
+    //beamSpot = *beamSpotHandle;
+    beamSpot = beamSpotHandle->position();
+  } else {
+    std::cout << "No beam spot available!!!" << std::endl;
+  }
+
+
+  ///handle to conversion vector
+  edm::Handle<edm::View<reco::Conversion> > conversionHandle;
+  e.getByToken(convPhotonTag_, conversionHandle);
+
+  if (!conversionHandle.isValid()) {
+    std::cout << "No Conv not available!!!" << std::endl;
+  }
+
+  /*
+  if (conversionHandle.isValid()) {
+    conversionsVector = conversionHandle->ptrs();
+  } else {
+    std::cout << "No Conv not available!!!" << std::endl;
+  }
+  */
+
+  ///single leg conv
+  edm::Handle<edm::View<reco::Conversion> > conversionHandleSL;
+  e.getByToken(convPhotonTagSL_, conversionHandleSL);
+
+  if (!conversionHandleSL.isValid()) {
+    std::cout << "No ConvSL not available!!!" << std::endl;
+  }
+  
+  /*
+  if (conversionHandleSL.isValid()) {
+    conversionsVectorSL = conversionHandleSL->ptrs();
+  } else {
+    std::cout << "No ConvSL not available!!!" << std::endl;
+  }
+  */
 
   for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho){
 
@@ -340,6 +395,39 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
       pho_gen_index_.push_back(phoGenPos_);
     }
 
+
+    ///conv pho info
+    /////reconstruct the Z vertex of the photons to reject beam halo from the converted ones
+    std::vector<int> vIndexMatchedConversion;
+    vIndexMatchedConversion = IndexMatchedConversion( iPho, conversionHandle->ptrs(), conversionHandleSL->ptrs() );
+    int IndexMatchedConversion = vIndexMatchedConversion[0];
+
+    int nConvLegs = vIndexMatchedConversion[1];
+    double zconv = -99;
+
+    //cout<<" "<<endl;
+    //cout<<"index of matched conversion "<<IndexMatchedConversion<<endl;
+
+    if(nConvLegs>0){
+      
+      if(nConvLegs==2){
+	const std::vector<edm::Ptr<reco::Conversion> > & conversions = conversionHandle->ptrs();
+	zconv = vtxZFromConv( iPho, conversions[IndexMatchedConversion], beamSpot); 	
+      }
+
+      if(nConvLegs==1){
+	const std::vector<edm::Ptr<reco::Conversion> > & conversions = conversionHandleSL->ptrs();
+	zconv = vtxZFromConv( iPho, conversions[IndexMatchedConversion], beamSpot); 	
+      }
+
+
+    }
+    
+    phoNConvLegs_.push_back(nConvLegs);
+    phoZVtxWithConv_.push_back(zconv);
+  
+
+    
     nPho_++;
   }
 }
@@ -599,3 +687,269 @@ void ggNtuplizer::resolveootPhoECALSCindex(){
     ootPhoDirectEcalSCindex_.push_back(resolvedIndex);
   }
 }; 
+
+
+
+////converted vertex info
+////conversion from https://github.com/cms-analysis/flashgg/blob/dev_legacy_runII/MicroAOD/plugins/LegacyVertexSelector.cc#L111
+
+double ggNtuplizer::vtxZFromConvOnly(  edm::View<pat::Photon>::const_iterator pho, const edm::Ptr<reco::Conversion> &conversion,
+				       const math::XYZPoint &beamSpot ) const
+{
+  double dz = 0;
+  if( conversion->nTracks() == 2 ) {
+    double r = sqrt( conversion->refittedPairMomentum().perp2() );
+    dz = ( conversion->conversionVertex().z() - beamSpot.z() )
+      -
+      ( ( conversion->conversionVertex().x() - beamSpot.x() ) * conversion->refittedPair4Momentum().x() + ( conversion->conversionVertex().y() - beamSpot.y() ) *
+	conversion->refittedPair4Momentum().y() ) / r * conversion->refittedPair4Momentum().z() / r;
+  }
+  if( conversion->nTracks() == 1 ) {
+    double r = sqrt( conversion->tracksPin()[0].x() * conversion->tracksPin()[0].x() + conversion->tracksPin()[0].y() * conversion->tracksPin()[0].y() );
+    dz = ( conversion->conversionVertex().z() - beamSpot.z() )
+                 -
+      ( ( conversion->conversionVertex().x() - beamSpot.x() ) * conversion->tracksPin()[0].x() + ( conversion->conversionVertex().y() - beamSpot.y() ) *
+	conversion->tracksPin()[0].y() ) / r * conversion->tracksPin()[0].z() / r;
+  }
+  return dz + beamSpot.z();
+}
+
+double ggNtuplizer::vtxZFromConvSuperCluster( edm::View<pat::Photon>::const_iterator pho, const edm::Ptr<reco::Conversion> &conversion, 
+					      const math::XYZPoint &beamSpot ) const
+{
+  // get the z from conversion plus SuperCluster
+  double deltaX1 =  pho->caloPosition().x() - conversion->conversionVertex().x();
+  double deltaY1 =  pho->caloPosition().y() - conversion->conversionVertex().y();
+  double deltaZ1 =  pho->caloPosition().z() - conversion->conversionVertex().z();
+  double R1 = sqrt( deltaX1 * deltaX1 + deltaY1 * deltaY1 );
+  double tantheta = R1 / deltaZ1;
+
+  double deltaX2 = conversion->conversionVertex().x() - beamSpot.x();
+  double deltaY2 = conversion->conversionVertex().y() - beamSpot.y();
+  double R2 = sqrt( deltaX2 * deltaX2 + deltaY2 * deltaY2 );
+  double deltaZ2 = R2 / tantheta;
+  double higgsZ =  pho->caloPosition().z() - deltaZ1 - deltaZ2;
+  return higgsZ;
+}
+
+double ggNtuplizer::vtxZFromConv( edm::View<pat::Photon>::const_iterator pho, 
+				  const edm::Ptr<reco::Conversion> &conversion,
+				  const math::XYZPoint &beamSpot) const
+{
+  double ReturnValue = 0;
+  /*
+  //const reco::Conversion* conversion = NULL;
+  edm::Ptr<reco::Conversion> conversion = NULL;
+
+  if(nConvLegs==2){
+    //reco::ConversionRefVector conversionsVector = pho->conversions();
+    conversion = conversionsVector[index];
+    
+  }
+
+  if(nConvLegs==1){
+    //reco::ConversionRefVector conversionsVector = pho->conversionsOneLeg();
+    conversion = conversionsVector[index];
+  }
+  */  
+
+  double perp = sqrt( conversion->conversionVertex().x() * conversion->conversionVertex().x() + conversion->conversionVertex().y() *
+		      conversion->conversionVertex().y() );
+  
+  float nTracksConv = conversion->nTracks();
+  
+  if( nTracksConv == 2 ) {
+    if( fabs( pho->superCluster()->eta() ) < 1.5 ) {
+      if( perp <= 15.0 ) {
+	if( sigma1Pix < sigma2Pix )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else if( perp > 15 && perp <= 60.0 ) {
+
+	if( sigma1Tib < sigma2Tib )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else {
+
+	if( sigma1Tob < sigma2Tob )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      }
+    } else {
+      if( fabs( conversion->conversionVertex().z() ) <= 50.0 ) {
+
+	if( sigma1PixFwd < sigma2PixFwd )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else if( fabs( conversion->conversionVertex().z() ) > 50.0 && fabs( conversion->conversionVertex().z() ) <= 100.0 ) {
+	if( sigma1Tid < sigma2Tid )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else {
+
+	if( sigma1Tec < sigma2Tec )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      }
+    }
+  }
+  if( nTracksConv == 1 ) {
+    if( fabs( pho->superCluster()->eta() ) < 1.5 ) {
+      if( perp <= 15.0 ) {
+
+	if( singlelegsigma1Pix < singlelegsigma2Pix )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else if( perp > 15 && perp <= 60.0 ) {
+
+	if( singlelegsigma1Tib < singlelegsigma2Tib )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else {
+
+	if( singlelegsigma1Tob < singlelegsigma2Tob )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      }
+    } else {
+      if( fabs( conversion->conversionVertex().z() ) <= 50.0 ) {
+
+	if( singlelegsigma1PixFwd < singlelegsigma2PixFwd )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else if( fabs( conversion->conversionVertex().z() ) > 50.0 && fabs( conversion->conversionVertex().z() ) <= 100.0 ) {
+
+	if( singlelegsigma1Tid < singlelegsigma2Tid )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      } else {
+
+	if( singlelegsigma1Tec < singlelegsigma2Tec )
+	  { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
+	else
+	  { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+      }
+    }
+  }
+  return ReturnValue;
+}
+
+///select the conversion index
+std::vector<int> ggNtuplizer::IndexMatchedConversion( edm::View<pat::Photon>::const_iterator g, 
+						      const  std::vector<edm::Ptr<reco::Conversion> > & conversionsVector,
+						      const std::vector<edm::Ptr<reco::Conversion> > & conversionsVectorSL
+						      ) const
+{
+  double mindR = 999;
+  int nConvLegs = 0;
+  bool doOneLeg = true;
+  
+  std::vector<int> result;
+
+  //if(!pureGeomConvMatching) assert( g->hasConversionTracks() );
+  int selected_conversion_index = -1;
+
+  //if( (g->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching){
+  if( g->hasConversionTracks()){
+
+    //cout<<"photon has converted tracks "<<endl;
+    
+    //reco::ConversionRefVector conversionsVector = g->conversions();
+
+      for( unsigned int i = 0; i < conversionsVector.size(); i++ ) {
+	edm::Ptr<reco::Conversion> conv = conversionsVector[i];
+	//const reco::Conversion* conv = conversionHandle.at(i).get();
+	
+	if( conv->nTracks() == 2 ) {
+	  if( !conv->isConverted() ) { continue; }
+	  if( conv->refittedPair4Momentum().pt() < 10. ) { continue; }
+	  if( TMath::Prob( conv->conversionVertex().chi2(), conv->conversionVertex().ndof() ) < 1e-6 ) { continue; }
+	
+	  //cout<<"Passed criteria of conv conv->refittedPair4Momentum().pt()"<<endl;
+	  
+	  TVector3 VtxtoSC;
+	  VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
+			  g->superCluster()->position().y() - conv->conversionVertex().y(),
+			  g->superCluster()->position().z() - conv->conversionVertex().z() );
+	  
+	TVector3 RefPairMo;
+	RefPairMo.SetXYZ( conv->refittedPairMomentum().x(), conv->refittedPairMomentum().y(), conv->refittedPairMomentum().z() );
+	double dR = 0;
+	dR = VtxtoSC.DeltaR( RefPairMo );
+	if( dR < mindR ) {
+	  mindR = dR;
+	  selected_conversion_index = i;
+	}//if( dR < mindR )
+	}//if( conv->nTracks() == 2 )
+      }//for( unsigned int i = 0; i < conversionsVector.size(); i++ )
+      
+    if( mindR < 0.1 ) {
+      result.push_back( selected_conversion_index );
+      nConvLegs = 2;
+      result.push_back( nConvLegs );
+      //cout<<"Found minDr < 0.1"<<endl;
+      doOneLeg = false;
+    }
+
+    //reco::ConversionRefVector conversionsVectorSingleLeg = g->conversionsOneLeg();
+    //if( doOneLeg && useSingleLeg ) {
+    if( doOneLeg ) {
+      mindR = 999;
+      for( unsigned int j = 0; j < conversionsVectorSL.size(); j++ ) {
+	edm::Ptr<reco::Conversion> conv = conversionsVectorSL[j];
+	//const reco::Conversion* conv = conversionsVectorSingleLeg.at(j).get();
+
+	if( conv->nTracks() == 1 ) {
+	  TVector3 VtxtoSC;
+	  VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
+			  g->superCluster()->position().y() - conv->conversionVertex().y(),
+			  g->superCluster()->position().z() - conv->conversionVertex().z() );
+	  TVector3 RefPairMo;
+	  float oneLegTrack_X = conv->tracksPin()[0].x();
+	  float oneLegTrack_Y = conv->tracksPin()[0].y();
+	  float oneLegTrack_Z = conv->tracksPin()[0].z();
+                        
+	  //cout<<"conv->nTracks() == 1 "<<endl;
+
+	  RefPairMo.SetXYZ( oneLegTrack_X, oneLegTrack_Y, oneLegTrack_Z );
+	  double dR = 0;
+	  dR = VtxtoSC.DeltaR( RefPairMo );
+	  if( dR < mindR ) {
+	    mindR = dR;
+	    selected_conversion_index = j;
+	  }//if( dR < mindR )                         
+	}//if( conv->nTracks() == 1 )
+      }//for( unsigned int j = 0; j < conversionsVectorSingleLeg.size(); j++ )
+      
+      if( mindR < 0.1 ) {
+	result.push_back( selected_conversion_index );
+	nConvLegs = 1;
+	result.push_back( nConvLegs );
+	//cout<<"minDr single "<<endl;
+      }//if( mindR < 0.1 )
+    }//if( doOneLeg )
+  }//if( g->hasConversionTracks())
+        
+  if( mindR < 0.1 )
+    {
+      //cout<<"Found a minDr final "<<endl;
+      return result;
+    }
+  else {
+    //cout<<"Nothing found "<<endl;
+    result.push_back( -1 );
+    result.push_back( -1 );
+    return result;
+  }
+}

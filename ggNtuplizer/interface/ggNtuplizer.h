@@ -36,6 +36,7 @@
 #include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
+#include "DataFormats/Common/interface/View.h"
 #include "iterator"
 
 using namespace std;
@@ -108,6 +109,11 @@ private:
 
   Float_t ECALrecHitE( const DetId & id, const EcalRecHitCollection *recHits, int di = 0, int dj = 0);
   Float_t swissCross(const DetId& id, noZS::EcalClusterLazyTools & ltNoZS);
+
+  std::vector<int> IndexMatchedConversion( edm::View<pat::Photon>::const_iterator g, const std::vector<edm::Ptr<reco::Conversion> > &, const std::vector<edm::Ptr<reco::Conversion> > &) const;
+  double vtxZFromConv( edm::View<pat::Photon>::const_iterator pho, const edm::Ptr<reco::Conversion> &, const math::XYZPoint &beamSpot) const;
+  double vtxZFromConvSuperCluster( edm::View<pat::Photon>::const_iterator pho, const edm::Ptr<reco::Conversion> &conversion, const math::XYZPoint &beamSpot ) const ;
+  double vtxZFromConvOnly(  edm::View<pat::Photon>::const_iterator pho, const edm::Ptr<reco::Conversion> &conversion, const math::XYZPoint &beamSpot ) const;
 
 
   std::vector<Short_t> phoSCindex_;
@@ -210,6 +216,36 @@ private:
 
   //check
   edm::EDGetToken gsfEle_;
+
+  edm::EDGetTokenT<reco::BeamSpot> offlinebeamSpot_;
+
+  edm::EDGetTokenT<edm::View<reco::Conversion> > convPhotonTag_;
+  edm::EDGetTokenT<edm::View<reco::Conversion> > convPhotonTagSL_;
+
+  double sigma1Pix;
+  double sigma1Tib;
+  double sigma1Tob;
+  double sigma1PixFwd;
+  double sigma1Tid;
+  double sigma1Tec;
+  double sigma2Pix;
+  double sigma2Tib;
+  double sigma2Tob;
+  double sigma2PixFwd;
+  double sigma2Tid;
+  double sigma2Tec;
+  double singlelegsigma1Pix;
+  double singlelegsigma1Tib;
+  double singlelegsigma1Tob;
+  double singlelegsigma1PixFwd;
+  double singlelegsigma1Tid;
+  double singlelegsigma1Tec;
+  double singlelegsigma2Pix;
+  double singlelegsigma2Tib;
+  double singlelegsigma2Tob;
+  double singlelegsigma2PixFwd;
+  double singlelegsigma2Tid;
+  double singlelegsigma2Tec;
 
   TTree   *tree_;
   TH1F    *hEvents_;

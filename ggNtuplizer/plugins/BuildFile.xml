@@ -40,6 +40,7 @@
 <use name="SimTracker/Records"/>
 <use name="SimTracker/TrackerHitAssociation"/>
 <use name="TrackingTools/IPTools"/>
+<use name="DataFormats/Common"/>
 <use name="heppdt"/>
 <use name="root"/>
 <use name="boost"/>

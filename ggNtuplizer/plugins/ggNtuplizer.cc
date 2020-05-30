@@ -90,6 +90,37 @@ hltPrescaleProvider_(ps, consumesCollector(), *this)
   newparticles_               =                                          ps.getParameter< vector<int > >("newParticles");
   ecalBadCalibFilterUpdateToken_ = consumes< Bool_t >(ps.getParameter<InputTag>("ecalBadCalibFilter"));
 
+  
+  convPhotonTag_ = consumes<edm::View<reco::Conversion> >(ps.getParameter<edm::InputTag>("convPhotonTag"));
+  convPhotonTagSL_ = consumes<edm::View<reco::Conversion> >(ps.getParameter<edm::InputTag>("convPhotonTagSL"));
+
+  offlinebeamSpot_ = consumes<reco::BeamSpot>(ps.getParameter<edm::InputTag>("offlineBeamSpot"));
+  sigma1Pix             = ps.getParameter<double>( "sigma1Pix" );
+  sigma1Tib             = ps.getParameter<double>( "sigma1Tib" );
+  sigma1Tob             = ps.getParameter<double>( "sigma1Tob" );
+  sigma1PixFwd          = ps.getParameter<double>( "sigma1PixFwd" );
+  sigma1Tid             = ps.getParameter<double>( "sigma1Tid" );
+  sigma1Tec             = ps.getParameter<double>( "sigma1Tec" );
+  sigma2Pix             = ps.getParameter<double>( "sigma2Pix" );
+  sigma2Tib             = ps.getParameter<double>( "sigma2Tib" );
+  sigma2Tob             = ps.getParameter<double>( "sigma2Tob" );
+  sigma2PixFwd          = ps.getParameter<double>( "sigma2PixFwd" );
+  sigma2Tid             = ps.getParameter<double>( "sigma2Tid" );
+  sigma2Tec             = ps.getParameter<double>( "sigma2Tec" );
+  singlelegsigma1Pix    = ps.getParameter<double>( "singlelegsigma1Pix" );
+  singlelegsigma1Tib    = ps.getParameter<double>( "singlelegsigma1Tib" );
+  singlelegsigma1Tob    = ps.getParameter<double>( "singlelegsigma1Tob" );
+  singlelegsigma1PixFwd = ps.getParameter<double>( "singlelegsigma1PixFwd" );
+  singlelegsigma1Tid    = ps.getParameter<double>( "singlelegsigma1Tid" );
+  singlelegsigma1Tec    = ps.getParameter<double>( "singlelegsigma1Tec" );
+  singlelegsigma2Pix    = ps.getParameter<double>( "singlelegsigma2Pix" );
+  singlelegsigma2Tib    = ps.getParameter<double>( "singlelegsigma2Tib" );
+  singlelegsigma2Tob    = ps.getParameter<double>( "singlelegsigma2Tob" );
+  singlelegsigma2PixFwd = ps.getParameter<double>( "singlelegsigma2PixFwd" );
+  singlelegsigma2Tid    = ps.getParameter<double>( "singlelegsigma2Tid" );
+  singlelegsigma2Tec    = ps.getParameter<double>( "singlelegsigma2Tec" );
+
+
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed and skimmed events",   2,  0,   1);
